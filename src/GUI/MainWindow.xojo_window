@@ -24,7 +24,8 @@ Begin DesktopWindow MainWindow
    Type            =   0
    Visible         =   True
    Width           =   600
-   Begin PlayerContainer PlayerContainer1
+   Begin MiniPlayerContainer MiniPlayer
+      AlbumIcon       =   0
       AllowAutoDeactivate=   True
       AllowFocus      =   False
       AllowFocusRing  =   False
@@ -52,48 +53,6 @@ Begin DesktopWindow MainWindow
       Transparent     =   True
       Visible         =   True
       Width           =   225
-   End
-   Begin DesktopMoviePlayer MoviePlayer1
-      Active          =   False
-      AllowAutoDeactivate=   True
-      AllowTabStop    =   True
-      AutoAdjustToMovieSize=   True
-      AutoPlay        =   False
-      AutoRepeat      =   False
-      ControllerHeight=   0
-      ControllerWidth =   0
-      Duration        =   0.0
-      Enabled         =   True
-      HasBorder       =   True
-      HasController   =   False
-      HasStepControls =   True
-      HasVolumeControl=   True
-      Height          =   100
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Left            =   -124
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Movie           =   0
-      PanelIndex      =   0
-      Position        =   0.0
-      RepeatInReverse =   False
-      Scope           =   2
-      TabIndex        =   3
-      TabPanelIndex   =   0
-      Tooltip         =   ""
-      Top             =   -159
-      Transparent     =   False
-      Visible         =   True
-      Volume          =   0
-      Width           =   100
-      _mIndex         =   0
-      _mInitialParent =   ""
-      _mName          =   ""
-      _mPanelIndex    =   0
    End
    Begin SongListContainer SongList
       AllowAutoDeactivate=   True
@@ -130,23 +89,96 @@ Begin DesktopWindow MainWindow
       Scope           =   2
       TabPanelIndex   =   0
    End
+   Begin DesktopMoviePlayer MP3Player
+      Active          =   False
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      AutoAdjustToMovieSize=   True
+      AutoPlay        =   False
+      AutoRepeat      =   False
+      ControllerHeight=   0
+      ControllerWidth =   0
+      Duration        =   0.0
+      Enabled         =   True
+      HasBorder       =   True
+      HasController   =   False
+      HasStepControls =   True
+      HasVolumeControl=   True
+      Height          =   100
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   -138
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Movie           =   0
+      PanelIndex      =   0
+      Position        =   0.0
+      RepeatInReverse =   False
+      Scope           =   2
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   -103
+      Transparent     =   False
+      Visible         =   True
+      Volume          =   0
+      Width           =   100
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
+   End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Method, Flags = &h21
+		Private Sub DrawAlbumIcon(g As Graphics, padding As Integer, radius As Integer)
+		  g.SaveState
+		  g.DrawingColor = Color.White
+		  g.FillRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
+		  g.DrawingColor = Color.LightGray
+		  g.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
+		  
+		  g.FontSize = g.Height / 3
+		  Var note As String = "🎵"
+		  Var w As Double = g.TextWidth(note)
+		  g.DrawText(note, g.Width / 2 - w / 2, g.Height / 2 + g.FontAscent / 2.5)
+		  
+		  g.RestoreState
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GenerateAlbumIcon() As Picture
+		  Var p As New Picture(300, 300)
+		  Var g As Graphics = p.Graphics
+		  DrawAlbumIcon(g, 0, 0)
+		  
+		  Return p
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub LoadMusicFile(f As FolderItem)
 		  mMusicFile = f
 		  
 		  If f <> Nil And f.Exists Then
-		    MoviePlayer1.Movie = Movie.Open(f)
+		    MP3Player.Movie = Movie.Open(f)
 		  Else
-		    MoviePlayer1.Stop
-		    MoviePlayer1.Movie = Nil
+		    MP3Player.Stop
+		    MP3Player.Movie = Nil
 		  End If
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		Private mIsPlaying As Boolean
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mMusicFile As FolderItem
@@ -155,25 +187,25 @@ End
 
 #tag EndWindowCode
 
-#tag Events PlayerContainer1
+#tag Events MiniPlayer
 	#tag Event
 		Sub PlayPressed()
-		  MoviePlayer1.Play
+		  MP3Player.Play
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub StopPressed()
-		  MoviePlayer1.Stop
+		  MP3Player.Stop
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Function PlaybackPositionInSeconds() As Integer
-		  Return MoviePlayer1.Position
+		  Return MP3Player.Position
 		End Function
 	#tag EndEvent
 	#tag Event
 		Function SongLengthInSeconds() As Integer
-		  Return MoviePlayer1.Duration
+		  Return MP3Player.Duration
 		End Function
 	#tag EndEvent
 	#tag Event
@@ -182,33 +214,27 @@ End
 		    Return "-"
 		  End If
 		  
-		  Return mMusicFile.Name
+		  Return mMusicFile.Name.TrimRight("." + mMusicFile.Extension)
 		End Function
 	#tag EndEvent
-#tag EndEvents
-#tag Events MoviePlayer1
 	#tag Event
-		Sub Opening()
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub PlaybackStarted()
-		  
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub PlaybackStopped()
-		  
-		End Sub
+		Function IsPlaying() As Boolean
+		  Return mIsPlaying
+		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag Events SongList
 	#tag Event
 		Sub SongDoublePressed(nativePath As String)
-		  MoviePlayer1.Movie = Movie.Open(New FolderItem(nativePath, FolderItem.PathModes.Native))
-		  MoviePlayer1.Position = 0
-		  MoviePlayer1.Play
+		  mMusicFile = New FolderItem(nativePath, FolderItem.PathModes.Native)
+		  mIsPlaying = True
+		  
+		  MP3Player.Movie = Movie.Open(New FolderItem(nativePath, FolderItem.PathModes.Native))
+		  MP3Player.Position = 0
+		  MP3Player.Play
+		  
+		  MiniPlayer.AlbumIcon = GenerateAlbumIcon
+		  MiniPlayer.Active = True
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -216,11 +242,35 @@ End
 		  Music.AddFolderRecursively(folder)
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub DrawAlbumIcon(g As Graphics)
+		  DrawAlbumIcon(g, 5, 8)
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events Music
 	#tag Event
 		Sub NewFilesAdded(nativePaths() As String)
 		  SongList.AddSongs(nativePaths)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events MP3Player
+	#tag Event
+		Sub Opening()
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub PlaybackStarted()
+		  mIsPlaying = True
+		  MiniPlayer.Active = True
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub PlaybackStopped()
+		  mIsPlaying = False
+		  MiniPlayer.Active = False
 		End Sub
 	#tag EndEvent
 #tag EndEvents

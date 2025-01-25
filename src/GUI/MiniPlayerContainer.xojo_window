@@ -1,5 +1,5 @@
 #tag DesktopWindow
-Begin DesktopContainer PlayerContainer
+Begin DesktopContainer MiniPlayerContainer
    AllowAutoDeactivate=   True
    AllowFocus      =   False
    AllowFocusRing  =   False
@@ -34,7 +34,7 @@ Begin DesktopContainer PlayerContainer
       Image           =   0
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   38
+      Left            =   39
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -72,7 +72,7 @@ Begin DesktopContainer PlayerContainer
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
-      Selectable      =   False
+      Selectable      =   True
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -122,7 +122,7 @@ Begin DesktopContainer PlayerContainer
       Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
-      Enabled         =   True
+      Enabled         =   False
       Height          =   20
       Indeterminate   =   False
       Index           =   -2147483648
@@ -331,7 +331,7 @@ Begin DesktopContainer PlayerContainer
       _mName          =   ""
       _mPanelIndex    =   0
    End
-   Begin Timer Timer1
+   Begin Timer UpdateTimer
       Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
@@ -374,10 +374,20 @@ End
 		  Label2.Text = FormatSeconds(pos)
 		  Label3.Text = FormatSeconds(length)
 		  
-		  ProgressBar1.Value = pos
+		  If length > 0 Then
+		    ProgressBar1.MaximumValue = length
+		    ProgressBar1.Value = pos
+		  Else
+		    ProgressBar1.MaximumValue = 1
+		    ProgressBar1.Value = 0
+		  End If
 		End Sub
 	#tag EndMethod
 
+
+	#tag Hook, Flags = &h0
+		Event IsPlaying() As Boolean
+	#tag EndHook
 
 	#tag Hook, Flags = &h0
 		Event PlaybackPositionInSeconds() As Integer
@@ -400,6 +410,49 @@ End
 	#tag EndHook
 
 
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mActive
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mActive = value
+			  
+			  UpdateTimer.RunMode = If(value, Timer.RunModes.Multiple, Timer.RunModes.Off)
+			  ProgressBar1.Enabled = value
+			  
+			  Update
+			End Set
+		#tag EndSetter
+		Active As Boolean
+	#tag EndComputedProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mAlbumIcon
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mAlbumIcon = value
+			  ImageViewer1.Image = value
+			End Set
+		#tag EndSetter
+		AlbumIcon As Picture
+	#tag EndComputedProperty
+
+	#tag Property, Flags = &h21
+		Private mActive As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mAlbumIcon As Picture
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
 #tag Events BevelButton2
@@ -409,7 +462,7 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events Timer1
+#tag Events UpdateTimer
 	#tag Event
 		Sub Action()
 		  Update
@@ -630,6 +683,22 @@ End
 		Visible=true
 		Group="Window Behavior"
 		InitialValue="False"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="AlbumIcon"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Picture"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Active"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
 		Type="Boolean"
 		EditorType=""
 	#tag EndViewProperty

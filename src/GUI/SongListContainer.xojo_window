@@ -131,26 +131,13 @@ End
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Sub DrawSoundIcon(g As Graphics)
-		  Const padding = 3
-		  Const radius = 4
-		  Var w As Double = g.Width / 3
-		  
-		  g.SaveState
-		  g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, 1)
-		  Var now As DateTime = DateTime.Now
-		  For i As Integer = 0 To 2
-		    Var h As Double = Sin((now.SecondsFrom1970 + i * .6) * 10) * g.Height
-		    g.FillRectangle(i * w, g.Height - h, i * w + w, h)
-		  Next
-		  g.RestoreState
-		End Sub
-	#tag EndMethod
-
 
 	#tag Hook, Flags = &h0
 		Event AddFilesFromDirectory(folder As FolderItem)
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event DrawAlbumIcon(g As Graphics)
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
@@ -185,16 +172,8 @@ End
 		  
 		  Select Case column
 		  Case 0
-		    g.DrawingColor = Color.LightGray
-		    g.SaveState
-		    g.DrawingColor = Color.White
-		    g.FillRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
-		    g.RestoreState
-		    g.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
+		    RaiseEvent DrawAlbumIcon(g)
 		    
-		    Var note As String = "🎵"
-		    Var w As Double = g.TextWidth(note)
-		    g.DrawText(note, g.Width / 2 - w / 2, g.Height / 2 + g.FontAscent / 2)
 		    Return True
 		    
 		  Case 2
@@ -202,7 +181,17 @@ End
 		      Return False
 		    End If
 		    
-		    DrawSoundIcon(g.Clip(padding, padding * 4, g.Width - padding * 2, g.Height - padding * 4))
+		    Var w As Double = g.Width / 3
+		    
+		    g.SaveState
+		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, 1)
+		    Var now As DateTime = DateTime.Now
+		    For i As Integer = 0 To 2
+		      Var h As Double = Sin((now.SecondsFrom1970 + i * .6) * 10) * g.Height
+		      g.FillRectangle(i * w, g.Height - h, i * w + w, h)
+		    Next
+		    g.RestoreState
+		    
 		    Return True
 		    
 		  End Select
