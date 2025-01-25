@@ -63,7 +63,7 @@ Begin DesktopContainer SongListContainer
       AllowFocusRing  =   False
       AllowResizableColumns=   False
       AllowRowDragging=   False
-      AllowRowReordering=   False
+      AllowRowReordering=   True
       Bold            =   False
       ColumnCount     =   3
       ColumnWidths    =   "50,*,50"
@@ -83,7 +83,7 @@ Begin DesktopContainer SongListContainer
       Index           =   -2147483648
       InitialValue    =   ""
       Italic          =   False
-      Left            =   0
+      Left            =   1
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -125,9 +125,39 @@ End
 		      Continue
 		    End If
 		    
-		    SongListBox.AddRow("", f.Name)
+		    SongListBox.AddRow("", f.Name, "")
 		    SongListBox.RowTagAt(SongListBox.LastAddedRowIndex) = f.NativePath
 		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Play(nativePath As String)
+		  For i As Integer = 0 To SongListBox.LastRowIndex
+		    Var path As String = SongListBox.RowTagAt(i)
+		    If path = nativePath Then
+		      mRowPlaying = i
+		      Exit
+		    End If
+		  Next
+		  
+		  ResetPlayingIndicator
+		  UpdateTimer.RunMode = Timer.RunModes.Multiple
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ResetPlayingIndicator()
+		  For i As Integer = 0 To SongListBox.LastRowIndex
+		    SongListBox.RefreshCell(i, 2)
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Stop()
+		  mRowPlaying = -1
+		  ResetPlayingIndicator
 		End Sub
 	#tag EndMethod
 
@@ -146,7 +176,7 @@ End
 
 
 	#tag Property, Flags = &h21
-		Private mRowPlaying As Integer = 0
+		Private mRowPlaying As Integer = -1
 	#tag EndProperty
 
 
@@ -202,6 +232,8 @@ End
 	#tag Event
 		Sub DoublePressed()
 		  mRowPlaying = Me.SelectedRowIndex
+		  ResetPlayingIndicator
+		  
 		  Var nativePath As Variant = Me.RowTagAt(Me.SelectedRowIndex)
 		  If nativePath <> Nil Then
 		    RaiseEvent SongDoublePressed(nativePath)

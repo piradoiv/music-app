@@ -25,6 +25,7 @@ Begin DesktopWindow MainWindow
    Visible         =   True
    Width           =   600
    Begin MiniPlayerContainer MiniPlayer
+      Active          =   False
       AlbumIcon       =   0
       AllowAutoDeactivate=   True
       AllowFocus      =   False
@@ -189,13 +190,12 @@ End
 
 #tag Events MiniPlayer
 	#tag Event
-		Sub PlayPressed()
-		  MP3Player.Play
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub StopPressed()
-		  MP3Player.Stop
+		Sub PlayPausePressed()
+		  If mIsPlaying Then
+		    MP3Player.Stop
+		  Else
+		    MP3Player.Play
+		  End If
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -221,6 +221,11 @@ End
 		Function IsPlaying() As Boolean
 		  Return mIsPlaying
 		End Function
+	#tag EndEvent
+	#tag Event
+		Sub Seek(newPosition As Double)
+		  MP3Player.Position = newPosition
+		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events SongList
@@ -265,12 +270,14 @@ End
 		Sub PlaybackStarted()
 		  mIsPlaying = True
 		  MiniPlayer.Active = True
+		  SongList.Play(mMusicFile.NativePath)
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub PlaybackStopped()
 		  mIsPlaying = False
 		  MiniPlayer.Active = False
+		  SongList.Stop
 		End Sub
 	#tag EndEvent
 #tag EndEvents

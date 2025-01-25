@@ -25,7 +25,7 @@ Begin DesktopContainer MiniPlayerContainer
    Transparent     =   True
    Visible         =   True
    Width           =   225
-   Begin DesktopImageViewer ImageViewer1
+   Begin DesktopImageViewer AlbumImageViewer
       Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
@@ -54,7 +54,7 @@ Begin DesktopContainer MiniPlayerContainer
       _mName          =   ""
       _mPanelIndex    =   0
    End
-   Begin DesktopLabel Label1
+   Begin DesktopLabel SongNameLabel
       AllowAutoDeactivate=   True
       Bold            =   False
       Enabled         =   True
@@ -86,7 +86,7 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   185
    End
-   Begin DesktopLabel Label2
+   Begin DesktopLabel PositionLabel
       AllowAutoDeactivate=   True
       Bold            =   False
       Enabled         =   True
@@ -118,7 +118,7 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   34
    End
-   Begin DesktopProgressBar ProgressBar1
+   Begin DesktopProgressBar PositionProgressBar
       Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
@@ -149,7 +149,7 @@ Begin DesktopContainer MiniPlayerContainer
       _mName          =   ""
       _mPanelIndex    =   0
    End
-   Begin DesktopLabel Label3
+   Begin DesktopLabel DurationLabel
       AllowAutoDeactivate=   True
       Bold            =   False
       Enabled         =   True
@@ -181,7 +181,7 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   34
    End
-   Begin DesktopBevelButton BevelButton1
+   Begin DesktopBevelButton PrevBevelButton
       Active          =   False
       AllowAutoDeactivate=   True
       AllowFocus      =   True
@@ -231,7 +231,7 @@ Begin DesktopContainer MiniPlayerContainer
       _mName          =   ""
       _mPanelIndex    =   0
    End
-   Begin DesktopBevelButton BevelButton2
+   Begin DesktopBevelButton PlayPauseBevelButton
       Active          =   False
       AllowAutoDeactivate=   True
       AllowFocus      =   True
@@ -281,7 +281,7 @@ Begin DesktopContainer MiniPlayerContainer
       _mName          =   ""
       _mPanelIndex    =   0
    End
-   Begin DesktopBevelButton BevelButton3
+   Begin DesktopBevelButton NextBevelButton
       Active          =   False
       AllowAutoDeactivate=   True
       AllowFocus      =   True
@@ -363,23 +363,25 @@ End
 	#tag Method, Flags = &h21
 		Private Sub Update()
 		  Var enable As Boolean = True
-		  BevelButton1.Enabled = enable
-		  BevelButton2.Enabled = enable
-		  BevelButton3.Enabled = enable
+		  PrevBevelButton.Enabled = enable
+		  PlayPauseBevelButton.Enabled = enable
+		  NextBevelButton.Enabled = enable
+		  
+		  PlayPauseBevelButton.Caption = If(RaiseEvent IsPlaying, "Pause", "Play")
 		  
 		  Var pos As Integer = RaiseEvent PlaybackPositionInSeconds
 		  Var length As Integer = RaiseEvent SongLengthInSeconds
 		  
-		  Label1.Text = RaiseEvent SongName
-		  Label2.Text = FormatSeconds(pos)
-		  Label3.Text = FormatSeconds(length)
+		  SongNameLabel.Text = RaiseEvent SongName
+		  PositionLabel.Text = FormatSeconds(pos)
+		  DurationLabel.Text = FormatSeconds(length)
 		  
 		  If length > 0 Then
-		    ProgressBar1.MaximumValue = length
-		    ProgressBar1.Value = pos
+		    PositionProgressBar.MaximumValue = length
+		    PositionProgressBar.Value = pos
 		  Else
-		    ProgressBar1.MaximumValue = 1
-		    ProgressBar1.Value = 0
+		    PositionProgressBar.MaximumValue = 1
+		    PositionProgressBar.Value = 0
 		  End If
 		End Sub
 	#tag EndMethod
@@ -394,7 +396,11 @@ End
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
-		Event PlayPressed()
+		Event PlayPausePressed()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event Seek(newPosition As Double)
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
@@ -403,10 +409,6 @@ End
 
 	#tag Hook, Flags = &h0
 		Event SongName() As String
-	#tag EndHook
-
-	#tag Hook, Flags = &h0
-		Event StopPressed()
 	#tag EndHook
 
 
@@ -421,7 +423,7 @@ End
 			  mActive = value
 			  
 			  UpdateTimer.RunMode = If(value, Timer.RunModes.Multiple, Timer.RunModes.Off)
-			  ProgressBar1.Enabled = value
+			  PositionProgressBar.Enabled = value
 			  
 			  Update
 			End Set
@@ -438,7 +440,7 @@ End
 		#tag Setter
 			Set
 			  mAlbumIcon = value
-			  ImageViewer1.Image = value
+			  AlbumImageViewer.Image = value
 			End Set
 		#tag EndSetter
 		AlbumIcon As Picture
@@ -455,10 +457,24 @@ End
 
 #tag EndWindowCode
 
-#tag Events BevelButton2
+#tag Events PositionProgressBar
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  Return True
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  Var newValue As Double = Me.MaximumValue / Me.Width * x
+		  Me.Value = newValue
+		  RaiseEvent Seek(newValue)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PlayPauseBevelButton
 	#tag Event
 		Sub Pressed()
-		  
+		  RaiseEvent PlayPausePressed
 		End Sub
 	#tag EndEvent
 #tag EndEvents
