@@ -25,7 +25,7 @@ Begin DesktopContainer SongListContainer
    Transparent     =   True
    Visible         =   True
    Width           =   300
-   Begin DesktopButton Button1
+   Begin DesktopButton OpenFilesButton
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -117,6 +117,20 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Method, Flags = &h0
+		Sub AddSongs(nativePaths() As String)
+		  For Each path As String In nativePaths
+		    Var f As New FolderItem(path, FolderItem.PathModes.Native)
+		    If f = Nil Or Not f.Exists Then
+		      Continue
+		    End If
+		    
+		    SongListBox.AddRow("", f.Name)
+		    SongListBox.RowTagAt(SongListBox.LastAddedRowIndex) = f.NativePath
+		  Next
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub DrawSoundIcon(g As Graphics)
 		  Const padding = 3
@@ -136,7 +150,11 @@ End
 
 
 	#tag Hook, Flags = &h0
-		Event SongDoublePressed(id As Integer)
+		Event AddFilesFromDirectory(folder As FolderItem)
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event SongDoublePressed(nativePath As String)
 	#tag EndHook
 
 
@@ -147,6 +165,18 @@ End
 
 #tag EndWindowCode
 
+#tag Events OpenFilesButton
+	#tag Event
+		Sub Pressed()
+		  Var folder As FolderItem = FolderItem.ShowSelectFolderDialog
+		  If folder = Nil Then
+		    Return
+		  End If
+		  
+		  RaiseEvent AddFilesFromDirectory(folder)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events SongListBox
 	#tag Event
 		Function PaintCellText(g as Graphics, row as Integer, column as Integer, x as Integer, y as Integer) As Boolean
@@ -181,26 +211,12 @@ End
 		End Function
 	#tag EndEvent
 	#tag Event
-		Sub Opening()
-		  For i As Integer = 1 To 10
-		    Me.AddRow("", "Song #" + i.ToString, "")
-		    Me.RowTagAt(Me.LastAddedRowIndex) = i + 1
-		  Next
-		  
-		  mRowPlaying = 1
-		End Sub
-	#tag EndEvent
-	#tag Event
 		Sub DoublePressed()
 		  mRowPlaying = Me.SelectedRowIndex
-		  Var tag As Variant = Me.RowTagAt(Me.SelectedRowIndex)
-		  If tag <> Nil Then
-		    RaiseEvent SongDoublePressed(tag)
+		  Var nativePath As Variant = Me.RowTagAt(Me.SelectedRowIndex)
+		  If nativePath <> Nil Then
+		    RaiseEvent SongDoublePressed(nativePath)
 		  End If
-		  
-		  For i As Integer = 0 To Me.LastRowIndex
-		    Me.RefreshCell(i, 2)
-		  Next
 		End Sub
 	#tag EndEvent
 #tag EndEvents

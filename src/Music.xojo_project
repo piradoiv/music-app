@@ -8,6 +8,7 @@ MenuBar=MainMenuBar;MainMenuBar.xojo_menu;&h00000000388ACFFF;&h0000000000000000;
 BuildSteps=Build Automation;Build Automation.xojo_code;&h000000005F1537FF;&h0000000000000000;false
 DesktopWindow=PlayerContainer;PlayerContainer.xojo_window;&h0000000057209FFF;&h0000000000000000;false
 DesktopWindow=SongListContainer;SongListContainer.xojo_window;&h000000005F8F77FF;&h0000000000000000;false
+Class=MusicApp;MusicApp.xojo_code;&h0000000006672FFF;&h0000000000000000;false
 DefaultWindow=MainWindow
 AppMenuBar=MainMenuBar
 MajorVersion=1

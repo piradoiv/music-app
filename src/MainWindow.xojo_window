@@ -115,7 +115,6 @@ Begin DesktopWindow MainWindow
       LockRight       =   True
       LockTop         =   True
       Scope           =   2
-      State           =   ""
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
@@ -124,6 +123,12 @@ Begin DesktopWindow MainWindow
       Transparent     =   True
       Visible         =   True
       Width           =   375
+   End
+   Begin MusicApp Music
+      Index           =   -2147483648
+      LockedInPosition=   False
+      Scope           =   2
+      TabPanelIndex   =   0
    End
 End
 #tag EndDesktopWindow
@@ -200,8 +205,22 @@ End
 #tag EndEvents
 #tag Events SongList
 	#tag Event
-		Sub SongDoublePressed(id As Integer)
-		  
+		Sub SongDoublePressed(nativePath As String)
+		  MoviePlayer1.Movie = Movie.Open(New FolderItem(nativePath, FolderItem.PathModes.Native))
+		  MoviePlayer1.Position = 0
+		  MoviePlayer1.Play
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub AddFilesFromDirectory(folder As FolderItem)
+		  Music.AddFolderRecursively(folder)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Music
+	#tag Event
+		Sub NewFilesAdded(nativePaths() As String)
+		  SongList.AddSongs(nativePaths)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
