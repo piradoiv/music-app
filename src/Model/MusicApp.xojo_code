@@ -14,6 +14,7 @@ Protected Class MusicApp
 		  Next
 		  
 		  If newPaths.Count > 0 Then
+		    newPaths.Sort
 		    RaiseEvent NewFilesAdded(newPaths)
 		  End If
 		End Sub
@@ -57,9 +58,22 @@ Protected Class MusicApp
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub RemoveSong(songPath As FolderItem)
+		  If mPlaylist.HasKey(songPath.NativePath) Then
+		    mPlaylist.Remove(songPath.NativePath)
+		    RaiseEvent SongRemoved(songPath.NativePath)
+		  End If
+		End Sub
+	#tag EndMethod
+
 
 	#tag Hook, Flags = &h0
 		Event NewFilesAdded(nativePaths() As String)
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event SongRemoved(nativePath As String)
 	#tag EndHook
 
 

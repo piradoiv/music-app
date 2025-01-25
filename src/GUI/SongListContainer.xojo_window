@@ -171,6 +171,10 @@ End
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
+		Event RemoveSong(nativePath As String)
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
 		Event SongDoublePressed(nativePath As String)
 	#tag EndHook
 
@@ -238,6 +242,21 @@ End
 		  If nativePath <> Nil Then
 		    RaiseEvent SongDoublePressed(nativePath)
 		  End If
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  Return Me.SelectedRowIndex <> -1 And Asc(key) = 8
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub KeyUp(key As String)
+		  Select Case Asc(key)
+		  Case 8
+		    Var path As String = Me.RowTagAt(Me.SelectedRowIndex)
+		    Me.RemoveRowAt(Me.SelectedRowIndex)
+		    RaiseEvent RemoveSong(path)
+		  End Select
 		End Sub
 	#tag EndEvent
 #tag EndEvents

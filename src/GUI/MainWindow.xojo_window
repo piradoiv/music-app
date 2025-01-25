@@ -252,11 +252,24 @@ End
 		  DrawAlbumIcon(g, 5, 8)
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub RemoveSong(nativePath As String)
+		  Music.RemoveSong(New FolderItem(nativePath))
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events Music
 	#tag Event
 		Sub NewFilesAdded(nativePaths() As String)
 		  SongList.AddSongs(nativePaths)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub SongRemoved(nativePath As String)
+		  If mMusicFile.NativePath = nativePath Then
+		    mMusicFile = Nil
+		    MP3Player.Stop
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents
