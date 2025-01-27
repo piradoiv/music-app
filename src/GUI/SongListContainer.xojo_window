@@ -294,6 +294,19 @@ End
 		  ResetPlayingIndicator
 		End Function
 	#tag EndEvent
+	#tag Event
+		Function PaintCellBackground(g As Graphics, row As Integer, column As Integer) As Boolean
+		  If Color.IsDarkMode Then
+		    g.DrawingColor = If(row Mod 2 = 0, &c121212, &c000000)
+		  Else
+		    g.DrawingColor = If(row Mod 2 = 0, &cF3F3F3, &cFFFFFF)
+		  End If
+		  
+		  g.FillRectangle(0, 0, g.Width, g.Height)
+		  
+		  Return False
+		End Function
+	#tag EndEvent
 #tag EndEvents
 #tag Events UpdateTimer
 	#tag Event
