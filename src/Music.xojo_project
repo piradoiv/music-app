@@ -9,6 +9,7 @@ MenuBar=MainMenuBar;GUI/MainMenuBar.xojo_menu;&h00000000388ACFFF;&h000000006480E
 DesktopWindow=MainWindow;GUI/MainWindow.xojo_window;&h0000000058584FFF;&h000000006480EFFF;false
 DesktopWindow=SongListContainer;GUI/SongListContainer.xojo_window;&h000000005F8F77FF;&h000000006480EFFF;false
 DesktopWindow=MiniPlayerContainer;GUI/MiniPlayerContainer.xojo_window;&h0000000057209FFF;&h000000006480EFFF;false
+Class=ButtonCanvas;GUI/ButtonCanvas.xojo_code;&h0000000019C0E7FF;&h000000006480EFFF;false
 Folder=Model;Model;&h000000005FD477FF;&h0000000000000000;false
 Class=MusicApp;Model/MusicApp.xojo_code;&h0000000006672FFF;&h000000005FD477FF;false
 Folder=Assets;Assets;&h00000000469FAFFF;&h0000000000000000;false

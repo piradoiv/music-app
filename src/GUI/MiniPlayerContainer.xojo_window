@@ -187,7 +187,7 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   150
    End
-   Begin DesktopCanvas PrevButtonCanvas
+   Begin ButtonCanvas PrevButtonCanvas
       AllowAutoDeactivate=   True
       AllowFocus      =   False
       AllowFocusRing  =   True
@@ -212,7 +212,7 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   45
    End
-   Begin DesktopCanvas PlayPauseButtonCanvas
+   Begin ButtonCanvas PlayPauseButtonCanvas
       AllowAutoDeactivate=   True
       AllowFocus      =   False
       AllowFocusRing  =   True
@@ -237,7 +237,7 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   45
    End
-   Begin DesktopCanvas NextButtonCanvas
+   Begin ButtonCanvas NextButtonCanvas
       AllowAutoDeactivate=   True
       AllowFocus      =   False
       AllowFocusRing  =   True
@@ -285,9 +285,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub Update()
-		  Var enable As Boolean = True
+		  Var enable As Boolean = mActive
 		  PrevButtonCanvas.Enabled = enable
-		  PlayPauseButtonCanvas.Enabled = enable
 		  NextButtonCanvas.Enabled = enable
 		  
 		  PlayPauseButtonCanvas.Refresh
@@ -448,11 +447,6 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(x As Integer, y As Integer) As Boolean
-		  Return True
-		End Function
-	#tag EndEvent
-	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  RaiseEvent PreviousSongPressed
 		End Sub
@@ -466,11 +460,6 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Function MouseDown(x As Integer, y As Integer) As Boolean
-		  Return True
-		End Function
-	#tag EndEvent
-	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  RaiseEvent PlayPausePressed
 		End Sub
@@ -482,11 +471,6 @@ End
 		  Var icon As Picture = skipforwardcircle
 		  g.DrawPicture(icon, 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
 		End Sub
-	#tag EndEvent
-	#tag Event
-		Function MouseDown(x As Integer, y As Integer) As Boolean
-		  Return True
-		End Function
 	#tag EndEvent
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
