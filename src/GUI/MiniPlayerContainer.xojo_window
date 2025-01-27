@@ -152,156 +152,6 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   34
    End
-   Begin DesktopBevelButton PrevBevelButton
-      Active          =   False
-      AllowAutoDeactivate=   True
-      AllowFocus      =   True
-      AllowTabStop    =   True
-      BackgroundColor =   &c00000000
-      BevelStyle      =   0
-      Bold            =   False
-      ButtonStyle     =   0
-      Caption         =   "Prev"
-      CaptionAlignment=   3
-      CaptionDelta    =   0
-      CaptionPosition =   1
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      HasBackgroundColor=   False
-      Height          =   22
-      Icon            =   0
-      IconAlignment   =   0
-      IconDeltaX      =   0
-      IconDeltaY      =   0
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      MenuStyle       =   0
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   5
-      TabPanelIndex   =   0
-      TextColor       =   &c00000000
-      Tooltip         =   ""
-      Top             =   282
-      Transparent     =   False
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   45
-      _mIndex         =   0
-      _mInitialParent =   ""
-      _mName          =   ""
-      _mPanelIndex    =   0
-   End
-   Begin DesktopBevelButton PlayPauseBevelButton
-      Active          =   False
-      AllowAutoDeactivate=   True
-      AllowFocus      =   True
-      AllowTabStop    =   True
-      BackgroundColor =   &c00000000
-      BevelStyle      =   0
-      Bold            =   False
-      ButtonStyle     =   0
-      Caption         =   "Play"
-      CaptionAlignment=   3
-      CaptionDelta    =   0
-      CaptionPosition =   1
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      HasBackgroundColor=   False
-      Height          =   22
-      Icon            =   0
-      IconAlignment   =   0
-      IconDeltaX      =   0
-      IconDeltaY      =   0
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   77
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      MenuStyle       =   0
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   6
-      TabPanelIndex   =   0
-      TextColor       =   &c00000000
-      Tooltip         =   ""
-      Top             =   282
-      Transparent     =   False
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   71
-      _mIndex         =   0
-      _mInitialParent =   ""
-      _mName          =   ""
-      _mPanelIndex    =   0
-   End
-   Begin DesktopBevelButton NextBevelButton
-      Active          =   False
-      AllowAutoDeactivate=   True
-      AllowFocus      =   True
-      AllowTabStop    =   True
-      BackgroundColor =   &c00000000
-      BevelStyle      =   0
-      Bold            =   False
-      ButtonStyle     =   0
-      Caption         =   "Next"
-      CaptionAlignment=   3
-      CaptionDelta    =   0
-      CaptionPosition =   1
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      HasBackgroundColor=   False
-      Height          =   22
-      Icon            =   0
-      IconAlignment   =   0
-      IconDeltaX      =   0
-      IconDeltaY      =   0
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   160
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      MenuStyle       =   0
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   7
-      TabPanelIndex   =   0
-      TextColor       =   &c00000000
-      Tooltip         =   ""
-      Top             =   282
-      Transparent     =   False
-      Underline       =   False
-      Value           =   False
-      Visible         =   True
-      Width           =   45
-      _mIndex         =   0
-      _mInitialParent =   ""
-      _mName          =   ""
-      _mPanelIndex    =   0
-   End
    Begin Timer UpdateTimer
       Enabled         =   True
       Index           =   -2147483648
@@ -337,6 +187,81 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   150
    End
+   Begin DesktopCanvas PrevButtonCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   45
+      Index           =   -2147483648
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   282
+      Transparent     =   True
+      Visible         =   True
+      Width           =   45
+   End
+   Begin DesktopCanvas PlayPauseButtonCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   45
+      Index           =   -2147483648
+      Left            =   90
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   10
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   282
+      Transparent     =   True
+      Visible         =   True
+      Width           =   45
+   End
+   Begin DesktopCanvas NextButtonCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   45
+      Index           =   -2147483648
+      Left            =   160
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   11
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   282
+      Transparent     =   True
+      Visible         =   True
+      Width           =   45
+   End
 End
 #tag EndDesktopWindow
 
@@ -361,11 +286,11 @@ End
 	#tag Method, Flags = &h21
 		Private Sub Update()
 		  Var enable As Boolean = True
-		  PrevBevelButton.Enabled = enable
-		  PlayPauseBevelButton.Enabled = enable
-		  NextBevelButton.Enabled = enable
+		  PrevButtonCanvas.Enabled = enable
+		  PlayPauseButtonCanvas.Enabled = enable
+		  NextButtonCanvas.Enabled = enable
 		  
-		  PlayPauseBevelButton.Caption = If(RaiseEvent IsPlaying, "Pause", "Play")
+		  PlayPauseButtonCanvas.Refresh
 		  
 		  Var pos As Integer = RaiseEvent PlaybackPositionInSeconds
 		  Var length As Integer = RaiseEvent SongLengthInSeconds
@@ -481,27 +406,6 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events PrevBevelButton
-	#tag Event
-		Sub Pressed()
-		  RaiseEvent PreviousSongPressed
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events PlayPauseBevelButton
-	#tag Event
-		Sub Pressed()
-		  RaiseEvent PlayPausePressed
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events NextBevelButton
-	#tag Event
-		Sub Pressed()
-		  RaiseEvent NextSongPressed
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events UpdateTimer
 	#tag Event
 		Sub Action()
@@ -533,6 +437,60 @@ End
 		  
 		  g.DrawingColor = Color.RGB(0, 0, 0, 200)
 		  g.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PrevButtonCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var icon As Picture = skipbackwardcircle
+		  g.DrawPicture(icon, 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  Return True
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  RaiseEvent PreviousSongPressed
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PlayPauseButtonCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var icon As Picture = If(RaiseEvent IsPlaying, pausefill, playfill)
+		  g.DrawPicture(icon, 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  Return True
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  RaiseEvent PlayPausePressed
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events NextButtonCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var icon As Picture = skipforwardcircle
+		  g.DrawPicture(icon, 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  Return True
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  RaiseEvent NextSongPressed
 		End Sub
 	#tag EndEvent
 #tag EndEvents
