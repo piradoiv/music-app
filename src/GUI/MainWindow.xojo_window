@@ -137,19 +137,42 @@ End
 
 #tag WindowCode
 	#tag Method, Flags = &h21
-		Private Sub DrawAlbumIcon(g As Graphics, padding As Integer, radius As Integer)
-		  g.SaveState
-		  g.DrawingColor = Color.White
-		  g.FillRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
-		  g.DrawingColor = Color.LightGray
+		Private Function AlbumIcon(songNativePath As String) As Picture
+		  Var result As New Picture(256, 256)
+		  Var g As Graphics = result.Graphics
+		  
+		  Var albumImage As Picture = Music.AlbumImage(songNativePath)
+		  If albumImage <> Nil Then
+		    g.DrawPicture(albumImage, 0, 0, g.Width, g.Height, 0, 0, albumImage.Width, albumImage.Height)
+		  Else
+		    g.DrawingColor = Color.White
+		    g.FillRectangle(0, 0, g.Width, g.Height)
+		    
+		    g.FontSize = g.Height / 3
+		    Var note As String = "🎵"
+		    Var w As Double = g.TextWidth(note)
+		    g.DrawText(note, g.Width / 2 - w / 2, g.Height / 2 + g.FontAscent / 2.5)
+		  End If
+		  
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DrawAlbumIcon(songNativePath As String, g As Graphics, padding As Integer, radius As Integer)
+		  Var p As Picture = AlbumIcon(songNativePath)
+		  Var resizedPic As New Picture(g.Width - padding * 2, g.Height - padding * 2, 32)
+		  
+		  Var mask As New Picture(resizedPic.Width, resizedPic.Height, 32)
+		  mask.Graphics.DrawingColor = Color.Black
+		  mask.Graphics.FillRoundRectangle(0, 0, mask.Width, mask.Height, 10, 10)
+		  
+		  resizedPic.ApplyMask(mask)
+		  resizedPic.Graphics.DrawPicture(p, 0, 0, resizedPic.Graphics.Width, resizedPic.Graphics.Height, 0, 0, p.Width, p.Height)
+		  
+		  g.DrawPicture(resizedPic, padding, padding, g.Width - padding * 2, g.Height - padding * 2, 0, 0, resizedPic.Width, resizedPic.Height)
+		  g.DrawingColor = Color.RGB(0, 0, 0, 200)
 		  g.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
-		  
-		  g.FontSize = g.Height / 3
-		  Var note As String = "🎵"
-		  Var w As Double = g.TextWidth(note)
-		  g.DrawText(note, g.Width / 2 - w / 2, g.Height / 2 + g.FontAscent / 2.5)
-		  
-		  g.RestoreState
 		End Sub
 	#tag EndMethod
 
@@ -157,7 +180,7 @@ End
 		Private Function GenerateAlbumIcon() As Picture
 		  Var p As New Picture(300, 300)
 		  Var g As Graphics = p.Graphics
-		  DrawAlbumIcon(g, 0, 0)
+		  DrawAlbumIcon(mMusicFile.NativePath, g, 0, 0)
 		  
 		  Return p
 		End Function
@@ -293,8 +316,8 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub DrawAlbumIcon(g As Graphics)
-		  DrawAlbumIcon(g, 5, 8)
+		Sub DrawAlbumIcon(songNativePath As String, g As Graphics)
+		  DrawAlbumIcon(songNativePath, g, 5, 8)
 		End Sub
 	#tag EndEvent
 	#tag Event

@@ -195,7 +195,7 @@ End
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
-		Event DrawAlbumIcon(g As Graphics)
+		Event DrawAlbumIcon(songNativePath As String, g As Graphics)
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
@@ -234,7 +234,8 @@ End
 		  
 		  Select Case column
 		  Case 0
-		    RaiseEvent DrawAlbumIcon(g)
+		    Var path As String = Me.RowTagAt(row)
+		    RaiseEvent DrawAlbumIcon(path, g)
 		    
 		    Return True
 		    

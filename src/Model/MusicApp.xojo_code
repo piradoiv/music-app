@@ -30,6 +30,29 @@ Protected Class MusicApp
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function AlbumImage(songNativePath As String) As Picture
+		  Var songFile As New FolderItem(songNativePath, FolderItem.PathModes.Native)
+		  If Not IsMusicFile(songFile) Then
+		    Return Nil
+		  End If
+		  
+		  Var parentFolder As FolderItem = songFile.Parent
+		  Var pictures() As FolderItem
+		  For Each child As FolderItem In parentFolder.Children
+		    If child.Extension = "jpg" Or child.Extension = "png" Then
+		      pictures.Add(child)
+		    End If
+		  Next
+		  
+		  If pictures.Count = 1 Then
+		    Return Picture.Open(pictures(0))
+		  End If
+		  
+		  Return Nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor()
 		  mPlaylist = New Dictionary
 		End Sub
@@ -54,7 +77,7 @@ Protected Class MusicApp
 
 	#tag Method, Flags = &h21
 		Private Function IsMusicFile(file As FolderItem) As Boolean
-		  Return file.Extension = "mp3"
+		  Return file <> Nil And file.Extension = "mp3"
 		End Function
 	#tag EndMethod
 
