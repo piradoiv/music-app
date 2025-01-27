@@ -25,35 +25,6 @@ Begin DesktopContainer MiniPlayerContainer
    Transparent     =   True
    Visible         =   True
    Width           =   225
-   Begin DesktopImageViewer AlbumImageViewer
-      Active          =   False
-      AllowAutoDeactivate=   True
-      AllowTabStop    =   True
-      Enabled         =   True
-      Height          =   150
-      Image           =   0
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Left            =   39
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   0
-      TabPanelIndex   =   0
-      Tooltip         =   ""
-      Top             =   44
-      Transparent     =   False
-      Visible         =   True
-      Width           =   150
-      _mIndex         =   0
-      _mInitialParent =   ""
-      _mName          =   ""
-      _mPanelIndex    =   0
-   End
    Begin DesktopLabel SongNameLabel
       AllowAutoDeactivate=   True
       Bold            =   False
@@ -340,6 +311,32 @@ Begin DesktopContainer MiniPlayerContainer
       Scope           =   2
       TabPanelIndex   =   0
    End
+   Begin DesktopCanvas AlbumImageCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   150
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   39
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   44
+      Transparent     =   True
+      Visible         =   True
+      Width           =   150
+   End
 End
 #tag EndDesktopWindow
 
@@ -347,6 +344,7 @@ End
 	#tag Event
 		Sub Opening()
 		  Update
+		  RaiseEvent Opening
 		End Sub
 	#tag EndEvent
 
@@ -393,6 +391,10 @@ End
 
 	#tag Hook, Flags = &h0
 		Event NextSongPressed()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event Opening()
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
@@ -448,7 +450,7 @@ End
 		#tag Setter
 			Set
 			  mAlbumIcon = value
-			  AlbumImageViewer.Image = value
+			  AlbumImageCanvas.Refresh
 			End Set
 		#tag EndSetter
 		AlbumIcon As Picture
@@ -504,6 +506,33 @@ End
 	#tag Event
 		Sub Action()
 		  Update
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events AlbumImageCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Const padding = 10
+		  Const radius = 15
+		  
+		  If mAlbumIcon = Nil Then
+		    Return
+		  End If
+		  
+		  Var resizedPic As New Picture(g.Width - padding * 2, g.Height - padding * 2, 32)
+		  
+		  Var mask As New Picture(resizedPic.Width, resizedPic.Height, 32)
+		  mask.Graphics.DrawingColor = Color.Black
+		  mask.Graphics.FillRoundRectangle(0, 0, mask.Width, mask.Height, radius, radius)
+		  
+		  resizedPic.ApplyMask(mask)
+		  resizedPic.Graphics.DrawPicture(mAlbumIcon, 0, 0, resizedPic.Graphics.Width, resizedPic.Graphics.Height, 0, 0, mAlbumIcon.Width, mAlbumIcon.Height)
+		  
+		  g.ShadowBrush = New ShadowBrush(0, padding / 4, Color.RGB(0, 0, 0, 150), padding / 2)
+		  g.DrawPicture(resizedPic, padding, padding, g.Width - padding * 2, g.Height - padding * 2, 0, 0, resizedPic.Width, resizedPic.Height)
+		  
+		  g.DrawingColor = Color.RGB(0, 0, 0, 200)
+		  g.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

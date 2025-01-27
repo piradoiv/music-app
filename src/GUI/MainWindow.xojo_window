@@ -170,7 +170,9 @@ End
 		  resizedPic.ApplyMask(mask)
 		  resizedPic.Graphics.DrawPicture(p, 0, 0, resizedPic.Graphics.Width, resizedPic.Graphics.Height, 0, 0, p.Width, p.Height)
 		  
+		  g.ShadowBrush = New ShadowBrush(0, padding / 2, Color.RGB(0, 0, 0, 125), padding / 2)
 		  g.DrawPicture(resizedPic, padding, padding, g.Width - padding * 2, g.Height - padding * 2, 0, 0, resizedPic.Width, resizedPic.Height)
+		  
 		  g.DrawingColor = Color.RGB(0, 0, 0, 200)
 		  g.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
 		End Sub
@@ -180,7 +182,12 @@ End
 		Private Function GenerateAlbumIcon() As Picture
 		  Var p As New Picture(300, 300)
 		  Var g As Graphics = p.Graphics
-		  DrawAlbumIcon(mMusicFile.NativePath, g, 0, 0)
+		  
+		  Var path As String
+		  If mMusicFile <> Nil Then
+		    path = mMusicFile.NativePath
+		  End If
+		  DrawAlbumIcon(path, g, 0, 0)
 		  
 		  Return p
 		End Function
@@ -301,6 +308,11 @@ End
 		  
 		  SongList.Play(mMusicFile.NativePath)
 		  PlaySong(SongList.PreviousSongNativePath)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.AlbumIcon = GenerateAlbumIcon
 		End Sub
 	#tag EndEvent
 #tag EndEvents
