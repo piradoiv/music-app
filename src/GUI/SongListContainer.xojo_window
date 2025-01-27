@@ -229,7 +229,7 @@ End
 #tag Events SongListBox
 	#tag Event
 		Function PaintCellText(g as Graphics, row as Integer, column as Integer, x as Integer, y as Integer) As Boolean
-		  Const padding = 5
+		  Const padding = 2
 		  Const radius = 8
 		  
 		  Select Case column
@@ -250,10 +250,14 @@ End
 		    g.SaveState
 		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, 1) // TODO: Cache Color.HighlightColor, as it consumes lots of CPU
 		    Var now As DateTime = DateTime.Now // TODO: Use System.Ticks instead, or something that consumes less CPU
+		    
 		    For i As Integer = 0 To 2
-		      Var h As Double = Sin((now.SecondsFrom1970 + i * .6) * 10) * g.Height
-		      g.FillRectangle(i * w, g.Height - h, i * w + w, h)
+		      Var h As Double = Sin((now.SecondsFrom1970 + i * .6) * 10) * g.Height * .75
+		      Var bar As New GraphicsPath
+		      bar.AddRectangle(i * w, g.Height - h, w - padding, h)
+		      g.FillPath(bar)
 		    Next
+		    
 		    g.RestoreState
 		    
 		    Return True
