@@ -36,7 +36,7 @@ Begin DesktopWindow MainWindow
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   450
+      Height          =   398
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   405
@@ -131,6 +131,38 @@ Begin DesktopWindow MainWindow
       _mInitialParent =   ""
       _mName          =   ""
       _mPanelIndex    =   0
+   End
+   Begin DesktopButton OpenFilesButton
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Open Files..."
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   417
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   2
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   410
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   193
    End
 End
 #tag EndDesktopWindow
@@ -323,11 +355,6 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub AddFilesFromDirectory(folder As FolderItem)
-		  Music.AddFolderRecursively(folder)
-		End Sub
-	#tag EndEvent
-	#tag Event
 		Sub DrawAlbumIcon(songNativePath As String, g As Graphics)
 		  DrawAlbumIcon(songNativePath, g, 5, 8)
 		End Sub
@@ -376,6 +403,18 @@ End
 		  mIsPlaying = False
 		  MiniPlayer.Active = False
 		  SongList.Stop
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events OpenFilesButton
+	#tag Event
+		Sub Pressed()
+		  Var folder As FolderItem = FolderItem.ShowSelectFolderDialog
+		  If folder = Nil Then
+		    Return
+		  End If
+		  
+		  Music.AddFolderRecursively(folder)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

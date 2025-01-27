@@ -25,37 +25,6 @@ Begin DesktopContainer SongListContainer
    Transparent     =   True
    Visible         =   True
    Width           =   300
-   Begin DesktopButton OpenFilesButton
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Open Files..."
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      MacButtonStyle  =   0
-      Scope           =   2
-      TabIndex        =   1
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   260
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   107
-   End
    Begin DesktopListBox SongListBox
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
@@ -79,7 +48,7 @@ Begin DesktopContainer SongListContainer
       HasHorizontalScrollbar=   False
       HasVerticalScrollbar=   True
       HeadingIndex    =   -1
-      Height          =   248
+      Height          =   300
       Index           =   -2147483648
       InitialValue    =   ""
       Italic          =   False
@@ -125,7 +94,7 @@ End
 		      Continue
 		    End If
 		    
-		    SongListBox.AddRow("", f.Name, "")
+		    SongListBox.AddRow("", f.Name.TrimRight("." + f.Extension), "")
 		    SongListBox.RowTagAt(SongListBox.LastAddedRowIndex) = f.NativePath
 		  Next
 		End Sub
@@ -191,10 +160,6 @@ End
 
 
 	#tag Hook, Flags = &h0
-		Event AddFilesFromDirectory(folder As FolderItem)
-	#tag EndHook
-
-	#tag Hook, Flags = &h0
 		Event DrawAlbumIcon(songNativePath As String, g As Graphics)
 	#tag EndHook
 
@@ -214,18 +179,6 @@ End
 
 #tag EndWindowCode
 
-#tag Events OpenFilesButton
-	#tag Event
-		Sub Pressed()
-		  Var folder As FolderItem = FolderItem.ShowSelectFolderDialog
-		  If folder = Nil Then
-		    Return
-		  End If
-		  
-		  RaiseEvent AddFilesFromDirectory(folder)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events SongListBox
 	#tag Event
 		Function PaintCellText(g as Graphics, row as Integer, column as Integer, x as Integer, y as Integer) As Boolean
@@ -314,6 +267,11 @@ End
 		  
 		  Return False
 		End Function
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.HasVerticalScrollbar = False
+		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events UpdateTimer
