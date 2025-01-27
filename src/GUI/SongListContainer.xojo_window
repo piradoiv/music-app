@@ -108,7 +108,7 @@ Begin DesktopContainer SongListContainer
       Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
-      Period          =   10
+      Period          =   30
       RunMode         =   2
       Scope           =   2
       TabPanelIndex   =   0
