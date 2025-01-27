@@ -9,7 +9,7 @@ Begin DesktopContainer MiniPlayerContainer
    Composited      =   False
    Enabled         =   True
    HasBackgroundColor=   False
-   Height          =   400
+   Height          =   450
    Index           =   -2147483648
    InitialParent   =   ""
    Left            =   0
@@ -262,6 +262,84 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   45
    End
+   Begin DesktopCanvas VolumeDownIconCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   18
+      Index           =   -2147483648
+      Left            =   39
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   12
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   347
+      Transparent     =   True
+      Visible         =   True
+      Width           =   18
+   End
+   Begin DesktopSlider VolumeSlider
+      AllowAutoDeactivate=   True
+      AllowLiveScrolling=   True
+      Enabled         =   True
+      Height          =   30
+      Index           =   -2147483648
+      Left            =   66
+      LineStep        =   1
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      MaximumValue    =   255
+      MinimumValue    =   0
+      PageStep        =   20
+      Scope           =   2
+      TabIndex        =   13
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TickMarkStyle   =   0
+      Tooltip         =   ""
+      Top             =   343
+      Transparent     =   False
+      Value           =   255
+      Visible         =   True
+      Width           =   93
+   End
+   Begin DesktopCanvas VolumeUpIconCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   18
+      Index           =   -2147483648
+      Left            =   168
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   14
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   347
+      Transparent     =   True
+      Visible         =   True
+      Width           =   18
+   End
 End
 #tag EndDesktopWindow
 
@@ -345,6 +423,10 @@ End
 		Event SongName() As String
 	#tag EndHook
 
+	#tag Hook, Flags = &h0
+		Event VolumeChanged(newValue As Integer)
+	#tag EndHook
+
 
 	#tag ComputedProperty, Flags = &h0
 		#tag Getter
@@ -386,6 +468,10 @@ End
 
 	#tag Property, Flags = &h21
 		Private mAlbumIcon As Picture
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private Volume As Integer
 	#tag EndProperty
 
 
@@ -475,6 +561,29 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  RaiseEvent NextSongPressed
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events VolumeDownIconCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var p As Picture = volumeofffill
+		  g.DrawPicture(p, 0, 0, g.Width, g.Height, 0, 0, p.Width, p.Height)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events VolumeSlider
+	#tag Event
+		Sub ValueChanged()
+		  RaiseEvent VolumeChanged(Me.Value)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events VolumeUpIconCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var p As Picture = volumeupfill
+		  g.DrawPicture(p, 0, 0, g.Width, g.Height, 0, 0, p.Width, p.Height)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

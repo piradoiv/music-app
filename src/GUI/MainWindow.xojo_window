@@ -347,6 +347,11 @@ End
 		  Me.AlbumIcon = GenerateAlbumIcon
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub VolumeChanged(newValue As Integer)
+		  MP3Player.Volume = newValue
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events SongList
 	#tag Event
