@@ -10,7 +10,7 @@ Begin DesktopWindow MainWindow
    HasFullScreenButton=   True
    HasMaximizeButton=   True
    HasMinimizeButton=   True
-   Height          =   400
+   Height          =   450
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
@@ -23,7 +23,7 @@ Begin DesktopWindow MainWindow
    Title           =   "Music"
    Type            =   0
    Visible         =   True
-   Width           =   600
+   Width           =   630
    Begin MiniPlayerContainer MiniPlayer
       Active          =   False
       AlbumIcon       =   0
@@ -36,10 +36,10 @@ Begin DesktopWindow MainWindow
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   400
+      Height          =   450
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   375
+      Left            =   405
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   False
@@ -65,7 +65,7 @@ Begin DesktopWindow MainWindow
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   400
+      Height          =   450
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
@@ -82,7 +82,7 @@ Begin DesktopWindow MainWindow
       Top             =   0
       Transparent     =   True
       Visible         =   True
-      Width           =   375
+      Width           =   405
    End
    Begin MusicApp Music
       Index           =   -2147483648
@@ -108,7 +108,7 @@ Begin DesktopWindow MainWindow
       Height          =   100
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   -139
+      Left            =   -112
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -122,7 +122,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   5
       TabPanelIndex   =   0
       Tooltip         =   ""
-      Top             =   -103
+      Top             =   -134
       Transparent     =   False
       Visible         =   True
       Volume          =   0

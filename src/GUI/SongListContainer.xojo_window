@@ -73,7 +73,7 @@ Begin DesktopContainer SongListContainer
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      GridLineStyle   =   1
+      GridLineStyle   =   0
       HasBorder       =   False
       HasHeader       =   False
       HasHorizontalScrollbar=   False
