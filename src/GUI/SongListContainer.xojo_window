@@ -83,7 +83,7 @@ Begin DesktopContainer SongListContainer
       Index           =   -2147483648
       InitialValue    =   ""
       Italic          =   False
-      Left            =   1
+      Left            =   0
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -248,8 +248,8 @@ End
 		    Var w As Double = g.Width / 3
 		    
 		    g.SaveState
-		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, 1)
-		    Var now As DateTime = DateTime.Now
+		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, 1) // TODO: Cache Color.HighlightColor, as it consumes lots of CPU
+		    Var now As DateTime = DateTime.Now // TODO: Use System.Ticks instead, or something that consumes less CPU
 		    For i As Integer = 0 To 2
 		      Var h As Double = Sin((now.SecondsFrom1970 + i * .6) * 10) * g.Height
 		      g.FillRectangle(i * w, g.Height - h, i * w + w, h)
