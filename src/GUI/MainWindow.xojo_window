@@ -108,7 +108,7 @@ Begin DesktopWindow MainWindow
       Height          =   100
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   -138
+      Left            =   -139
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -356,6 +356,11 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub PlaybackStopped()
+		  If Me.Duration > 0 And Me.Duration - Me.Position < 1 Then
+		    PlaySong(SongList.NextSongNativePath)
+		    Return
+		  End If
+		  
 		  mIsPlaying = False
 		  MiniPlayer.Active = False
 		  SongList.Stop
