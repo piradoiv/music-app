@@ -164,6 +164,28 @@ Begin DesktopWindow MainWindow
       Visible         =   True
       Width           =   193
    End
+   Begin DesktopSeparator Separator1
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   450
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   382
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   0
+      Transparent     =   False
+      Visible         =   True
+      Width           =   44
+   End
 End
 #tag EndDesktopWindow
 

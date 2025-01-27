@@ -51,7 +51,7 @@ Begin DesktopContainer MiniPlayerContainer
       TextAlignment   =   2
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   206
+      Top             =   190
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -83,7 +83,7 @@ Begin DesktopContainer MiniPlayerContainer
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   238
+      Top             =   222
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -110,7 +110,7 @@ Begin DesktopContainer MiniPlayerContainer
       TabIndex        =   3
       TabPanelIndex   =   0
       Tooltip         =   ""
-      Top             =   238
+      Top             =   222
       Transparent     =   False
       Value           =   50.0
       Visible         =   True
@@ -146,7 +146,7 @@ Begin DesktopContainer MiniPlayerContainer
       TextAlignment   =   3
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   238
+      Top             =   222
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -182,7 +182,7 @@ Begin DesktopContainer MiniPlayerContainer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   44
+      Top             =   28
       Transparent     =   True
       Visible         =   True
       Width           =   150
@@ -207,7 +207,7 @@ Begin DesktopContainer MiniPlayerContainer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   282
+      Top             =   266
       Transparent     =   True
       Visible         =   True
       Width           =   45
@@ -232,7 +232,7 @@ Begin DesktopContainer MiniPlayerContainer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   282
+      Top             =   266
       Transparent     =   True
       Visible         =   True
       Width           =   45
@@ -257,7 +257,7 @@ Begin DesktopContainer MiniPlayerContainer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   282
+      Top             =   266
       Transparent     =   True
       Visible         =   True
       Width           =   45
@@ -282,7 +282,7 @@ Begin DesktopContainer MiniPlayerContainer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   347
+      Top             =   331
       Transparent     =   True
       Visible         =   True
       Width           =   18
@@ -309,7 +309,7 @@ Begin DesktopContainer MiniPlayerContainer
       TabStop         =   True
       TickMarkStyle   =   0
       Tooltip         =   ""
-      Top             =   343
+      Top             =   327
       Transparent     =   False
       Value           =   255
       Visible         =   True
@@ -335,7 +335,7 @@ Begin DesktopContainer MiniPlayerContainer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   347
+      Top             =   331
       Transparent     =   True
       Visible         =   True
       Width           =   18
