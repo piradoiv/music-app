@@ -392,11 +392,19 @@ End
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
+		Event NextSongPressed()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
 		Event PlaybackPositionInSeconds() As Integer
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
 		Event PlayPausePressed()
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
+		Event PreviousSongPressed()
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
@@ -471,10 +479,24 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events PrevBevelButton
+	#tag Event
+		Sub Pressed()
+		  RaiseEvent PreviousSongPressed
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events PlayPauseBevelButton
 	#tag Event
 		Sub Pressed()
 		  RaiseEvent PlayPausePressed
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events NextBevelButton
+	#tag Event
+		Sub Pressed()
+		  RaiseEvent NextSongPressed
 		End Sub
 	#tag EndEvent
 #tag EndEvents

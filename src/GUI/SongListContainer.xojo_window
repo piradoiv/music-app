@@ -131,19 +131,47 @@ End
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Play(nativePath As String)
-		  For i As Integer = 0 To SongListBox.LastRowIndex
-		    Var path As String = SongListBox.RowTagAt(i)
-		    If path = nativePath Then
-		      mRowPlaying = i
-		      Exit
+	#tag Method, Flags = &h21
+		Private Function CurrentSongRow() As Integer
+		  For row As Integer = 0 To SongListBox.LastRowIndex
+		    Var tag As String = SongListBox.RowTagAt(row)
+		    If tag = mSongPlaying Then
+		      Return row
 		    End If
 		  Next
 		  
+		  Return -1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextSongNativePath() As String
+		  Var row As Integer = CurrentSongRow
+		  If row < SongListBox.LastRowIndex Then
+		    Return SongListBox.RowTagAt(row + 1)
+		  End If
+		  
+		  Return ""
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Play(nativePath As String)
+		  mSongPlaying = nativePath
 		  ResetPlayingIndicator
 		  UpdateTimer.RunMode = Timer.RunModes.Multiple
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PreviousSongNativePath() As String
+		  Var row As Integer = CurrentSongRow
+		  If row > 0 Then
+		    Return SongListBox.RowTagAt(row - 1)
+		  End If
+		  
+		  Return ""
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -156,7 +184,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Stop()
-		  mRowPlaying = -1
+		  mSongPlaying = ""
 		  ResetPlayingIndicator
 		End Sub
 	#tag EndMethod
@@ -180,7 +208,7 @@ End
 
 
 	#tag Property, Flags = &h21
-		Private mRowPlaying As Integer = -1
+		Private mSongPlaying As String
 	#tag EndProperty
 
 
@@ -211,7 +239,8 @@ End
 		    Return True
 		    
 		  Case 2
-		    If row <> mRowPlaying Then
+		    Var path As String = Me.RowTagAt(row)
+		    If path <> mSongPlaying Then
 		      Return False
 		    End If
 		    
@@ -235,7 +264,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub DoublePressed()
-		  mRowPlaying = Me.SelectedRowIndex
+		  mSongPlaying = Me.RowTagAt(Me.SelectedRowIndex)
 		  ResetPlayingIndicator
 		  
 		  Var nativePath As Variant = Me.RowTagAt(Me.SelectedRowIndex)
@@ -259,16 +288,27 @@ End
 		  End Select
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Function DragReorderRows(newPosition as Integer, parentRow as Integer) As Boolean
+		  ResetPlayingIndicator
+		End Function
+	#tag EndEvent
 #tag EndEvents
 #tag Events UpdateTimer
 	#tag Event
 		Sub Action()
-		  If mRowPlaying = -1 Then
+		  If mSongPlaying = "" Then
 		    Me.RunMode = Timer.RunModes.Off
 		    Return
 		  End If
 		  
-		  SongListBox.RefreshCell(mRowPlaying, 2)
+		  For i As Integer = 0 To SongListBox.LastRowIndex
+		    Var path As String = SongListBox.RowTagAt(i)
+		    If mSongPlaying = path Then
+		      SongListBox.RefreshCell(i, 2)
+		      Exit
+		    End If
+		  Next
 		End Sub
 	#tag EndEvent
 #tag EndEvents

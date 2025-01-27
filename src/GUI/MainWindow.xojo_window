@@ -176,6 +176,37 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub PlaySong(nativePath As String)
+		  mMusicFile = New FolderItem(nativePath, FolderItem.PathModes.Native)
+		  If nativePath = "" or Not mMusicFile.Exists Then
+		    StopPlaying
+		    Return
+		  End If
+		  
+		  mIsPlaying = True
+		  
+		  MP3Player.Movie = Movie.Open(New FolderItem(nativePath, FolderItem.PathModes.Native))
+		  MP3Player.Position = 0
+		  MP3Player.Play
+		  
+		  SongList.Play(nativePath)
+		  
+		  MiniPlayer.AlbumIcon = GenerateAlbumIcon
+		  MiniPlayer.Active = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub StopPlaying()
+		  mMusicFile = Nil
+		  mIsPlaying = False
+		  SongList.Stop
+		  MiniPlayer.Active = False
+		  MP3Player.Stop
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h21
 		Private mIsPlaying As Boolean
@@ -191,6 +222,11 @@ End
 #tag Events MiniPlayer
 	#tag Event
 		Sub PlayPausePressed()
+		  If mMusicFile = Nil Then
+		    StopPlaying
+		    Return
+		  End If
+		  
 		  If mIsPlaying Then
 		    MP3Player.Stop
 		  Else
@@ -227,19 +263,28 @@ End
 		  MP3Player.Position = newPosition
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub NextSongPressed()
+		  SongList.Play(mMusicFile.NativePath)
+		  PlaySong(SongList.NextSongNativePath)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub PreviousSongPressed()
+		  If MP3Player.Position > 5 Then
+		    MP3Player.Position = 0
+		    Return
+		  End If
+		  
+		  SongList.Play(mMusicFile.NativePath)
+		  PlaySong(SongList.PreviousSongNativePath)
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events SongList
 	#tag Event
 		Sub SongDoublePressed(nativePath As String)
-		  mMusicFile = New FolderItem(nativePath, FolderItem.PathModes.Native)
-		  mIsPlaying = True
-		  
-		  MP3Player.Movie = Movie.Open(New FolderItem(nativePath, FolderItem.PathModes.Native))
-		  MP3Player.Position = 0
-		  MP3Player.Play
-		  
-		  MiniPlayer.AlbumIcon = GenerateAlbumIcon
-		  MiniPlayer.Active = True
+		  PlaySong(nativePath)
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -266,7 +311,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub SongRemoved(nativePath As String)
-		  If mMusicFile.NativePath = nativePath Then
+		  If mMusicFile <> Nil And mMusicFile.NativePath = nativePath Then
 		    mMusicFile = Nil
 		    MP3Player.Stop
 		  End If
