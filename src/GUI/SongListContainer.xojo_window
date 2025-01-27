@@ -265,6 +265,10 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub DoublePressed()
+		  If Me.SelectedRowIndex = -1 Then
+		    Return
+		  End If
+		  
 		  mSongPlaying = Me.RowTagAt(Me.SelectedRowIndex)
 		  ResetPlayingIndicator
 		  
