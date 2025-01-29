@@ -289,7 +289,6 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub StopPlaying()
-		  mMusicFile = Nil
 		  mIsPlaying = False
 		  SongList.Stop
 		  MiniPlayer.Active = False
@@ -318,7 +317,8 @@ End
 		  End If
 		  
 		  If mIsPlaying Then
-		    MP3Player.Stop
+		    mIsPlaying = False
+		    StopPlaying
 		  Else
 		    MP3Player.Play
 		  End If
@@ -432,8 +432,6 @@ End
 		    PlaySong(SongList.NextSongNativePath)
 		    Return
 		  End If
-		  
-		  StopPlaying
 		End Sub
 	#tag EndEvent
 #tag EndEvents
