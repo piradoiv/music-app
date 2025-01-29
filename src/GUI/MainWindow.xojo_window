@@ -165,6 +165,7 @@ Begin DesktopWindow MainWindow
       Width           =   193
    End
    Begin DesktopSeparator Separator1
+      Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
@@ -177,6 +178,7 @@ Begin DesktopWindow MainWindow
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
+      PanelIndex      =   0
       Scope           =   2
       TabIndex        =   7
       TabPanelIndex   =   0
@@ -185,6 +187,10 @@ Begin DesktopWindow MainWindow
       Transparent     =   False
       Visible         =   True
       Width           =   44
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
    End
 End
 #tag EndDesktopWindow
@@ -410,7 +416,7 @@ End
 #tag Events MP3Player
 	#tag Event
 		Sub Opening()
-		  
+		  Me.Volume = 127
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -422,14 +428,12 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub PlaybackStopped()
-		  If Me.Duration > 0 And Me.Duration - Me.Position < 1 Then
+		  If mIsPlaying Then
 		    PlaySong(SongList.NextSongNativePath)
 		    Return
 		  End If
 		  
-		  mIsPlaying = False
-		  MiniPlayer.Active = False
-		  SongList.Stop
+		  StopPlaying
 		End Sub
 	#tag EndEvent
 #tag EndEvents

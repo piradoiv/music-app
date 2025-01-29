@@ -311,7 +311,7 @@ Begin DesktopContainer MiniPlayerContainer
       Tooltip         =   ""
       Top             =   327
       Transparent     =   False
-      Value           =   255
+      Value           =   127
       Visible         =   True
       Width           =   93
    End
