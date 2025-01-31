@@ -10,7 +10,7 @@ Begin DesktopWindow MainWindow
    HasFullScreenButton=   True
    HasMaximizeButton=   True
    HasMinimizeButton=   True
-   Height          =   400
+   Height          =   450
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
@@ -23,7 +23,7 @@ Begin DesktopWindow MainWindow
    Title           =   "Music"
    Type            =   0
    Visible         =   True
-   Width           =   600
+   Width           =   630
    Begin MiniPlayerContainer MiniPlayer
       Active          =   False
       AlbumIcon       =   0
@@ -36,10 +36,10 @@ Begin DesktopWindow MainWindow
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   400
+      Height          =   398
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   375
+      Left            =   405
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   False
@@ -65,7 +65,7 @@ Begin DesktopWindow MainWindow
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   400
+      Height          =   450
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
@@ -82,7 +82,7 @@ Begin DesktopWindow MainWindow
       Top             =   0
       Transparent     =   True
       Visible         =   True
-      Width           =   375
+      Width           =   405
    End
    Begin MusicApp Music
       Index           =   -2147483648
@@ -108,7 +108,7 @@ Begin DesktopWindow MainWindow
       Height          =   100
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   -138
+      Left            =   -112
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -122,11 +122,71 @@ Begin DesktopWindow MainWindow
       TabIndex        =   5
       TabPanelIndex   =   0
       Tooltip         =   ""
-      Top             =   -103
+      Top             =   -134
       Transparent     =   False
       Visible         =   True
       Volume          =   0
       Width           =   100
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
+   End
+   Begin DesktopButton OpenFilesButton
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Open Files..."
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   417
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   2
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   410
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   193
+   End
+   Begin DesktopSeparator Separator1
+      Active          =   False
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   450
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   382
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   0
+      Transparent     =   False
+      Visible         =   True
+      Width           =   44
       _mIndex         =   0
       _mInitialParent =   ""
       _mName          =   ""
@@ -137,19 +197,59 @@ End
 
 #tag WindowCode
 	#tag Method, Flags = &h21
-		Private Sub DrawAlbumIcon(g As Graphics, padding As Integer, radius As Integer)
-		  g.SaveState
-		  g.DrawingColor = Color.White
-		  g.FillRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
-		  g.DrawingColor = Color.LightGray
+		Private Function AlbumIcon(songNativePath As String) As Picture
+		  If mAlbumIconCache.HasKey(songNativePath) Then
+		    Return mAlbumIconCache.Value(songNativePath)
+		  End If
+		  
+		  Var result As New Picture(256, 256)
+		  Var g As Graphics = result.Graphics
+		  
+		  Var albumImage As Picture = Music.AlbumImage(songNativePath)
+		  If albumImage <> Nil Then
+		    g.DrawPicture(albumImage, 0, 0, g.Width, g.Height, 0, 0, albumImage.Width, albumImage.Height)
+		  Else
+		    g.DrawingColor = Color.White
+		    g.FillRectangle(0, 0, g.Width, g.Height)
+		    
+		    g.FontSize = g.Height / 3
+		    Var note As String = "🎵"
+		    Var w As Double = g.TextWidth(note)
+		    g.DrawText(note, g.Width / 2 - w / 2, g.Height / 2 + g.FontAscent / 2.5)
+		  End If
+		  
+		  mAlbumIconCache.Value(songNativePath) = result
+		  
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor()
+		  // Calling the overridden superclass constructor.
+		  mAlbumIconCache = New Dictionary
+		  Super.Constructor
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DrawAlbumIcon(songNativePath As String, g As Graphics, padding As Integer, radius As Integer)
+		  Var p As Picture = AlbumIcon(songNativePath)
+		  Var resizedPic As New Picture(g.Width - padding * 2, g.Height - padding * 2, 32)
+		  
+		  Var mask As New Picture(resizedPic.Width, resizedPic.Height, 32)
+		  mask.Graphics.DrawingColor = Color.Black
+		  mask.Graphics.FillRoundRectangle(0, 0, mask.Width, mask.Height, 10, 10)
+		  
+		  resizedPic.ApplyMask(mask)
+		  resizedPic.Graphics.DrawPicture(p, 0, 0, resizedPic.Graphics.Width, resizedPic.Graphics.Height, 0, 0, p.Width, p.Height)
+		  
+		  g.ShadowBrush = New ShadowBrush(0, padding / 2, Color.RGB(0, 0, 0, 125), padding / 2)
+		  g.DrawPicture(resizedPic, padding, padding, g.Width - padding * 2, g.Height - padding * 2, 0, 0, resizedPic.Width, resizedPic.Height)
+		  
+		  g.DrawingColor = Color.RGB(0, 0, 0, 200)
 		  g.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
-		  
-		  g.FontSize = g.Height / 3
-		  Var note As String = "🎵"
-		  Var w As Double = g.TextWidth(note)
-		  g.DrawText(note, g.Width / 2 - w / 2, g.Height / 2 + g.FontAscent / 2.5)
-		  
-		  g.RestoreState
 		End Sub
 	#tag EndMethod
 
@@ -157,7 +257,12 @@ End
 		Private Function GenerateAlbumIcon() As Picture
 		  Var p As New Picture(300, 300)
 		  Var g As Graphics = p.Graphics
-		  DrawAlbumIcon(g, 0, 0)
+		  
+		  Var path As String
+		  If mMusicFile <> Nil Then
+		    path = mMusicFile.NativePath
+		  End If
+		  DrawAlbumIcon(path, g, 0, 0)
 		  
 		  Return p
 		End Function
@@ -176,6 +281,40 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub PlaySong(nativePath As String)
+		  mMusicFile = New FolderItem(nativePath, FolderItem.PathModes.Native)
+		  If nativePath = "" or Not mMusicFile.Exists Then
+		    StopPlaying
+		    Return
+		  End If
+		  
+		  mIsPlaying = True
+		  
+		  MP3Player.Movie = Movie.Open(New FolderItem(nativePath, FolderItem.PathModes.Native))
+		  MP3Player.Position = 0
+		  MP3Player.Play
+		  
+		  SongList.Play(nativePath)
+		  
+		  MiniPlayer.AlbumIcon = GenerateAlbumIcon
+		  MiniPlayer.Active = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub StopPlaying()
+		  mIsPlaying = False
+		  SongList.Stop
+		  MiniPlayer.Active = False
+		  MP3Player.Stop
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private mAlbumIconCache As Dictionary
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mIsPlaying As Boolean
@@ -191,8 +330,14 @@ End
 #tag Events MiniPlayer
 	#tag Event
 		Sub PlayPausePressed()
+		  If mMusicFile = Nil Then
+		    StopPlaying
+		    Return
+		  End If
+		  
 		  If mIsPlaying Then
-		    MP3Player.Stop
+		    mIsPlaying = False
+		    StopPlaying
 		  Else
 		    MP3Player.Play
 		  End If
@@ -227,29 +372,43 @@ End
 		  MP3Player.Position = newPosition
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub NextSongPressed()
+		  SongList.Play(mMusicFile.NativePath)
+		  PlaySong(SongList.NextSongNativePath)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub PreviousSongPressed()
+		  If MP3Player.Position > 5 Then
+		    MP3Player.Position = 0
+		    Return
+		  End If
+		  
+		  SongList.Play(mMusicFile.NativePath)
+		  PlaySong(SongList.PreviousSongNativePath)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.AlbumIcon = GenerateAlbumIcon
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub VolumeChanged(newValue As Integer)
+		  MP3Player.Volume = newValue
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events SongList
 	#tag Event
 		Sub SongDoublePressed(nativePath As String)
-		  mMusicFile = New FolderItem(nativePath, FolderItem.PathModes.Native)
-		  mIsPlaying = True
-		  
-		  MP3Player.Movie = Movie.Open(New FolderItem(nativePath, FolderItem.PathModes.Native))
-		  MP3Player.Position = 0
-		  MP3Player.Play
-		  
-		  MiniPlayer.AlbumIcon = GenerateAlbumIcon
-		  MiniPlayer.Active = True
+		  PlaySong(nativePath)
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub AddFilesFromDirectory(folder As FolderItem)
-		  Music.AddFolderRecursively(folder)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub DrawAlbumIcon(g As Graphics)
-		  DrawAlbumIcon(g, 5, 8)
+		Sub DrawAlbumIcon(songNativePath As String, g As Graphics)
+		  DrawAlbumIcon(songNativePath, g, 5, 8)
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -266,7 +425,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub SongRemoved(nativePath As String)
-		  If mMusicFile.NativePath = nativePath Then
+		  If mMusicFile <> Nil And mMusicFile.NativePath = nativePath Then
 		    mMusicFile = Nil
 		    MP3Player.Stop
 		  End If
@@ -276,7 +435,7 @@ End
 #tag Events MP3Player
 	#tag Event
 		Sub Opening()
-		  
+		  Me.Volume = 127
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -288,9 +447,22 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub PlaybackStopped()
-		  mIsPlaying = False
-		  MiniPlayer.Active = False
-		  SongList.Stop
+		  If mIsPlaying Then
+		    PlaySong(SongList.NextSongNativePath)
+		    Return
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events OpenFilesButton
+	#tag Event
+		Sub Pressed()
+		  Var folder As FolderItem = FolderItem.ShowSelectFolderDialog
+		  If folder = Nil Then
+		    Return
+		  End If
+		  
+		  Music.AddFolderRecursively(folder)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

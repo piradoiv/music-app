@@ -25,37 +25,6 @@ Begin DesktopContainer SongListContainer
    Transparent     =   True
    Visible         =   True
    Width           =   300
-   Begin DesktopButton OpenFilesButton
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Open Files..."
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      MacButtonStyle  =   0
-      Scope           =   2
-      TabIndex        =   1
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   260
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   107
-   End
    Begin DesktopListBox SongListBox
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
@@ -73,24 +42,24 @@ Begin DesktopContainer SongListContainer
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      GridLineStyle   =   1
+      GridLineStyle   =   0
       HasBorder       =   False
       HasHeader       =   False
       HasHorizontalScrollbar=   False
       HasVerticalScrollbar=   True
       HeadingIndex    =   -1
-      Height          =   248
+      Height          =   300
       Index           =   -2147483648
       InitialValue    =   ""
       Italic          =   False
-      Left            =   1
+      Left            =   0
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
       RequiresSelection=   False
-      RowSelectionType=   0
+      RowSelectionType=   1
       Scope           =   2
       TabIndex        =   0
       TabPanelIndex   =   0
@@ -108,7 +77,7 @@ Begin DesktopContainer SongListContainer
       Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
-      Period          =   10
+      Period          =   30
       RunMode         =   2
       Scope           =   2
       TabPanelIndex   =   0
@@ -125,25 +94,53 @@ End
 		      Continue
 		    End If
 		    
-		    SongListBox.AddRow("", f.Name, "")
+		    SongListBox.AddRow("", f.Name.TrimRight("." + f.Extension), "")
 		    SongListBox.RowTagAt(SongListBox.LastAddedRowIndex) = f.NativePath
 		  Next
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Play(nativePath As String)
-		  For i As Integer = 0 To SongListBox.LastRowIndex
-		    Var path As String = SongListBox.RowTagAt(i)
-		    If path = nativePath Then
-		      mRowPlaying = i
-		      Exit
+	#tag Method, Flags = &h21
+		Private Function CurrentSongRow() As Integer
+		  For row As Integer = 0 To SongListBox.LastRowIndex
+		    Var tag As String = SongListBox.RowTagAt(row)
+		    If tag = mSongPlaying Then
+		      Return row
 		    End If
 		  Next
 		  
+		  Return -1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextSongNativePath() As String
+		  Var row As Integer = CurrentSongRow
+		  If row < SongListBox.LastRowIndex Then
+		    Return SongListBox.RowTagAt(row + 1)
+		  End If
+		  
+		  Return ""
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Play(nativePath As String)
+		  mSongPlaying = nativePath
 		  ResetPlayingIndicator
 		  UpdateTimer.RunMode = Timer.RunModes.Multiple
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function PreviousSongNativePath() As String
+		  Var row As Integer = CurrentSongRow
+		  If row > 0 Then
+		    Return SongListBox.RowTagAt(row - 1)
+		  End If
+		  
+		  Return ""
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -156,18 +153,14 @@ End
 
 	#tag Method, Flags = &h0
 		Sub Stop()
-		  mRowPlaying = -1
+		  mSongPlaying = ""
 		  ResetPlayingIndicator
 		End Sub
 	#tag EndMethod
 
 
 	#tag Hook, Flags = &h0
-		Event AddFilesFromDirectory(folder As FolderItem)
-	#tag EndHook
-
-	#tag Hook, Flags = &h0
-		Event DrawAlbumIcon(g As Graphics)
+		Event DrawAlbumIcon(songNativePath As String, g As Graphics)
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
@@ -180,50 +173,44 @@ End
 
 
 	#tag Property, Flags = &h21
-		Private mRowPlaying As Integer = -1
+		Private mSongPlaying As String
 	#tag EndProperty
 
 
 #tag EndWindowCode
 
-#tag Events OpenFilesButton
-	#tag Event
-		Sub Pressed()
-		  Var folder As FolderItem = FolderItem.ShowSelectFolderDialog
-		  If folder = Nil Then
-		    Return
-		  End If
-		  
-		  RaiseEvent AddFilesFromDirectory(folder)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events SongListBox
 	#tag Event
 		Function PaintCellText(g as Graphics, row as Integer, column as Integer, x as Integer, y as Integer) As Boolean
-		  Const padding = 5
+		  Const padding = 2
 		  Const radius = 8
 		  
 		  Select Case column
 		  Case 0
-		    RaiseEvent DrawAlbumIcon(g)
+		    Var path As String = Me.RowTagAt(row)
+		    RaiseEvent DrawAlbumIcon(path, g)
 		    
 		    Return True
 		    
 		  Case 2
-		    If row <> mRowPlaying Then
+		    Var path As String = Me.RowTagAt(row)
+		    If path <> mSongPlaying Then
 		      Return False
 		    End If
 		    
 		    Var w As Double = g.Width / 3
 		    
 		    g.SaveState
-		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, 1)
-		    Var now As DateTime = DateTime.Now
+		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, 1) // TODO: Cache Color.HighlightColor, as it consumes lots of CPU
+		    Var now As DateTime = DateTime.Now // TODO: Use System.Ticks instead, or something that consumes less CPU
+		    
 		    For i As Integer = 0 To 2
-		      Var h As Double = Sin((now.SecondsFrom1970 + i * .6) * 10) * g.Height
-		      g.FillRectangle(i * w, g.Height - h, i * w + w, h)
+		      Var h As Double = Sin((now.SecondsFrom1970 + i * .6) * 10) * g.Height * .75
+		      Var bar As New GraphicsPath
+		      bar.AddRectangle(i * w, g.Height - h, w - padding, h)
+		      g.FillPath(bar)
 		    Next
+		    
 		    g.RestoreState
 		    
 		    Return True
@@ -235,7 +222,11 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub DoublePressed()
-		  mRowPlaying = Me.SelectedRowIndex
+		  If Me.SelectedRowIndex = -1 Then
+		    Return
+		  End If
+		  
+		  mSongPlaying = Me.RowTagAt(Me.SelectedRowIndex)
 		  ResetPlayingIndicator
 		  
 		  Var nativePath As Variant = Me.RowTagAt(Me.SelectedRowIndex)
@@ -253,22 +244,56 @@ End
 		Sub KeyUp(key As String)
 		  Select Case Asc(key)
 		  Case 8
-		    Var path As String = Me.RowTagAt(Me.SelectedRowIndex)
-		    Me.RemoveRowAt(Me.SelectedRowIndex)
-		    RaiseEvent RemoveSong(path)
+		    For i As Integer = Me.LastRowIndex DownTo 0
+		      If Not Me.RowSelectedAt(i) Then
+		        Continue
+		      End If
+		      Var path As String = Me.RowTagAt(i)
+		      Me.RemoveRowAt(i)
+		      RaiseEvent RemoveSong(path)
+		    Next
 		  End Select
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function DragReorderRows(newPosition as Integer, parentRow as Integer) As Boolean
+		  ResetPlayingIndicator
+		End Function
+	#tag EndEvent
+	#tag Event
+		Function PaintCellBackground(g As Graphics, row As Integer, column As Integer) As Boolean
+		  If Color.IsDarkMode Then
+		    g.DrawingColor = If(row Mod 2 = 0, &c121212, &c000000)
+		  Else
+		    g.DrawingColor = If(row Mod 2 = 0, &cF3F3F3, &cFFFFFF)
+		  End If
+		  
+		  g.FillRectangle(0, 0, g.Width, g.Height)
+		  
+		  Return False
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  Me.HasVerticalScrollbar = False
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events UpdateTimer
 	#tag Event
 		Sub Action()
-		  If mRowPlaying = -1 Then
+		  If mSongPlaying = "" Then
 		    Me.RunMode = Timer.RunModes.Off
 		    Return
 		  End If
 		  
-		  SongListBox.RefreshCell(mRowPlaying, 2)
+		  For i As Integer = 0 To SongListBox.LastRowIndex
+		    Var path As String = SongListBox.RowTagAt(i)
+		    If mSongPlaying = path Then
+		      SongListBox.RefreshCell(i, 2)
+		      Exit
+		    End If
+		  Next
 		End Sub
 	#tag EndEvent
 #tag EndEvents

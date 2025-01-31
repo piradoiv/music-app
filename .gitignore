@@ -1,1 +1,3 @@
 *.xojo_uistate
+**/Builds - Music
+**/.DS_Store
