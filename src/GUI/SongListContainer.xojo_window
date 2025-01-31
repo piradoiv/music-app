@@ -59,7 +59,7 @@ Begin DesktopContainer SongListContainer
       LockRight       =   True
       LockTop         =   True
       RequiresSelection=   False
-      RowSelectionType=   0
+      RowSelectionType=   1
       Scope           =   2
       TabIndex        =   0
       TabPanelIndex   =   0
@@ -244,9 +244,14 @@ End
 		Sub KeyUp(key As String)
 		  Select Case Asc(key)
 		  Case 8
-		    Var path As String = Me.RowTagAt(Me.SelectedRowIndex)
-		    Me.RemoveRowAt(Me.SelectedRowIndex)
-		    RaiseEvent RemoveSong(path)
+		    For i As Integer = Me.LastRowIndex DownTo 0
+		      If Not Me.RowSelectedAt(i) Then
+		        Continue
+		      End If
+		      Var path As String = Me.RowTagAt(i)
+		      Me.RemoveRowAt(i)
+		      RaiseEvent RemoveSong(path)
+		    Next
 		  End Select
 		End Sub
 	#tag EndEvent

@@ -198,6 +198,10 @@ End
 #tag WindowCode
 	#tag Method, Flags = &h21
 		Private Function AlbumIcon(songNativePath As String) As Picture
+		  If mAlbumIconCache.HasKey(songNativePath) Then
+		    Return mAlbumIconCache.Value(songNativePath)
+		  End If
+		  
 		  Var result As New Picture(256, 256)
 		  Var g As Graphics = result.Graphics
 		  
@@ -214,8 +218,19 @@ End
 		    g.DrawText(note, g.Width / 2 - w / 2, g.Height / 2 + g.FontAscent / 2.5)
 		  End If
 		  
+		  mAlbumIconCache.Value(songNativePath) = result
+		  
 		  Return result
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor()
+		  // Calling the overridden superclass constructor.
+		  mAlbumIconCache = New Dictionary
+		  Super.Constructor
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -296,6 +311,10 @@ End
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		Private mAlbumIconCache As Dictionary
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mIsPlaying As Boolean
