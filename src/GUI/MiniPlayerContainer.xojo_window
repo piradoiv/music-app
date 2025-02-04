@@ -353,6 +353,27 @@ End
 
 
 	#tag Method, Flags = &h21
+		Private Function AppearanceIcon(icon As Picture) As Picture
+		  If Not Color.IsDarkMode Then
+		    Return icon
+		  End If
+		  
+		  Var result As New Picture(icon.Width, icon.Height)
+		  result.Graphics.DrawPicture(icon, 0, 0, icon.Width, icon.Height)
+		  
+		  Const kMaxMapOffset = 255
+		  Var map(kMaxMapOffset) As Integer
+		  For i As Integer = 0 To kMaxMapOffset
+		    map(i) = kMaxMapOffset - i
+		  Next
+		  
+		  result.RGBSurface.Transform(map)
+		  
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function FormatSeconds(value As Integer) As String
 		  Var minutes As Integer = value / 60
 		  Var seconds As Integer = value Mod 60
@@ -529,7 +550,7 @@ End
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
 		  Var icon As Picture = skipbackwardcircle
-		  g.DrawPicture(icon, 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -542,7 +563,7 @@ End
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
 		  Var icon As Picture = If(RaiseEvent IsPlaying, pausefill, playfill)
-		  g.DrawPicture(icon, 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -555,7 +576,7 @@ End
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
 		  Var icon As Picture = skipforwardcircle
-		  g.DrawPicture(icon, 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -567,8 +588,8 @@ End
 #tag Events VolumeDownIconCanvas
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
-		  Var p As Picture = volumeofffill
-		  g.DrawPicture(p, 0, 0, g.Width, g.Height, 0, 0, p.Width, p.Height)
+		  Var icon As Picture = volumeofffill
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -582,8 +603,8 @@ End
 #tag Events VolumeUpIconCanvas
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
-		  Var p As Picture = volumeupfill
-		  g.DrawPicture(p, 0, 0, g.Width, g.Height, 0, 0, p.Width, p.Height)
+		  Var icon As Picture = volumeupfill
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
