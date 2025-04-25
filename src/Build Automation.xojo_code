@@ -2,25 +2,9 @@
 			Begin BuildStepList Linux
 				Begin BuildProjectStep Build
 				End
-				Begin CopyFilesBuildStep CopyLinuxFiles
-					AppliesTo = 0
-					Architecture = 0
-					Target = 0
-					Destination = 1
-					Subdirectory = 
-					FolderItem = Li4vLi4vZm9udHMvMTBfcGl4ZWwv
-				End
 			End
 			Begin BuildStepList Mac OS X
 				Begin BuildProjectStep Build
-				End
-				Begin CopyFilesBuildStep CopyMacFiles
-					AppliesTo = 0
-					Architecture = 0
-					Target = 0
-					Destination = 1
-					Subdirectory = 
-					FolderItem = Li4vLi4vZm9udHMvMTBfcGl4ZWwv
 				End
 				Begin SignProjectStep Sign
 				  DeveloperID=
@@ -29,14 +13,6 @@
 			End
 			Begin BuildStepList Windows
 				Begin BuildProjectStep Build
-				End
-				Begin CopyFilesBuildStep CopyWinFiles
-					AppliesTo = 0
-					Architecture = 0
-					Target = 0
-					Destination = 1
-					Subdirectory = 
-					FolderItem = Li4vLi4vZm9udHMvMTBfcGl4ZWwv
 				End
 			End
 #tag EndBuildAutomation
