@@ -1,7 +1,13 @@
 <img width="256" alt="Music App Icon" src="https://github.com/user-attachments/assets/16ee6704-09f9-47a1-9ea7-3f5f7a27c0ba" />
 
 # Music
-This is a personal app for listening to your own MP3 files. 🚧 The app is under active development 🚧.
+This is a personal app for listening to your own MP3 files.
+
+🚧 The app is under active development 🚧.
+
+I'm interested in maintaining my very own music library, instead of renting music through streaming services.
+
+Music is inspired in iTunes, BeatBox and elementaryOS' Music app which are amazing apps. Unfortunately, iTunes and BeatBox aren't being developed anymore and Music, from elementaryOS, works only on Linux, while macOS is my main OS.
 
 ## macOS
 ![Music on macOS](https://github.com/user-attachments/assets/a6e1bf0b-9b38-4c1a-9823-5b61c9328c44)
