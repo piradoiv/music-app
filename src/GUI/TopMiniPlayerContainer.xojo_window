@@ -450,6 +450,8 @@ End
 		  
 		  If cachedPic = Nil Or cachedPic.Width <> icon.Width Or cachedPic.Height <> icon.Height Then
 		    cachedPic = New Picture(icon.Width, icon.Height)
+		    cachedPic.VerticalResolution = 256
+		    cachedPic.HorizontalResolution = 256
 		    cachedPic.Graphics.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		    cachedPic.Graphics.AntiAliased = True
 		    cachedPic.Graphics.DrawPicture(icon, 0, 0, icon.Width, icon.Height)
@@ -790,6 +792,8 @@ End
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
 		  Var icon As Picture = volumeupfill
+		  g.AntiAliased = True
+		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
 		End Sub
 	#tag EndEvent
@@ -798,6 +802,8 @@ End
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
 		  Var icon As Picture = volumeofffill
+		  g.AntiAliased = True
+		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
 		End Sub
 	#tag EndEvent
@@ -826,6 +832,8 @@ End
 		  mask.Graphics.FillRoundRectangle(0, 0, mask.Width, mask.Height, radius, radius)
 		  
 		  // resizedPic.ApplyMask(mask)
+		  resizedPic.Graphics.AntiAliased = True
+		  resizedPic.Graphics.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  resizedPic.Graphics.DrawPicture(mAlbumIcon, 0, 0, resizedPic.Graphics.Width, resizedPic.Graphics.Height, 0, 0, mAlbumIcon.Width, mAlbumIcon.Height)
 		  
 		  // g.ShadowBrush = New ShadowBrush(0, padding / 4, Color.RGB(0, 0, 0, 150), padding / 2)

@@ -55,6 +55,7 @@ Begin DesktopWindow MainWindow
       Width           =   700
    End
    Begin MusicApp Music
+      Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
       Scope           =   2
@@ -260,6 +261,8 @@ End
 		  
 		  Var result As New Picture(256, 256)
 		  Var g As Graphics = result.Graphics
+		  g.AntiAliased = True
+		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  
 		  Var albumImage As Picture = Music.AlbumImage(songNativePath)
 		  If albumImage <> Nil Then
@@ -292,6 +295,9 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub DrawAlbumIcon(songNativePath As String, g As Graphics, padding As Integer, radius As Integer)
+		  g.AntiAliased = True
+		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
+		  
 		  Var picWidth As Double = g.Width - padding * 2
 		  Var picHeight As Double = g.Height - padding * 2
 		  
@@ -306,6 +312,8 @@ End
 		  Var p As Picture = AlbumIcon(songNativePath)
 		  Var resizedPic As New Picture(picWidth, picHeight, 32)
 		  Var gg As Graphics = resizedPic.Graphics
+		  gg.AntiAliased = True
+		  gg.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  
 		  Var mask As New Picture(resizedPic.Width, resizedPic.Height, 32)
 		  mask.Graphics.DrawingColor = Color.Black

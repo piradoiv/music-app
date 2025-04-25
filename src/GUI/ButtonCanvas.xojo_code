@@ -32,6 +32,8 @@ Inherits DesktopCanvas
 		    g.RestoreState
 		  End If
 		  
+		  g.AntiAliased = True
+		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  RaiseEvent Paint(g, areas)
 		End Sub
 	#tag EndEvent
