@@ -4,6 +4,6 @@
 		Type=1
 		Platform=1
 		Light=D9D9D927
-		Dark=0D0D0D27
+		Dark=1D1D1D27
 	#tag EndColor
 #tag EndColorGroup
