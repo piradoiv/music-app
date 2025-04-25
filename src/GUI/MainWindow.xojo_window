@@ -35,7 +35,7 @@ Begin DesktopWindow MainWindow
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   390
+      Height          =   380
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
@@ -55,7 +55,6 @@ Begin DesktopWindow MainWindow
       Width           =   700
    End
    Begin MusicApp Music
-      Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
       Scope           =   2
@@ -138,17 +137,17 @@ Begin DesktopWindow MainWindow
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "+"
+      Caption         =   "Add Music"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   26
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   8
+      Left            =   13
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -160,11 +159,11 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   472
+      Top             =   466
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   25
+      Width           =   92
    End
    Begin DesktopSeparator Separator2
       Active          =   False
@@ -213,7 +212,7 @@ Begin DesktopWindow MainWindow
       TabIndex        =   14
       TabPanelIndex   =   0
       Tooltip         =   ""
-      Top             =   468
+      Top             =   458
       Transparent     =   False
       Visible         =   True
       Width           =   700

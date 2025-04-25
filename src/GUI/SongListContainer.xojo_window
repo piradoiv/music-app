@@ -35,7 +35,7 @@ Begin DesktopContainer SongListContainer
       AllowRowReordering=   True
       Bold            =   False
       ColumnCount     =   5
-      ColumnWidths    =   "50,*,120,70,25"
+      ColumnWidths    =   "50,*,120,75,40"
       DefaultRowHeight=   48
       DropIndicatorVisible=   False
       Enabled         =   True
@@ -210,7 +210,7 @@ End
 		    Var w As Double = g.Width / 3
 		    
 		    g.SaveState
-		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, 1) // TODO: Cache Color.HighlightColor, as it consumes lots of CPU
+		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, .6) // TODO: Cache Color.HighlightColor, as it consumes lots of CPU
 		    Var now As DateTime = DateTime.Now // TODO: Use System.Ticks instead, or something that consumes less CPU
 		    
 		    For i As Integer = 0 To 2
