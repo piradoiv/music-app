@@ -289,7 +289,7 @@ Begin DesktopContainer TopMiniPlayerContainer
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
-      Selectable      =   True
+      Selectable      =   False
       TabIndex        =   29
       TabPanelIndex   =   0
       TabStop         =   True
@@ -486,13 +486,15 @@ End
 		  #EndIf
 		  
 		  Static cachedPic As Picture
-		  If cachedPic = Nil Or cachedPic.Width <> g.Width Or cachedPic.Height <> g.Height Then
+		  Static darkMode As Boolean = Color.IsDarkMode
+		  If cachedPic = Nil Or cachedPic.Width <> g.Width Or cachedPic.Height <> g.Height Or darkMode <> Color.IsDarkMode Then
 		    cachedPic = New Picture(g.Width, g.Height)
+		    darkMode = Color.IsDarkMode
 		    Var stops() As Pair
-		    // stops.Add(0.0 : &ceae8e9)
-		    // stops.Add(1.0 : &cb8b8b8)
-		    stops.Add(0.0 : Color.RGB(241, 241, 241))
-		    stops.Add(1.0 : Color.RGB(217, 217, 217))
+		    Var light As Color = ToolbarBackgroundLightColorGroup
+		    Var dark As Color = ToolbarBackgroundDarkColorGroup
+		    stops.Add(0.0 : light)
+		    stops.Add(1.0 : dark)
 		    Var gradient As New LinearGradientBrush(New Point(g.Width / 2, 0), New Point(g.Width / 2, g.Height), stops)
 		    
 		    cachedPic.Graphics.Brush = gradient
@@ -519,8 +521,10 @@ End
 		  #EndIf
 		  
 		  Static cachedPic As Picture
-		  If cachedPic = Nil Or cachedPic.Width <> g.Width Or cachedPic.Height <> g.Height Then
+		  Static darkMode As Boolean = Color.IsDarkMode
+		  If cachedPic = Nil Or cachedPic.Width <> g.Width Or cachedPic.Height <> g.Height Or darkMode <> Color.IsDarkMode Then
 		    cachedPic = New Picture(g.Width, g.Height)
+		    darkMode = Color.IsDarkMode
 		    Var gg As Graphics = cachedPic.Graphics
 		    Var clipPath As New GraphicsPath
 		    clipPath.AddRoundRectangle(0, 0, gg.Width, gg.Height, radius, radius)
@@ -536,48 +540,33 @@ End
 		    Var gradient As LinearGradientBrush
 		    gradient = New LinearGradientBrush(New Point(gg.Width / 2, 0), New Point(gg.Width / 2, gg.Height), stops)
 		    
-		    gg.Brush = gradient
+		    gg.DrawingColor = DisplayBaseBackgroundColorGroup
 		    gg.FillRoundRectangle(0, 0, gg.Width, gg.Height, radius, radius)
-		    
-		    Var radialBrush As New RadialGradientBrush
-		    radialBrush.StartPoint = New Point(gg.Width / 2, gg.Height * 2)
-		    radialBrush.EndPoint = New Point(gg.Width / 2, gg.Height * 2)
-		    radialBrush.GradientStops.Add(0 : Color.RGB(218, 224, 229, 200))
-		    radialBrush.GradientStops.Add(1 : Color.RGB(218, 224, 229, 255))
-		    radialBrush.StartRadius = 0
-		    radialBrush.EndRadius = gg.Width
-		    gg.Brush = radialBrush
-		    gg.FillOval(0, 0, gg.Width, gg.Height * 2)
 		    
 		    gg.Brush = Nil
 		    
 		    gg.ShadowBrush = New ShadowBrush(0, 1, Color.RGB(0, 0, 0, 0), 9)
 		    gg.DrawingColor = Color.RGB(0, 0, 0, 0)
 		    gg.PenSize = 2
-		    gg.DrawRoundRectangle(-5, -5, gg.Width + 10, gg.Height + 10, radius + 5, radius + 5)
+		    gg.DrawRoundRectangle(-5, -5, gg.Width + 10, gg.Height + 10, radius, radius)
 		    gg.ShadowBrush = Nil
 		    gg.RestoreState
 		    
-		    // Screen
-		    // Var screenGradient As New LinearGradientBrush
-		    // screenGradient.GradientStops.Add(0.0 : Color.RGB(232, 235, 222, 100))
-		    // screenGradient.GradientStops.Add(1.0 : Color.RGB(217, 221, 188, 100))
-		    
 		    // Outer border
 		    Var outerBorderGradient As New LinearGradientBrush
-		    outerBorderGradient.GradientStops.Add(0.0 : Color.RGB(124, 124, 124))
-		    outerBorderGradient.GradientStops.Add(1.0 : Color.RGB(241, 241, 241))
+		    outerBorderGradient.GradientStops.Add(0.0 : If(Color.IsDarkMode, Color.RGB(4, 4, 4), Color.RGB(124, 124, 124)))
+		    outerBorderGradient.GradientStops.Add(1.0 : If(Color.IsDarkMode, Color.RGB(101, 101, 101), Color.RGB(241, 241, 241)))
 		    outerBorderGradient.StartPoint = New Point(gg.Width / 2, 0)
 		    outerBorderGradient.EndPoint = New Point(gg.Width / 2, gg.Height)
 		    gg.PenSize = 1
 		    gg.Brush = outerBorderGradient
 		    gg.DrawingColor = Color.Red
-		    gg.DrawRoundRectangle(0, 0, gg.Width, gg.Height, radius + 6, radius + 6)
+		    gg.DrawRoundRectangle(0, 0, gg.Width, gg.Height, radius, radius)
 		    gg.Brush = Nil
 		    
 		    // Border
-		    gg.DrawingColor = Color.RGB(144, 147, 151, 150)
-		    gg.DrawRoundRectangle(1, 1, gg.Width - 2, gg.Height - 2, radius + 5, radius + 5)
+		    gg.DrawingColor = If(Color.IsDarkMode, Color.RGB(44, 47, 51, 200), Color.RGB(144, 147, 151, 150))
+		    gg.DrawRoundRectangle(1, 1, gg.Width - 2, gg.Height - 2, radius, radius)
 		  End If
 		  
 		  g.DrawPicture(cachedPic, 0, 0, g.Width, g.Height)
@@ -880,10 +869,10 @@ End
 		  Var brush As New LinearGradientBrush
 		  brush.StartPoint = New Point(g.Width / 2, 0)
 		  brush.EndPoint = New Point(g.Width / 2, g.Height)
-		  brush.GradientStops.Add(0.0 : Color.RGB(255, 255, 255, 200))
-		  brush.GradientStops.Add(0.49 : Color.RGB(255, 255, 255, 250))
-		  brush.GradientStops.Add(0.50 : Color.RGB(0, 0, 0, 255))
-		  brush.GradientStops.Add(1.0 : Color.RGB(0, 0, 0, 255))
+		  brush.GradientStops.Add(0.0 : If(Color.IsDarkMode, Color.RGB(255, 255, 255, 210), Color.RGB(255, 255, 255, 180)))
+		  brush.GradientStops.Add(0.49 : If(Color.IsDarkMode, Color.RGB(255, 255, 255, 250), Color.RGB(255, 255, 255, 230)))
+		  brush.GradientStops.Add(0.50 : Color.RGB(0, 0, 0, 250))
+		  brush.GradientStops.Add(1.0 : Color.RGB(0, 0, 0, 250))
 		  gg.Brush = brush
 		  
 		  gg.FillRectangle(0, 0, gg.Width, gg.Height)
