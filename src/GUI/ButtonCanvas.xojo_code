@@ -27,11 +27,13 @@ Inherits DesktopCanvas
 		  
 		  If mIsMouseInside Then
 		    g.SaveState
-		    g.DrawingColor = If(Color.IsDarkMode, &c0a0a0a, &cdadada)
+		    g.DrawingColor = If(Color.IsDarkMode, &c3a3a3a, &cdadada)
 		    g.FillRoundRectangle(0, 0, g.Width, g.Height, radius, radius)
 		    g.RestoreState
 		  End If
 		  
+		  g.AntiAliased = True
+		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  RaiseEvent Paint(g, areas)
 		End Sub
 	#tag EndEvent

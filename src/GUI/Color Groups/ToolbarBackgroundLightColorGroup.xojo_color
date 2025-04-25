@@ -1,0 +1,9 @@
+#tag ColorGroup
+	CodeName=ToolbarBackgroundLightColorGroup
+	#tag Color
+		Type=1
+		Platform=1
+		Light=F1F1F127
+		Dark=17171727
+	#tag EndColor
+#tag EndColorGroup

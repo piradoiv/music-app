@@ -10,51 +10,21 @@ Begin DesktopWindow MainWindow
    HasFullScreenButton=   True
    HasMaximizeButton=   True
    HasMinimizeButton=   True
-   Height          =   450
+   HasTitleBar     =   True
+   Height          =   500
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
-   MenuBar         =   948621311
+   MenuBar         =   0
    MenuBarVisible  =   False
    MinimumHeight   =   360
-   MinimumWidth    =   420
+   MinimumWidth    =   600
    Resizeable      =   True
    Title           =   "Music"
    Type            =   0
    Visible         =   True
-   Width           =   630
-   Begin MiniPlayerContainer MiniPlayer
-      Active          =   False
-      AlbumIcon       =   0
-      AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   False
-      AllowTabs       =   True
-      Backdrop        =   0
-      BackgroundColor =   &cFFFFFF
-      Composited      =   False
-      Enabled         =   True
-      HasBackgroundColor=   False
-      Height          =   398
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Left            =   405
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   True
-      Scope           =   2
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   0
-      Transparent     =   True
-      Visible         =   True
-      Width           =   225
-   End
+   Width           =   700
    Begin SongListContainer SongList
       AllowAutoDeactivate=   True
       AllowFocus      =   False
@@ -65,7 +35,7 @@ Begin DesktopWindow MainWindow
       Composited      =   False
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   450
+      Height          =   380
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
@@ -79,10 +49,10 @@ Begin DesktopWindow MainWindow
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   0
+      Top             =   78
       Transparent     =   True
       Visible         =   True
-      Width           =   405
+      Width           =   700
    End
    Begin MusicApp Music
       Index           =   -2147483648
@@ -132,61 +102,120 @@ Begin DesktopWindow MainWindow
       _mName          =   ""
       _mPanelIndex    =   0
    End
+   Begin TopMiniPlayerContainer MiniPlayer
+      Active          =   False
+      AlbumIcon       =   0
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   False
+      AllowTabs       =   True
+      Backdrop        =   0
+      BackgroundColor =   &cFFFFFF
+      Composited      =   False
+      Enabled         =   True
+      HasBackgroundColor=   False
+      Height          =   78
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   12
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   0
+      Transparent     =   True
+      Visible         =   True
+      Width           =   700
+   End
    Begin DesktopButton OpenFilesButton
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
-      Caption         =   "Open Files..."
+      Caption         =   "Add Music"
       Default         =   False
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   26
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   417
+      Left            =   13
       LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   6
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   410
+      Top             =   466
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   193
+      Width           =   92
    End
-   Begin DesktopSeparator Separator1
+   Begin DesktopSeparator Separator2
       Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
-      Height          =   450
+      Height          =   1
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   382
-      LockBottom      =   True
+      Left            =   0
+      LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   False
+      LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   7
+      TabIndex        =   9
       TabPanelIndex   =   0
       Tooltip         =   ""
-      Top             =   0
+      Top             =   78
       Transparent     =   False
       Visible         =   True
-      Width           =   44
+      Width           =   700
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
+   End
+   Begin DesktopSeparator Separator3
+      Active          =   False
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   1
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   0
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   False
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   14
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   458
+      Transparent     =   False
+      Visible         =   True
+      Width           =   700
       _mIndex         =   0
       _mInitialParent =   ""
       _mName          =   ""
@@ -196,6 +225,33 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  #If TargetMacOS
+		    Self.MenuBar = MainMenuBar
+		    Try
+		      Declare Function NSClassFromString Lib "Foundation" (aClassName As CFStringRef) As Ptr
+		      If NSClassFromString( "NSVisualEffectView" ) <> Nil Then
+		        Const AppKit = "AppKit"
+		        Const NSWindowTitleHidden = 1
+		        Const NSWindowStyleMaskFullSizeContentView = 32768
+		        
+		        Declare Sub titleVisibility Lib AppKit Selector "setTitleVisibility:" (handle As Ptr, value As Integer)
+		        titleVisibility(Me.Handle, NSWindowTitleHidden)
+		        
+		        Declare Sub setStyleMask Lib AppKit Selector "setStyleMask:" (handle As Ptr, value As Integer)
+		        Declare Function styleMask Lib AppKit Selector "styleMask" (handle As Ptr) As Integer
+		        setStyleMAsk(Me.Handle, styleMask(Me.Handle) + NSWindowStyleMaskFullSizeContentView)
+		        
+		        Declare Sub titlebarAppearsTransparent Lib AppKit Selector "setTitlebarAppearsTransparent:" (handle As Ptr, value As Boolean)
+		        titleBarAppearsTransparent(Me.Handle, True)
+		      End If
+		    End Try
+		  #EndIf
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h21
 		Private Function AlbumIcon(songNativePath As String) As Picture
 		  If mAlbumIconCache.HasKey(songNativePath) Then
@@ -204,6 +260,8 @@ End
 		  
 		  Var result As New Picture(256, 256)
 		  Var g As Graphics = result.Graphics
+		  g.AntiAliased = True
+		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  
 		  Var albumImage As Picture = Music.AlbumImage(songNativePath)
 		  If albumImage <> Nil Then
@@ -228,6 +286,7 @@ End
 		Sub Constructor()
 		  // Calling the overridden superclass constructor.
 		  mAlbumIconCache = New Dictionary
+		  mDrawAlbumIconCache = New Dictionary
 		  Super.Constructor
 		  
 		End Sub
@@ -235,21 +294,42 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub DrawAlbumIcon(songNativePath As String, g As Graphics, padding As Integer, radius As Integer)
+		  g.AntiAliased = True
+		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
+		  
+		  Var picWidth As Double = g.Width - padding * 2
+		  Var picHeight As Double = g.Height - padding * 2
+		  
+		  If mDrawAlbumIconCache.HasKey(songNativePath) Then
+		    Var result As Picture = mDrawAlbumIconCache.Value(songNativePath)
+		    If result <> Nil And result.Width = picWidth And result.Height = picHeight Then
+		      g.DrawPicture(result, padding, padding, picWidth, picHeight)
+		      Return
+		    End If
+		  End If
+		  
 		  Var p As Picture = AlbumIcon(songNativePath)
-		  Var resizedPic As New Picture(g.Width - padding * 2, g.Height - padding * 2, 32)
+		  Var resizedPic As New Picture(picWidth, picHeight, 32)
+		  Var gg As Graphics = resizedPic.Graphics
+		  gg.AntiAliased = True
+		  gg.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  
 		  Var mask As New Picture(resizedPic.Width, resizedPic.Height, 32)
 		  mask.Graphics.DrawingColor = Color.Black
 		  mask.Graphics.FillRoundRectangle(0, 0, mask.Width, mask.Height, 10, 10)
-		  
 		  resizedPic.ApplyMask(mask)
-		  resizedPic.Graphics.DrawPicture(p, 0, 0, resizedPic.Graphics.Width, resizedPic.Graphics.Height, 0, 0, p.Width, p.Height)
 		  
-		  g.ShadowBrush = New ShadowBrush(0, padding / 2, Color.RGB(0, 0, 0, 125), padding / 2)
-		  g.DrawPicture(resizedPic, padding, padding, g.Width - padding * 2, g.Height - padding * 2, 0, 0, resizedPic.Width, resizedPic.Height)
+		  // gg.ShadowBrush = New ShadowBrush(0, padding / 2, Color.RGB(0, 0, 0, 125), padding / 2)
+		  // gg.DrawPicture(p, padding, padding, gg.Width - padding * 2, gg.Height - padding * 2, 0, 0, gg.Width, gg.Height)
 		  
-		  g.DrawingColor = Color.RGB(0, 0, 0, 200)
-		  g.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
+		  gg.DrawingColor = Color.RGB(0, 0, 0, 200)
+		  gg.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
+		  
+		  gg.DrawPicture(p, 0, 0, gg.Width, gg.Height, 0, 0, p.Width, p.Height)
+		  // gg.DrawPicture(p, 0, 0, g.Width, g.Height, 0, 0, p.Width, p.Height)
+		  
+		  mDrawAlbumIconCache.Value(songNativePath) = resizedPic
+		  g.DrawPicture(resizedPic, padding, padding, g.Width, g.Height)
 		End Sub
 	#tag EndMethod
 
@@ -317,6 +397,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		Private mDrawAlbumIconCache As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mIsPlaying As Boolean
 	#tag EndProperty
 
@@ -327,6 +411,60 @@ End
 
 #tag EndWindowCode
 
+#tag Events SongList
+	#tag Event
+		Sub SongDoublePressed(nativePath As String)
+		  PlaySong(nativePath)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub DrawAlbumIcon(songNativePath As String, g As Graphics)
+		  DrawAlbumIcon(songNativePath, g, 5, 8)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub RemoveSong(nativePath As String)
+		  Music.RemoveSong(New FolderItem(nativePath))
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Music
+	#tag Event
+		Sub NewFilesAdded(nativePaths() As String)
+		  SongList.AddSongs(nativePaths)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub SongRemoved(nativePath As String)
+		  If mMusicFile <> Nil And mMusicFile.NativePath = nativePath Then
+		    mMusicFile = Nil
+		    MP3Player.Stop
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events MP3Player
+	#tag Event
+		Sub Opening()
+		  Me.Volume = 127
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub PlaybackStarted()
+		  mIsPlaying = True
+		  MiniPlayer.Active = True
+		  SongList.Play(mMusicFile.NativePath)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub PlaybackStopped()
+		  If mIsPlaying Then
+		    PlaySong(SongList.NextSongNativePath)
+		    Return
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events MiniPlayer
 	#tag Event
 		Sub PlayPausePressed()
@@ -400,60 +538,6 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events SongList
-	#tag Event
-		Sub SongDoublePressed(nativePath As String)
-		  PlaySong(nativePath)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub DrawAlbumIcon(songNativePath As String, g As Graphics)
-		  DrawAlbumIcon(songNativePath, g, 5, 8)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub RemoveSong(nativePath As String)
-		  Music.RemoveSong(New FolderItem(nativePath))
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events Music
-	#tag Event
-		Sub NewFilesAdded(nativePaths() As String)
-		  SongList.AddSongs(nativePaths)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub SongRemoved(nativePath As String)
-		  If mMusicFile <> Nil And mMusicFile.NativePath = nativePath Then
-		    mMusicFile = Nil
-		    MP3Player.Stop
-		  End If
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events MP3Player
-	#tag Event
-		Sub Opening()
-		  Me.Volume = 127
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub PlaybackStarted()
-		  mIsPlaying = True
-		  MiniPlayer.Active = True
-		  SongList.Play(mMusicFile.NativePath)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub PlaybackStopped()
-		  If mIsPlaying Then
-		    PlaySong(SongList.NextSongNativePath)
-		    Return
-		  End If
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events OpenFilesButton
 	#tag Event
 		Sub Pressed()
@@ -467,6 +551,14 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="HasTitleBar"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Name"
 		Visible=true

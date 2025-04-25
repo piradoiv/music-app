@@ -105,6 +105,14 @@ Begin Menu MainMenuBar
          Visible = True
       End
    End
+   Begin DesktopMenuItem WindowMenu
+      SpecialMenu = 0
+      Index = -2147483648
+      Text = "Window"
+      AutoEnabled = True
+      AutoEnable = True
+      Visible = True
+   End
    Begin DesktopMenuItem HelpMenu
       SpecialMenu = 0
       Index = -2147483648

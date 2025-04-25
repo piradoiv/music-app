@@ -1,0 +1,9 @@
+#tag ColorGroup
+	CodeName=DisplayBaseBackgroundColorGroup
+	#tag Color
+		Type=1
+		Platform=1
+		Light=E1E4C927
+		Dark=696C5127
+	#tag EndColor
+#tag EndColorGroup
