@@ -210,7 +210,8 @@ End
 		    Var w As Double = g.Width / 3
 		    
 		    g.SaveState
-		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, .6) // TODO: Cache Color.HighlightColor, as it consumes lots of CPU
+		    Static highlight As Color = Color.HighlightColor
+		    g.DrawingColor = Color.HSV(highlight.Hue, 1, .6)
 		    Var now As DateTime = DateTime.Now // TODO: Use System.Ticks instead, or something that consumes less CPU
 		    
 		    For i As Integer = 0 To 2
