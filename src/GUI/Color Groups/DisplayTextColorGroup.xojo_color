@@ -1,8 +1,9 @@
 #tag ColorGroup
 	CodeName=DisplayTextColorGroup
 	#tag Color
-		Type=0
+		Type=1
 		Platform=1
-		Light=00000080
+		Light=00000094
+		Dark=FFFFFF94
 	#tag EndColor
 #tag EndColorGroup

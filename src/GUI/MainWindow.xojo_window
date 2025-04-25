@@ -165,13 +165,13 @@ Begin DesktopWindow MainWindow
       Visible         =   True
       Width           =   92
    End
-   Begin DesktopSeparator Separator2
+   Begin DesktopSeparator Separators
       Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
       Height          =   1
-      Index           =   -2147483648
+      Index           =   0
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   False
@@ -193,13 +193,13 @@ Begin DesktopWindow MainWindow
       _mName          =   ""
       _mPanelIndex    =   0
    End
-   Begin DesktopSeparator Separator3
+   Begin DesktopSeparator Separators
       Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
       Height          =   1
-      Index           =   -2147483648
+      Index           =   1
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   True
@@ -247,6 +247,18 @@ End
 		        titleBarAppearsTransparent(Me.Handle, True)
 		      End If
 		    End Try
+		  #EndIf
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  // Separators won't look right on Dark Mode on Linux
+		  #If TargetLinux
+		    Var showSeparators As Boolean = Not Color.IsDarkMode
+		    For i As Integer = 0 To 1
+		      Separators(i).Visible = showSeparators
+		    Next
 		  #EndIf
 		End Sub
 	#tag EndEvent

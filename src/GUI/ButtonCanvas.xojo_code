@@ -27,7 +27,7 @@ Inherits DesktopCanvas
 		  
 		  If mIsMouseInside Then
 		    g.SaveState
-		    g.DrawingColor = If(Color.IsDarkMode, &c3a3a3a, &cdadada)
+		    g.DrawingColor = If(Color.IsDarkMode, &c1a1a1a, &cdadada)
 		    g.FillRoundRectangle(0, 0, g.Width, g.Height, radius, radius)
 		    g.RestoreState
 		  End If
