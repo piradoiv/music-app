@@ -25,62 +25,225 @@ Begin DesktopContainer MiniPlayerContainer
    Transparent     =   True
    Visible         =   True
    Width           =   225
-   Begin DesktopLabel SongNameLabel
-      AllowAutoDeactivate=   True
-      Bold            =   False
+   Begin Timer UpdateTimer
       Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
       Index           =   -2147483648
-      Italic          =   False
-      Left            =   20
+      LockedInPosition=   False
+      Period          =   1000
+      RunMode         =   0
+      Scope           =   2
+      TabPanelIndex   =   0
+   End
+   Begin DesktopCanvas VolumeUpIconCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   18
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   168
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   16
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   331
+      Transparent     =   True
+      Visible         =   True
+      Width           =   18
+   End
+   Begin DesktopSlider VolumeSlider
+      AllowAutoDeactivate=   True
+      AllowLiveScrolling=   True
+      Enabled         =   True
+      Height          =   30
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   66
+      LineStep        =   1
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
-      Multiline       =   False
+      MaximumValue    =   255
+      MinimumValue    =   0
+      PageStep        =   20
       Scope           =   2
-      Selectable      =   True
-      TabIndex        =   1
+      TabIndex        =   17
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "Song name"
-      TextAlignment   =   2
-      TextColor       =   &c000000
+      TickMarkStyle   =   0
       Tooltip         =   ""
-      Top             =   190
+      Top             =   327
       Transparent     =   False
-      Underline       =   False
+      Value           =   127
       Visible         =   True
-      Width           =   185
+      Width           =   93
    End
-   Begin DesktopLabel PositionLabel
+   Begin DesktopCanvas VolumeDownIconCanvas
       AllowAutoDeactivate=   True
-      Bold            =   False
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
       Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
+      Height          =   18
       Index           =   -2147483648
-      Italic          =   False
+      InitialParent   =   ""
+      Left            =   39
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   18
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   331
+      Transparent     =   True
+      Visible         =   True
+      Width           =   18
+   End
+   Begin ButtonCanvas NextButtonCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   45
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   160
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   19
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   266
+      Transparent     =   True
+      Visible         =   True
+      Width           =   45
+   End
+   Begin ButtonCanvas PlayPauseButtonCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   45
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   90
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   20
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   266
+      Transparent     =   True
+      Visible         =   True
+      Width           =   45
+   End
+   Begin ButtonCanvas PrevButtonCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   45
+      Index           =   -2147483648
+      InitialParent   =   ""
       Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
+      Scope           =   2
+      TabIndex        =   21
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   266
+      Transparent     =   True
+      Visible         =   True
+      Width           =   45
+   End
+   Begin DesktopCanvas AlbumImageCanvas
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   150
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   39
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   22
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   28
+      Transparent     =   True
+      Visible         =   True
+      Width           =   150
+   End
+   Begin DesktopLabel DurationLabel
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   171
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   2
+      TabIndex        =   23
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "--:--"
-      TextAlignment   =   0
+      TextAlignment   =   3
       TextColor       =   &c000000
       Tooltip         =   ""
       Top             =   222
@@ -107,7 +270,7 @@ Begin DesktopContainer MiniPlayerContainer
       MaximumValue    =   100
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   3
+      TabIndex        =   24
       TabPanelIndex   =   0
       Tooltip         =   ""
       Top             =   222
@@ -120,7 +283,7 @@ Begin DesktopContainer MiniPlayerContainer
       _mName          =   ""
       _mPanelIndex    =   0
    End
-   Begin DesktopLabel DurationLabel
+   Begin DesktopLabel PositionLabel
       AllowAutoDeactivate=   True
       Bold            =   False
       Enabled         =   True
@@ -129,21 +292,22 @@ Begin DesktopContainer MiniPlayerContainer
       FontUnit        =   0
       Height          =   20
       Index           =   -2147483648
+      InitialParent   =   ""
       Italic          =   False
-      Left            =   171
+      Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   True
+      LockLeft        =   True
+      LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   4
+      TabIndex        =   25
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "--:--"
-      TextAlignment   =   3
+      TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
       Top             =   222
@@ -152,193 +316,38 @@ Begin DesktopContainer MiniPlayerContainer
       Visible         =   True
       Width           =   34
    End
-   Begin Timer UpdateTimer
-      Enabled         =   True
-      Index           =   -2147483648
-      LockedInPosition=   False
-      Period          =   1000
-      RunMode         =   0
-      Scope           =   2
-      TabPanelIndex   =   0
-   End
-   Begin DesktopCanvas AlbumImageCanvas
+   Begin DesktopLabel SongNameLabel
       AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   True
-      AllowTabs       =   False
-      Backdrop        =   0
+      Bold            =   False
       Enabled         =   True
-      Height          =   150
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   39
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   2
-      TabIndex        =   8
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   28
-      Transparent     =   True
-      Visible         =   True
-      Width           =   150
-   End
-   Begin ButtonCanvas PrevButtonCanvas
-      AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   True
-      AllowTabs       =   False
-      Backdrop        =   0
-      Enabled         =   True
-      Height          =   45
-      Index           =   -2147483648
+      Italic          =   False
       Left            =   20
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   2
-      TabIndex        =   9
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   266
-      Transparent     =   True
-      Visible         =   True
-      Width           =   45
-   End
-   Begin ButtonCanvas PlayPauseButtonCanvas
-      AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   True
-      AllowTabs       =   False
-      Backdrop        =   0
-      Enabled         =   True
-      Height          =   45
-      Index           =   -2147483648
-      Left            =   90
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   2
-      TabIndex        =   10
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   266
-      Transparent     =   True
-      Visible         =   True
-      Width           =   45
-   End
-   Begin ButtonCanvas NextButtonCanvas
-      AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   True
-      AllowTabs       =   False
-      Backdrop        =   0
-      Enabled         =   True
-      Height          =   45
-      Index           =   -2147483648
-      Left            =   160
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
+      Multiline       =   False
       Scope           =   2
-      TabIndex        =   11
+      Selectable      =   True
+      TabIndex        =   26
       TabPanelIndex   =   0
       TabStop         =   True
+      Text            =   "Song name"
+      TextAlignment   =   2
+      TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   266
-      Transparent     =   True
-      Visible         =   True
-      Width           =   45
-   End
-   Begin DesktopCanvas VolumeDownIconCanvas
-      AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   True
-      AllowTabs       =   False
-      Backdrop        =   0
-      Enabled         =   True
-      Height          =   18
-      Index           =   -2147483648
-      Left            =   39
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   2
-      TabIndex        =   12
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   331
-      Transparent     =   True
-      Visible         =   True
-      Width           =   18
-   End
-   Begin DesktopSlider VolumeSlider
-      AllowAutoDeactivate=   True
-      AllowLiveScrolling=   True
-      Enabled         =   True
-      Height          =   30
-      Index           =   -2147483648
-      Left            =   66
-      LineStep        =   1
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      MaximumValue    =   255
-      MinimumValue    =   0
-      PageStep        =   20
-      Scope           =   2
-      TabIndex        =   13
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TickMarkStyle   =   0
-      Tooltip         =   ""
-      Top             =   327
+      Top             =   190
       Transparent     =   False
-      Value           =   127
+      Underline       =   False
       Visible         =   True
-      Width           =   93
-   End
-   Begin DesktopCanvas VolumeUpIconCanvas
-      AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   True
-      AllowTabs       =   False
-      Backdrop        =   0
-      Enabled         =   True
-      Height          =   18
-      Index           =   -2147483648
-      Left            =   168
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   2
-      TabIndex        =   14
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   331
-      Transparent     =   True
-      Visible         =   True
-      Width           =   18
+      Width           =   185
    End
 End
 #tag EndDesktopWindow
@@ -498,24 +507,72 @@ End
 
 #tag EndWindowCode
 
-#tag Events PositionProgressBar
-	#tag Event
-		Function MouseDown(x As Integer, y As Integer) As Boolean
-		  Return True
-		End Function
-	#tag EndEvent
-	#tag Event
-		Sub MouseUp(x As Integer, y As Integer)
-		  Var newValue As Double = Me.MaximumValue / Me.Width * x
-		  Me.Value = newValue
-		  RaiseEvent Seek(newValue)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events UpdateTimer
 	#tag Event
 		Sub Action()
 		  Update
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events VolumeUpIconCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var icon As Picture = volumeupfill
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events VolumeSlider
+	#tag Event
+		Sub ValueChanged()
+		  RaiseEvent VolumeChanged(Me.Value)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events VolumeDownIconCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var icon As Picture = volumeofffill
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events NextButtonCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var icon As Picture = skipforwardcircle
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  RaiseEvent NextSongPressed
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PlayPauseButtonCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var icon As Picture = If(RaiseEvent IsPlaying, pausefill, playfill)
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  RaiseEvent PlayPausePressed
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PrevButtonCanvas
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  Var icon As Picture = skipbackwardcircle
+		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  RaiseEvent PreviousSongPressed
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -546,65 +603,17 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events PrevButtonCanvas
+#tag Events PositionProgressBar
 	#tag Event
-		Sub Paint(g As Graphics, areas() As Rect)
-		  Var icon As Picture = skipbackwardcircle
-		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
-		End Sub
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  Return True
+		End Function
 	#tag EndEvent
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
-		  RaiseEvent PreviousSongPressed
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events PlayPauseButtonCanvas
-	#tag Event
-		Sub Paint(g As Graphics, areas() As Rect)
-		  Var icon As Picture = If(RaiseEvent IsPlaying, pausefill, playfill)
-		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub MouseUp(x As Integer, y As Integer)
-		  RaiseEvent PlayPausePressed
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events NextButtonCanvas
-	#tag Event
-		Sub Paint(g As Graphics, areas() As Rect)
-		  Var icon As Picture = skipforwardcircle
-		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub MouseUp(x As Integer, y As Integer)
-		  RaiseEvent NextSongPressed
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events VolumeDownIconCanvas
-	#tag Event
-		Sub Paint(g As Graphics, areas() As Rect)
-		  Var icon As Picture = volumeofffill
-		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events VolumeSlider
-	#tag Event
-		Sub ValueChanged()
-		  RaiseEvent VolumeChanged(Me.Value)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events VolumeUpIconCanvas
-	#tag Event
-		Sub Paint(g As Graphics, areas() As Rect)
-		  Var icon As Picture = volumeupfill
-		  g.DrawPicture(AppearanceIcon(icon), 0, 0, g.Width, g.Height, 0, 0, icon.Width, icon.Height)
+		  Var newValue As Double = Me.MaximumValue / Me.Width * x
+		  Me.Value = newValue
+		  RaiseEvent Seek(newValue)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

@@ -30,12 +30,12 @@ Begin DesktopContainer SongListContainer
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
       AllowFocusRing  =   False
-      AllowResizableColumns=   False
+      AllowResizableColumns=   True
       AllowRowDragging=   False
       AllowRowReordering=   True
       Bold            =   False
-      ColumnCount     =   3
-      ColumnWidths    =   "50,*,50"
+      ColumnCount     =   5
+      ColumnWidths    =   "50,*,120,70,25"
       DefaultRowHeight=   48
       DropIndicatorVisible=   False
       Enabled         =   True
@@ -44,13 +44,13 @@ Begin DesktopContainer SongListContainer
       FontUnit        =   0
       GridLineStyle   =   0
       HasBorder       =   False
-      HasHeader       =   False
+      HasHeader       =   True
       HasHorizontalScrollbar=   False
       HasVerticalScrollbar=   True
       HeadingIndex    =   -1
       Height          =   300
       Index           =   -2147483648
-      InitialValue    =   ""
+      InitialValue    =   " 	Title	Album	Artist	 "
       Italic          =   False
       Left            =   0
       LockBottom      =   True
@@ -94,7 +94,16 @@ End
 		      Continue
 		    End If
 		    
-		    SongListBox.AddRow("", f.Name.TrimRight("." + f.Extension), "")
+		    Var reader As TextInputStream = TextInputStream.Open(f)
+		    Var fileData As MemoryBlock = reader.ReadAll
+		    reader.Close
+		    Var tags As Dictionary = ReadID3Tags(fileData)
+		    
+		    Var title As String = If(tags.HasKey("TIT2") And tags.Value("TIT2").StringValue.Length > 5, tags.Value("TIT2"), f.Name.TrimRight("." + f.Extension))
+		    Var album As String = tags.Lookup("TALB", "")
+		    Var artist As String = tags.Lookup("TPE1", "")
+		    
+		    SongListBox.AddRow("", title, album, artist, "")
 		    SongListBox.RowTagAt(SongListBox.LastAddedRowIndex) = f.NativePath
 		  Next
 		End Sub
@@ -146,7 +155,7 @@ End
 	#tag Method, Flags = &h21
 		Private Sub ResetPlayingIndicator()
 		  For i As Integer = 0 To SongListBox.LastRowIndex
-		    SongListBox.RefreshCell(i, 2)
+		    SongListBox.RefreshCell(i, 4)
 		  Next
 		End Sub
 	#tag EndMethod
@@ -192,7 +201,7 @@ End
 		    
 		    Return True
 		    
-		  Case 2
+		  Case 4
 		    Var path As String = Me.RowTagAt(row)
 		    If path <> mSongPlaying Then
 		      Return False
@@ -290,7 +299,7 @@ End
 		  For i As Integer = 0 To SongListBox.LastRowIndex
 		    Var path As String = SongListBox.RowTagAt(i)
 		    If mSongPlaying = path Then
-		      SongListBox.RefreshCell(i, 2)
+		      SongListBox.RefreshCell(i, 4)
 		      Exit
 		    End If
 		  Next

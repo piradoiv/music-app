@@ -36,11 +36,22 @@ Protected Class MusicApp
 		    Return Nil
 		  End If
 		  
+		  // First try to get the ID3 tags
+		  Var reader As TextInputStream = TextInputStream.Open(songFile)
+		  Var songData As MemoryBlock = reader.ReadAll
+		  reader.Close
+		  Var tags As Dictionary = ReadID3Tags(songData)
+		  If tags.HasKey("APIC") Then
+		    Return tags.Value("APIC")
+		  End If
+		  
+		  // Try with to find an album picture if ID3 tags didn't contain images
 		  Var parentFolder As FolderItem = songFile.Parent
 		  Var pictures() As FolderItem
 		  For Each child As FolderItem In parentFolder.Children
 		    If child.Extension = "jpg" Or child.Extension = "png" Then
 		      pictures.Add(child)
+		      Exit
 		    End If
 		  Next
 		  
