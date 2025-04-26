@@ -19,7 +19,7 @@ Begin DesktopWindow MainWindow
    MenuBar         =   0
    MenuBarVisible  =   False
    MinimumHeight   =   360
-   MinimumWidth    =   600
+   MinimumWidth    =   650
    Resizeable      =   True
    Title           =   "Music"
    Type            =   0

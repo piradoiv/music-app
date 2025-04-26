@@ -24,7 +24,7 @@ Begin DesktopContainer TopMiniPlayerContainer
    Top             =   0
    Transparent     =   True
    Visible         =   True
-   Width           =   600
+   Width           =   700
    Begin Timer UpdateTimer
       Enabled         =   True
       Index           =   -2147483648
@@ -57,7 +57,7 @@ Begin DesktopContainer TopMiniPlayerContainer
       Top             =   0
       Transparent     =   False
       Visible         =   True
-      Width           =   600
+      Width           =   700
       Begin ButtonCanvas PrevButtonCanvas
          AllowAutoDeactivate=   True
          AllowFocus      =   False
@@ -68,7 +68,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          Height          =   30
          Index           =   -2147483648
          InitialParent   =   "BackgroundCanvas"
-         Left            =   50
+         Left            =   74
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
@@ -94,7 +94,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          Height          =   44
          Index           =   -2147483648
          InitialParent   =   "BackgroundCanvas"
-         Left            =   84
+         Left            =   108
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
@@ -120,7 +120,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          Height          =   30
          Index           =   -2147483648
          InitialParent   =   "BackgroundCanvas"
-         Left            =   132
+         Left            =   156
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   True
@@ -143,7 +143,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          Height          =   30
          Index           =   -2147483648
          InitialParent   =   "BackgroundCanvas"
-         Left            =   464
+         Left            =   540
          LineStep        =   1
          LockBottom      =   False
          LockedInPosition=   False
@@ -175,7 +175,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          Height          =   18
          Index           =   -2147483648
          InitialParent   =   "BackgroundCanvas"
-         Left            =   538
+         Left            =   614
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   False
@@ -201,7 +201,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          Height          =   18
          Index           =   -2147483648
          InitialParent   =   "BackgroundCanvas"
-         Left            =   440
+         Left            =   516
          LockBottom      =   False
          LockedInPosition=   False
          LockLeft        =   False
@@ -228,7 +228,7 @@ Begin DesktopContainer TopMiniPlayerContainer
       Height          =   68
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   180
+      Left            =   215
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -242,188 +242,189 @@ Begin DesktopContainer TopMiniPlayerContainer
       Top             =   5
       Transparent     =   False
       Visible         =   True
-      Width           =   240
-   End
-   Begin DesktopCanvas AlbumImageCanvas
-      AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   True
-      AllowTabs       =   False
-      Backdrop        =   0
-      Enabled         =   True
-      Height          =   60
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Left            =   184
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   2
-      TabIndex        =   28
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   9
-      Transparent     =   True
-      Visible         =   True
-      Width           =   60
-   End
-   Begin DesktopLabel SongNameLabel
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   248
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   2
-      Selectable      =   False
-      TabIndex        =   29
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Song name"
-      TextAlignment   =   2
-      TextColor       =   DisplayTextColorGroup
-      Tooltip         =   ""
-      Top             =   17
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   168
-   End
-   Begin DesktopLabel PositionLabel
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   251
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      Multiline       =   False
-      Scope           =   2
-      Selectable      =   False
-      TabIndex        =   30
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "--:--"
-      TextAlignment   =   0
-      TextColor       =   DisplayTextColorGroup
-      Tooltip         =   ""
-      Top             =   41
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   40
-   End
-   Begin DesktopLabel DurationLabel
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   366
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   False
-      LockRight       =   True
-      LockTop         =   False
-      Multiline       =   False
-      Scope           =   2
-      Selectable      =   False
-      TabIndex        =   31
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "--:--"
-      TextAlignment   =   3
-      TextColor       =   DisplayTextColorGroup
-      Tooltip         =   ""
-      Top             =   41
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   40
-   End
-   Begin DesktopProgressBar PositionProgressBar
-      Active          =   False
-      AllowAutoDeactivate=   True
-      AllowTabStop    =   True
-      Enabled         =   False
-      Height          =   20
-      Indeterminate   =   False
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Left            =   299
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   False
-      MaximumValue    =   100
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   32
-      TabPanelIndex   =   0
-      Tooltip         =   ""
-      Top             =   40
-      Transparent     =   False
-      Value           =   50.0
-      Visible         =   True
-      Width           =   60
-      _mIndex         =   0
-      _mInitialParent =   ""
-      _mName          =   ""
-      _mPanelIndex    =   0
-   End
-   Begin DesktopCanvas ScreenCanvas
-      AllowAutoDeactivate=   True
-      AllowFocus      =   False
-      AllowFocusRing  =   True
-      AllowTabs       =   False
-      Backdrop        =   0
-      Enabled         =   True
-      Height          =   68
-      Index           =   -2147483648
-      Left            =   180
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      Scope           =   2
-      TabIndex        =   34
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   5
-      Transparent     =   False
-      Visible         =   True
-      Width           =   240
+      Width           =   270
+      Begin DesktopLabel SongNameLabel
+         AllowAutoDeactivate=   True
+         Bold            =   False
+         Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
+         Height          =   20
+         Index           =   -2147483648
+         InitialParent   =   "DisplayCanvas"
+         Italic          =   False
+         Left            =   283
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   True
+         Multiline       =   False
+         Scope           =   2
+         Selectable      =   False
+         TabIndex        =   0
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "Song name"
+         TextAlignment   =   2
+         TextColor       =   DisplayTextColorGroup
+         Tooltip         =   ""
+         Top             =   17
+         Transparent     =   False
+         Underline       =   False
+         Visible         =   True
+         Width           =   198
+      End
+      Begin DesktopLabel PositionLabel
+         AllowAutoDeactivate=   True
+         Bold            =   False
+         Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
+         Height          =   20
+         Index           =   -2147483648
+         InitialParent   =   "DisplayCanvas"
+         Italic          =   False
+         Left            =   286
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   False
+         Multiline       =   False
+         Scope           =   2
+         Selectable      =   False
+         TabIndex        =   1
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "--:--"
+         TextAlignment   =   0
+         TextColor       =   DisplayTextColorGroup
+         Tooltip         =   ""
+         Top             =   41
+         Transparent     =   False
+         Underline       =   False
+         Visible         =   True
+         Width           =   40
+      End
+      Begin DesktopProgressBar PositionProgressBar
+         Active          =   False
+         AllowAutoDeactivate=   True
+         AllowTabStop    =   True
+         Enabled         =   False
+         Height          =   20
+         Indeterminate   =   False
+         Index           =   -2147483648
+         InitialParent   =   "DisplayCanvas"
+         Left            =   334
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   False
+         MaximumValue    =   100
+         PanelIndex      =   0
+         Scope           =   2
+         TabIndex        =   2
+         TabPanelIndex   =   0
+         Tooltip         =   ""
+         Top             =   40
+         Transparent     =   False
+         Value           =   50.0
+         Visible         =   True
+         Width           =   90
+         _mIndex         =   0
+         _mInitialParent =   ""
+         _mName          =   ""
+         _mPanelIndex    =   0
+      End
+      Begin DesktopLabel DurationLabel
+         AllowAutoDeactivate=   True
+         Bold            =   False
+         Enabled         =   True
+         FontName        =   "System"
+         FontSize        =   0.0
+         FontUnit        =   0
+         Height          =   20
+         Index           =   -2147483648
+         InitialParent   =   "DisplayCanvas"
+         Italic          =   False
+         Left            =   431
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   False
+         Multiline       =   False
+         Scope           =   2
+         Selectable      =   False
+         TabIndex        =   3
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Text            =   "--:--"
+         TextAlignment   =   3
+         TextColor       =   DisplayTextColorGroup
+         Tooltip         =   ""
+         Top             =   41
+         Transparent     =   False
+         Underline       =   False
+         Visible         =   True
+         Width           =   40
+      End
+      Begin DesktopCanvas AlbumImageCanvas
+         AllowAutoDeactivate=   True
+         AllowFocus      =   False
+         AllowFocusRing  =   True
+         AllowTabs       =   False
+         Backdrop        =   0
+         Enabled         =   True
+         Height          =   60
+         Index           =   -2147483648
+         InitialParent   =   "DisplayCanvas"
+         Left            =   219
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockLeft        =   True
+         LockRight       =   False
+         LockTop         =   True
+         Scope           =   2
+         TabIndex        =   4
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   9
+         Transparent     =   True
+         Visible         =   True
+         Width           =   60
+      End
+      Begin DesktopCanvas ScreenCanvas
+         AllowAutoDeactivate=   True
+         AllowFocus      =   False
+         AllowFocusRing  =   True
+         AllowTabs       =   False
+         Backdrop        =   0
+         Enabled         =   True
+         Height          =   68
+         Index           =   -2147483648
+         InitialParent   =   "DisplayCanvas"
+         Left            =   215
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   True
+         Scope           =   2
+         TabIndex        =   5
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   5
+         Transparent     =   False
+         Visible         =   True
+         Width           =   270
+      End
    End
 End
 #tag EndDesktopWindow
@@ -803,6 +804,27 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events PositionProgressBar
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  Return True
+		End Function
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  Var newValue As Double = Me.MaximumValue / Me.Width * x
+		  Me.Value = newValue
+		  RaiseEvent Seek(newValue)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  #If TargetLinux
+		    Me.Top = Me.Top - 5
+		  #EndIf
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events AlbumImageCanvas
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
@@ -829,27 +851,6 @@ End
 		  
 		  g.DrawingColor = Color.RGB(0, 0, 0, 200)
 		  // g.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events PositionProgressBar
-	#tag Event
-		Function MouseDown(x As Integer, y As Integer) As Boolean
-		  Return True
-		End Function
-	#tag EndEvent
-	#tag Event
-		Sub MouseUp(x As Integer, y As Integer)
-		  Var newValue As Double = Me.MaximumValue / Me.Width * x
-		  Me.Value = newValue
-		  RaiseEvent Seek(newValue)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Opening()
-		  #If TargetLinux
-		    Me.Top = Me.Top - 5
-		  #EndIf
 		End Sub
 	#tag EndEvent
 #tag EndEvents
