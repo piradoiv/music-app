@@ -546,6 +546,29 @@ End
 		  Var pos As Integer = RaiseEvent PlaybackPositionInSeconds
 		  Var length As Integer = RaiseEvent SongLengthInSeconds
 		  
+		  // This is a fix for the issue I've been seeing where the player
+		  // got stuck at the end of some songs, randomly. It looks like
+		  // DesktopMoviePlayer won't fire the PlaybackStopped event with
+		  // these files, so I'll be detecting it manually.
+		  // Issue #5 
+		  Static previousPos As Integer = -1
+		  Static samePosTimes As Integer = 0
+		  If previousPos = pos Then
+		    samePosTimes = samePosTimes + 1
+		  End If
+		  
+		  If samePosTimes > 5 And IsPlaying Then
+		    #If DebugBuild
+		      System.DebugLog("MP3Player reached the end of the song, but PlaybackStopped didn't fire, we will ask it to continue")
+		    #EndIf
+		    samePosTimes = 0
+		    previousPos = -1
+		    RaiseEvent NextSongPressed
+		    Return
+		  End If
+		  previousPos = pos
+		  // End of fix #5
+		  
 		  SongNameLabel.Text = RaiseEvent SongName
 		  PositionLabel.Text = FormatSeconds(pos)
 		  DurationLabel.Text = FormatSeconds(length)
