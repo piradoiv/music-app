@@ -15,7 +15,10 @@ Music is inspired in iTunes, BeatBox and elementaryOS' Music app which are amazi
 ## Ubuntu Linux
 ![Music on Ubuntu Linux](https://github.com/user-attachments/assets/8bfb6410-39e4-4bbe-aa64-249f1c3827f8)
 
-macOS is fully supported, it works under Linux. Windows is not supported at the moment ([see Issue #4](https://github.com/piradoiv/music-app/issues/4)).
+## Windows
+![Windows 11](https://github.com/user-attachments/assets/f9f06f1d-8f9c-4865-8c24-9177fbb18882)
+
+macOS is fully supported. It works on Linux and Windows, but as these aren't my main OS, please report any issue you might find.
 
 # Releases
 There are no public releases yet, but you can build it using [Xojo](https://www.xojo.com/), release 2025r1.1 is being used at the moment of writing this README file.
