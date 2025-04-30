@@ -160,7 +160,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          TickMarkStyle   =   0
          Tooltip         =   ""
          Top             =   26
-         Transparent     =   False
+         Transparent     =   True
          Value           =   127
          Visible         =   True
          Width           =   68
@@ -271,7 +271,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          TextColor       =   DisplayTextColorGroup
          Tooltip         =   ""
          Top             =   17
-         Transparent     =   False
+         Transparent     =   True
          Underline       =   False
          Visible         =   True
          Width           =   198
@@ -304,7 +304,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          TextColor       =   DisplayTextColorGroup
          Tooltip         =   ""
          Top             =   41
-         Transparent     =   False
+         Transparent     =   True
          Underline       =   False
          Visible         =   True
          Width           =   40
@@ -368,7 +368,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          TextColor       =   DisplayTextColorGroup
          Tooltip         =   ""
          Top             =   41
-         Transparent     =   False
+         Transparent     =   True
          Underline       =   False
          Visible         =   True
          Width           =   40
@@ -421,7 +421,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          TabStop         =   True
          Tooltip         =   ""
          Top             =   5
-         Transparent     =   False
+         Transparent     =   True
          Visible         =   True
          Width           =   270
       End
@@ -782,7 +782,9 @@ End
 		    Var gg As Graphics = cachedPic.Graphics
 		    Var clipPath As New GraphicsPath
 		    clipPath.AddRoundRectangle(0, 0, gg.Width, gg.Height, radius, radius)
-		    gg.ClipToPath(clipPath)
+		    #If Not TargetWindows
+		      gg.ClipToPath(clipPath)
+		    #EndIf
 		    
 		    // Background
 		    gg.SaveState
@@ -887,7 +889,9 @@ End
 		  
 		  Var clipPath As New GraphicsPath
 		  clipPath.AddRoundRectangle(0, 0, gg.Width, gg.Height, radius, radius)
-		  gg.ClipToPath(clipPath)
+		  #If Not TargetWindows
+		    gg.ClipToPath(clipPath)
+		  #EndIf
 		  
 		  Var brush As New LinearGradientBrush
 		  brush.StartPoint = New Point(g.Width / 2, 0)
@@ -899,6 +903,13 @@ End
 		  gg.Brush = brush
 		  
 		  gg.FillRectangle(0, 0, gg.Width, gg.Height)
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  #If TargetWindows
+		    Me.Visible = False
+		  #Endif
 		End Sub
 	#tag EndEvent
 #tag EndEvents

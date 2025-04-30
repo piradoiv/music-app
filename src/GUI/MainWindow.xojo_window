@@ -382,12 +382,15 @@ End
 		  End If
 		  
 		  mIsPlaying = True
+		  mChangingSong = True
 		  
 		  MP3Player.Movie = Movie.Open(New FolderItem(nativePath, FolderItem.PathModes.Native))
 		  MP3Player.Position = 0
 		  MP3Player.Play
 		  
 		  SongList.Play(nativePath)
+		  
+		  mChangingSong = False
 		  
 		  MiniPlayer.AlbumIcon = GenerateAlbumIcon
 		  MiniPlayer.Active = True
@@ -406,6 +409,10 @@ End
 
 	#tag Property, Flags = &h21
 		Private mAlbumIconCache As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mChangingSong As Boolean = False
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -470,7 +477,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub PlaybackStopped()
-		  If mIsPlaying Then
+		  If mIsPlaying And Not mChangingSong Then
 		    PlaySong(SongList.NextSongNativePath)
 		    Return
 		  End If
