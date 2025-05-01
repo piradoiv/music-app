@@ -82,38 +82,51 @@ Begin DesktopContainer SongListContainer
       Scope           =   2
       TabPanelIndex   =   0
    End
+   Begin Thread ImportMusicThread
+      DebugIdentifier =   ""
+      Index           =   -2147483648
+      LockedInPosition=   False
+      Priority        =   5
+      Scope           =   2
+      StackSize       =   0
+      TabPanelIndex   =   0
+      ThreadID        =   0
+      ThreadState     =   0
+      Type            =   0
+   End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Method, Flags = &h0
 		Sub AddSongs(nativePaths() As String)
+		  If ImportMusicThread.ThreadState = Thread.ThreadStates.Running Then
+		    ImportMusicThread.Stop
+		  End If
+		  
 		  For Each path As String In nativePaths
 		    Var f As New FolderItem(path, FolderItem.PathModes.Native)
 		    If f = Nil Or Not f.Exists Then
 		      Continue
 		    End If
 		    
-		    Var reader As TextInputStream = TextInputStream.Open(f)
-		    Var fileData As MemoryBlock = reader.ReadAll
-		    reader.Close
-		    Var tags As Dictionary = ReadID3Tags(fileData)
-		    
-		    Var title As String = If(tags.HasKey("TIT2") And tags.Value("TIT2").StringValue.Length > 5, tags.Value("TIT2"), f.Name.TrimRight("." + f.Extension))
-		    Var album As String = tags.Lookup("TALB", "")
-		    Var artist As String = tags.Lookup("TPE1", "")
-		    
-		    SongListBox.AddRow("", title, album, artist, "")
-		    SongListBox.RowTagAt(SongListBox.LastAddedRowIndex) = f.NativePath
+		    SongListBox.AddRow("", f.NativePath)
+		    Var song As New SongElement
+		    song.NativePath = f.NativePath
+		    song.Title = song.NativePath
+		    SongListBox.RowTagAt(SongListBox.LastAddedRowIndex) = song
+		    mPendingToScanSongs.Add(f.NativePath)
 		  Next
+		  
+		  ImportMusicThread.Start
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Function CurrentSongRow() As Integer
 		  For row As Integer = 0 To SongListBox.LastRowIndex
-		    Var tag As String = SongListBox.RowTagAt(row)
-		    If tag = mSongPlaying Then
+		    Var tag As SongElement = SongElement(SongListBox.RowTagAt(row))
+		    If tag.NativePath = mSongPlaying Then
 		      Return row
 		    End If
 		  Next
@@ -122,11 +135,58 @@ End
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub DoDrawAlbumIcon(pic As Picture, g As Graphics)
+		  Const padding = 5
+		  Const radius = 8
+		  
+		  g.AntiAliased = True
+		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
+		  
+		  Var picWidth As Double = g.Width - padding * 2
+		  Var picHeight As Double = g.Height - padding * 2
+		  
+		  Var p As Picture = pic
+		  Var resizedPic As New Picture(picWidth, picHeight, 32)
+		  Var gg As Graphics = resizedPic.Graphics
+		  gg.AntiAliased = True
+		  gg.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
+		  
+		  Var mask As New Picture(resizedPic.Width, resizedPic.Height, 32)
+		  mask.Graphics.DrawingColor = Color.Black
+		  mask.Graphics.FillRoundRectangle(0, 0, mask.Width, mask.Height, 10, 10)
+		  resizedPic.ApplyMask(mask)
+		  
+		  gg.DrawingColor = Color.RGB(0, 0, 0, 200)
+		  gg.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
+		  
+		  gg.DrawPicture(p, 0, 0, gg.Width, gg.Height, 0, 0, p.Width, p.Height)
+		  
+		  g.DrawPicture(resizedPic, padding, padding, g.Width, g.Height)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GenerateDefaultAlbumImage() As Picture
+		  Var albumImage As New Picture(128, 128)
+		  Var gg As Graphics = albumImage.Graphics
+		  gg.DrawingColor = Color.White
+		  gg.FillRectangle(0, 0, gg.Width, gg.Height)
+		  
+		  gg.FontSize = gg.Height / 3
+		  Var note As String = "🎵"
+		  Var w As Double = gg.TextWidth(note)
+		  gg.DrawText(note, gg.Width / 2 - w / 2, gg.Height / 2 + gg.FontAscent / 2.5)
+		  
+		  Return albumImage
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function NextSongNativePath() As String
 		  Var row As Integer = CurrentSongRow
 		  If row < SongListBox.LastRowIndex Then
-		    Return SongListBox.RowTagAt(row + 1)
+		    Return SongElement(SongListBox.RowTagAt(row + 1)).NativePath
 		  End If
 		  
 		  Return ""
@@ -145,7 +205,7 @@ End
 		Function PreviousSongNativePath() As String
 		  Var row As Integer = CurrentSongRow
 		  If row > 0 Then
-		    Return SongListBox.RowTagAt(row - 1)
+		    Return SongElement(SongListBox.RowTagAt(row - 1)).NativePath
 		  End If
 		  
 		  Return ""
@@ -182,6 +242,10 @@ End
 
 
 	#tag Property, Flags = &h21
+		Private mPendingToScanSongs() As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mSongPlaying As String
 	#tag EndProperty
 
@@ -196,14 +260,21 @@ End
 		  
 		  Select Case column
 		  Case 0
-		    Var path As String = Me.RowTagAt(row)
-		    RaiseEvent DrawAlbumIcon(path, g)
+		    Var song As SongElement = SongElement(Me.RowTagAt(row))
+		    Var albumImage As Picture
+		    If song.AlbumImage = Nil Then
+		      albumImage = GenerateDefaultAlbumImage
+		    Else
+		      albumImage = song.AlbumImage
+		    End If
+		    
+		    DoDrawAlbumIcon(albumImage, g)
 		    
 		    Return True
 		    
 		  Case 4
-		    Var path As String = Me.RowTagAt(row)
-		    If path <> mSongPlaying Then
+		    Var song As SongElement = SongElement(Me.RowTagAt(row))
+		    If song.NativePath <> mSongPlaying Then
 		      Return False
 		    End If
 		    
@@ -236,12 +307,11 @@ End
 		    Return
 		  End If
 		  
-		  mSongPlaying = Me.RowTagAt(Me.SelectedRowIndex)
-		  ResetPlayingIndicator
-		  
-		  Var nativePath As Variant = Me.RowTagAt(Me.SelectedRowIndex)
-		  If nativePath <> Nil Then
-		    RaiseEvent SongDoublePressed(nativePath)
+		  Var song As SongElement = SongElement(Me.RowTagAt(Me.SelectedRowIndex))
+		  If song <> Nil Then
+		    mSongPlaying = song.NativePath
+		    ResetPlayingIndicator
+		    RaiseEvent SongDoublePressed(song.NativePath)
 		  End If
 		End Sub
 	#tag EndEvent
@@ -254,13 +324,13 @@ End
 		Sub KeyUp(key As String)
 		  Select Case Asc(key)
 		  Case 8
-		    For i As Integer = Me.LastRowIndex DownTo 0
-		      If Not Me.RowSelectedAt(i) Then
+		    For row As Integer = Me.LastRowIndex DownTo 0
+		      If Not Me.RowSelectedAt(row) Then
 		        Continue
 		      End If
-		      Var path As String = Me.RowTagAt(i)
-		      Me.RemoveRowAt(i)
-		      RaiseEvent RemoveSong(path)
+		      Var song As SongElement = Me.RowTagAt(row)
+		      Me.RemoveRowAt(row)
+		      RaiseEvent RemoveSong(song.NativePath)
 		    Next
 		  End Select
 		End Sub
@@ -297,12 +367,68 @@ End
 		    Return
 		  End If
 		  
-		  For i As Integer = 0 To SongListBox.LastRowIndex
-		    Var path As String = SongListBox.RowTagAt(i)
-		    If mSongPlaying = path Then
-		      SongListBox.RefreshCell(i, 4)
+		  For row As Integer = 0 To SongListBox.LastRowIndex
+		    Var song As SongElement = SongElement(SongListBox.RowTagAt(row))
+		    If mSongPlaying = song.NativePath Then
+		      SongListBox.RefreshCell(row, 4)
 		      Exit
 		    End If
+		  Next
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events ImportMusicThread
+	#tag Event
+		Sub Run()
+		  For Each path As String In mPendingToScanSongs
+		    Var f As New FolderItem(path, FolderItem.PathModes.Native)
+		    If f = Nil Or Not f.Exists Then
+		      Continue
+		    End If
+		    
+		    Var reader As TextInputStream = TextInputStream.Open(f)
+		    Var fileData As MemoryBlock = reader.ReadAll
+		    reader.Close
+		    Var tags As Dictionary = ReadID3Tags(fileData)
+		    
+		    Var title As String = If(tags.HasKey("TIT2") And tags.Value("TIT2").StringValue.Length > 5, tags.Value("TIT2"), f.Name.TrimRight("." + f.Extension))
+		    Var album As String = tags.Lookup("TALB", "")
+		    Var artist As String = tags.Lookup("TPE1", "")
+		    
+		    Var result As New SongElement
+		    result.NativePath = path
+		    result.Title = title
+		    result.Album = album
+		    result.Artist = artist
+		    
+		    Var albumImage As Picture
+		    If tags.HasKey("APIC") Then
+		      albumImage = tags.Value("APIC")
+		    End If
+		    result.AlbumImage = albumImage
+		    
+		    Me.AddUserInterfaceUpdate(path : result)
+		  Next
+		  
+		  mPendingToScanSongs.RemoveAll
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub UserInterfaceUpdate(data() as Dictionary)
+		  For Each update As Dictionary In data
+		    For Each entry As DictionaryEntry In update
+		      For row As Integer = 0 To SongListBox.LastRowIndex
+		        If SongElement(SongListBox.RowTagAt(row)).NativePath = entry.Key Then
+		          Var song As SongElement = SongElement(entry.Value)
+		          SongListBox.RowTagAt(row) = song
+		          SongListBox.CellTextAt(row, 1) = song.Title
+		          SongListBox.CellTextAt(row, 2) = song.Album
+		          SongListBox.CellTextAt(row, 3) = song.Artist
+		          SongListBox.RefreshCell(row, 0)
+		          Exit For entry
+		        End If
+		      Next
+		    Next
 		  Next
 		End Sub
 	#tag EndEvent
