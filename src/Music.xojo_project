@@ -30,6 +30,7 @@ ColorAsset=ToolbarBackgroundLightColorGroup;GUI/Color Groups/ToolbarBackgroundLi
 ColorAsset=ToolbarBackgroundDarkColorGroup;GUI/Color Groups/ToolbarBackgroundDarkColorGroup.xojo_color;&h000000002B01C7FF;&h0000000050465FFF;false
 ColorAsset=DisplayBaseBackgroundColorGroup;GUI/Color Groups/DisplayBaseBackgroundColorGroup.xojo_color;&h0000000023EB6FFF;&h0000000050465FFF;false
 Class=SongElement;Model/SongElement.xojo_code;&h00000000276587FF;&h000000005FD477FF;false
+Class=PreferencesStore;Model/PreferencesStore.xojo_code;&h000000001D7BB7FF;&h000000005FD477FF;false
 DefaultWindow=MainWindow
 MajorVersion=0
 MinorVersion=1

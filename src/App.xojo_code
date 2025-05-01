@@ -4,9 +4,37 @@ Inherits DesktopApplication
 	#tag Event
 		Sub Opening()
 		  AllowAutoQuit = True
+		  mPreferences = New PreferencesStore(AppFolder.Child("settings.json"))
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h21
+		Private Function AppFolder() As FolderItem
+		  Var result As FolderItem = SpecialFolder.ApplicationData.Child(kApplicationIdentifier)
+		  
+		  If Not result.Exists Then
+		    result.CreateFolder
+		  End If
+		  
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Preferences() As PreferencesStore
+		  Return mPreferences
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private mPreferences As PreferencesStore
+	#tag EndProperty
+
+
+	#tag Constant, Name = kApplicationIdentifier, Type = String, Dynamic = False, Default = \"es.rcruz.music", Scope = Private
+	#tag EndConstant
 
 	#tag Constant, Name = kEditClear, Type = String, Dynamic = False, Default = \"&Delete", Scope = Public
 		#Tag Instance, Platform = Windows, Language = Default, Definition  = \"&Delete"

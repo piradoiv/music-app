@@ -227,6 +227,9 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
+		  MainWindow.Width = App.Preferences.Lookup("mainWindow.width", Self.Width)
+		  MainWindow.Height = App.Preferences.Lookup("mainWindow.height", Self.Height)
+		  
 		  #If TargetMacOS
 		    Self.MenuBar = MainMenuBar
 		    Try
@@ -260,6 +263,13 @@ End
 		      Separators(i).Visible = showSeparators
 		    Next
 		  #EndIf
+		End Sub
+	#tag EndEvent
+
+	#tag Event
+		Sub Resized()
+		  App.Preferences.Set("mainWindow.width", Self.Width)
+		  App.Preferences.Set("mainWindow.height", Self.Height)
 		End Sub
 	#tag EndEvent
 
@@ -548,12 +558,14 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Opening()
+		  Me.SetVolume(App.Preferences.Lookup("volume", 255))
 		  Me.AlbumIcon = GenerateAlbumIcon
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub VolumeChanged(newValue As Integer)
 		  MP3Player.Volume = newValue
+		  App.Preferences.Set("volume", newValue)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

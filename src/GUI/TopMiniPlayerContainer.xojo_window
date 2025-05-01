@@ -535,6 +535,12 @@ End
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub SetVolume(value As Integer)
+		  VolumeSlider.Value = value
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub Update()
 		  Var enable As Boolean = mActive
