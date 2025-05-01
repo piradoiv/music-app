@@ -1,4 +1,4 @@
-<img width="256" alt="Music App Icon" src="https://github.com/user-attachments/assets/16ee6704-09f9-47a1-9ea7-3f5f7a27c0ba" />
+<p align="center"><img width="256" alt="Music App Icon" src="https://github.com/user-attachments/assets/16ee6704-09f9-47a1-9ea7-3f5f7a27c0ba" /></p>
 
 # Music
 This is a personal app for listening to your own MP3 files.
