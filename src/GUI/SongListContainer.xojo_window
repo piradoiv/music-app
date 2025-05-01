@@ -358,6 +358,38 @@ End
 		  Me.HasVerticalScrollbar = False
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Function ConstructContextualMenu(base As DesktopMenuItem, x As Integer, y As Integer) As Boolean
+		  Var count As Integer = Me.SelectedRowCount
+		  
+		  If count = 0 Then
+		    Return False
+		  End If
+		  
+		  Var removeSongs As New DesktopMenuItem("Remove this song", "removeSongs")
+		  If count > 1 Then
+		    removeSongs.Text = "Remove " + count.ToString + " songs"
+		  End If
+		  
+		  base.AddMenu(RemoveSongs)
+		  
+		  Return True
+		End Function
+	#tag EndEvent
+	#tag Event
+		Function ContextualMenuItemSelected(selectedItem As DesktopMenuItem) As Boolean
+		  Select Case selectedItem.Tag
+		  Case "removeSongs"
+		    For row As Integer = Me.LastRowIndex DownTo 0
+		      If Me.RowSelectedAt(row) Then
+		        Me.RemoveRowAt(row)
+		      End If
+		    Next
+		    
+		    Return True
+		  End Select
+		End Function
+	#tag EndEvent
 #tag EndEvents
 #tag Events UpdateTimer
 	#tag Event
