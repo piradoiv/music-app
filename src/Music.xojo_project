@@ -29,6 +29,7 @@ ColorAsset=DisplayTextColorGroup;GUI/Color Groups/DisplayTextColorGroup.xojo_col
 ColorAsset=ToolbarBackgroundLightColorGroup;GUI/Color Groups/ToolbarBackgroundLightColorGroup.xojo_color;&h000000002BCFAFFF;&h0000000050465FFF;false
 ColorAsset=ToolbarBackgroundDarkColorGroup;GUI/Color Groups/ToolbarBackgroundDarkColorGroup.xojo_color;&h000000002B01C7FF;&h0000000050465FFF;false
 ColorAsset=DisplayBaseBackgroundColorGroup;GUI/Color Groups/DisplayBaseBackgroundColorGroup.xojo_color;&h0000000023EB6FFF;&h0000000050465FFF;false
+Class=SongElement;Model/SongElement.xojo_code;&h00000000276587FF;&h000000005FD477FF;false
 DefaultWindow=MainWindow
 MajorVersion=0
 MinorVersion=1
