@@ -117,7 +117,7 @@ End
 		      Continue
 		    End If
 		    
-		    SongListBox.AddRow("", f.NativePath)
+		    SongListBox.AddRow("", f.NativePath, "", "", "")
 		    Var song As New SongElement
 		    song.NativePath = f.NativePath
 		    song.Title = song.NativePath
