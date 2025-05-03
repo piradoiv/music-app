@@ -1,15 +1,47 @@
 #tag Class
 Protected Class SongElement
+	#tag Method, Flags = &h0
+		Sub Constructor()
+		  AlbumImage = App.GenerateDefaultAlbumImage
+		End Sub
+	#tag EndMethod
+
+
 	#tag Property, Flags = &h0
 		Album As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mAlbumImage
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mAlbumImage = App.GenerateDefaultAlbumImage
+			  AlbumImageHash = ""
+			  
+			  If value <> Nil Then
+			    mAlbumImage = Picture.FromData(value.ToData(Picture.Formats.PNG))
+			  End If
+			  
+			  AlbumImageHash = EncodeHex(Crypto.Hash(mAlbumImage.ToData(Picture.Formats.JPEG, Picture.QualityLow), Crypto.HashAlgorithms.MD5))
+			End Set
+		#tag EndSetter
 		AlbumImage As Picture
+	#tag EndComputedProperty
+
+	#tag Property, Flags = &h0
+		AlbumImageHash As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		Artist As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mAlbumImage As Picture
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -68,10 +100,10 @@ Protected Class SongElement
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="AlbumImage"
+			Name="mAlbumImage"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
@@ -84,10 +116,18 @@ Protected Class SongElement
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Title"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="NativePath"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

@@ -92,12 +92,19 @@ Begin DesktopContainer SongListContainer
       TabPanelIndex   =   0
       ThreadID        =   0
       ThreadState     =   0
-      Type            =   0
+      Type            =   1
    End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  mDrawingCache = New Dictionary
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h0
 		Sub AddSongs(nativePaths() As String)
 		  If ImportMusicThread.ThreadState = Thread.ThreadStates.Running Then
@@ -136,50 +143,43 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub DoDrawAlbumIcon(pic As Picture, g As Graphics)
+		Private Sub DoDrawAlbumIcon(song As SongElement, g As Graphics)
 		  Const padding = 5
 		  Const radius = 8
 		  
 		  g.AntiAliased = True
 		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
 		  
-		  Var picWidth As Double = g.Width - padding * 2
-		  Var picHeight As Double = g.Height - padding * 2
+		  Var resizedPic As Picture
 		  
-		  Var p As Picture = pic
-		  Var resizedPic As New Picture(picWidth, picHeight, 32)
-		  Var gg As Graphics = resizedPic.Graphics
-		  gg.AntiAliased = True
-		  gg.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
+		  Var key As String = song.AlbumImageHash
 		  
-		  Var mask As New Picture(resizedPic.Width, resizedPic.Height, 32)
-		  mask.Graphics.DrawingColor = Color.Black
-		  mask.Graphics.FillRoundRectangle(0, 0, mask.Width, mask.Height, 10, 10)
-		  resizedPic.ApplyMask(mask)
+		  If Not mDrawingCache.HasKey(key) Then
+		    Var picWidth As Double = g.Width - padding * 2
+		    Var picHeight As Double = g.Height - padding * 2
+		    
+		    Var p As Picture = song.AlbumImage
+		    resizedPic = New Picture(picWidth, picHeight, 32)
+		    Var gg As Graphics = resizedPic.Graphics
+		    gg.AntiAliased = True
+		    gg.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
+		    
+		    Var mask As New Picture(resizedPic.Width, resizedPic.Height, 32)
+		    mask.Graphics.DrawingColor = Color.Black
+		    mask.Graphics.FillRoundRectangle(0, 0, mask.Width, mask.Height, 10, 10)
+		    resizedPic.ApplyMask(mask)
+		    
+		    gg.DrawingColor = Color.RGB(0, 0, 0, 200)
+		    gg.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
+		    
+		    gg.DrawPicture(p, 0, 0, gg.Width, gg.Height, 0, 0, p.Width, p.Height)
+		    
+		    mDrawingCache.Value(key) = resizedPic
+		  End If
 		  
-		  gg.DrawingColor = Color.RGB(0, 0, 0, 200)
-		  gg.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
-		  
-		  gg.DrawPicture(p, 0, 0, gg.Width, gg.Height, 0, 0, p.Width, p.Height)
-		  
+		  resizedPic = mDrawingCache.Value(key)
 		  g.DrawPicture(resizedPic, padding, padding, g.Width, g.Height)
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function GenerateDefaultAlbumImage() As Picture
-		  Var albumImage As New Picture(128, 128)
-		  Var gg As Graphics = albumImage.Graphics
-		  gg.DrawingColor = Color.White
-		  gg.FillRectangle(0, 0, gg.Width, gg.Height)
-		  
-		  gg.FontSize = gg.Height / 3
-		  Var note As String = "🎵"
-		  Var w As Double = gg.TextWidth(note)
-		  gg.DrawText(note, gg.Width / 2 - w / 2, gg.Height / 2 + gg.FontAscent / 2.5)
-		  
-		  Return albumImage
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -229,10 +229,6 @@ End
 
 
 	#tag Hook, Flags = &h0
-		Event DrawAlbumIcon(songNativePath As String, g As Graphics)
-	#tag EndHook
-
-	#tag Hook, Flags = &h0
 		Event RemoveSong(nativePath As String)
 	#tag EndHook
 
@@ -240,6 +236,10 @@ End
 		Event SongDoublePressed(nativePath As String)
 	#tag EndHook
 
+
+	#tag Property, Flags = &h21
+		Private mDrawingCache As Dictionary
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mPendingToScanSongs() As String
@@ -263,12 +263,12 @@ End
 		    Var song As SongElement = SongElement(Me.RowTagAt(row))
 		    Var albumImage As Picture
 		    If song.AlbumImage = Nil Then
-		      albumImage = GenerateDefaultAlbumImage
+		      albumImage = App.GenerateDefaultAlbumImage
 		    Else
 		      albumImage = song.AlbumImage
 		    End If
 		    
-		    DoDrawAlbumIcon(albumImage, g)
+		    DoDrawAlbumIcon(song, g)
 		    
 		    Return True
 		    
@@ -412,6 +412,8 @@ End
 #tag Events ImportMusicThread
 	#tag Event
 		Sub Run()
+		  Const maxSize = 84
+		  
 		  For Each path As String In mPendingToScanSongs
 		    Var f As New FolderItem(path, FolderItem.PathModes.Native)
 		    If f = Nil Or Not f.Exists Then
@@ -436,6 +438,23 @@ End
 		    Var albumImage As Picture
 		    If tags.HasKey("APIC") Then
 		      albumImage = tags.Value("APIC")
+		      If albumImage.Width > maxSize Or albumImage.Height > maxSize Then
+		        Var newWidth As Double
+		        Var newHeight As Double
+		        If albumImage.Width > albumImage.Height Then
+		          newWidth = maxSize
+		          newHeight = albumImage.Height * maxSize / albumImage.Width
+		        Else
+		          newHeight = maxSize
+		          newWidth = albumImage.Width * maxSize / albumImage.Height
+		        End If
+		        Var resizedAlbumImage As New Picture(newWidth, newHeight)
+		        Var gg As Graphics = resizedAlbumImage.Graphics
+		        gg.AntiAliased = True
+		        gg.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
+		        gg.DrawPicture(albumImage, 0, 0, gg.Width, gg.Height, 0, 0, albumImage.Width, albumImage.Height)
+		        albumImage = resizedAlbumImage
+		      End If
 		    End If
 		    result.AlbumImage = albumImage
 		    

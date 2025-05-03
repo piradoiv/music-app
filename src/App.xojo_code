@@ -22,6 +22,22 @@ Inherits DesktopApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GenerateDefaultAlbumImage() As Picture
+		  Var albumImage As New Picture(128, 128)
+		  Var gg As Graphics = albumImage.Graphics
+		  gg.DrawingColor = Color.White
+		  gg.FillRectangle(0, 0, gg.Width, gg.Height)
+		  
+		  gg.FontSize = gg.Height / 3
+		  Var note As String = "🎵"
+		  Var w As Double = gg.TextWidth(note)
+		  gg.DrawText(note, gg.Width / 2 - w / 2, gg.Height / 2 + gg.FontAscent / 2.5)
+		  
+		  Return albumImage
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Preferences() As PreferencesStore
 		  Return mPreferences
 		End Function

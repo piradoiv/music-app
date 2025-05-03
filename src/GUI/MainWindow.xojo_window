@@ -447,11 +447,6 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub DrawAlbumIcon(songNativePath As String, g As Graphics)
-		  DrawAlbumIcon(songNativePath, g, 5, 8)
-		End Sub
-	#tag EndEvent
-	#tag Event
 		Sub RemoveSong(nativePath As String)
 		  Music.RemoveSong(New FolderItem(nativePath))
 		End Sub
