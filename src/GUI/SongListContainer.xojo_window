@@ -145,7 +145,7 @@ End
 	#tag Method, Flags = &h21
 		Private Sub DoDrawAlbumIcon(song As SongElement, g As Graphics)
 		  Const padding = 5
-		  Const radius = 8
+		  Const radius = 10
 		  
 		  g.AntiAliased = True
 		  g.AntiAliasMode = Graphics.AntiAliasModes.HighQuality
@@ -155,8 +155,8 @@ End
 		  Var key As String = song.AlbumImageHash
 		  
 		  If Not mDrawingCache.HasKey(key) Then
-		    Var picWidth As Double = g.Width - padding * 2
-		    Var picHeight As Double = g.Height - padding * 2
+		    Var picWidth As Double = g.Width
+		    Var picHeight As Double = g.Height
 		    
 		    Var p As Picture = song.AlbumImage
 		    resizedPic = New Picture(picWidth, picHeight, 32)
@@ -166,19 +166,18 @@ End
 		    
 		    Var mask As New Picture(resizedPic.Width, resizedPic.Height, 32)
 		    mask.Graphics.DrawingColor = Color.Black
-		    mask.Graphics.FillRoundRectangle(0, 0, mask.Width, mask.Height, 10, 10)
+		    mask.Graphics.FillRoundRectangle(padding, padding, mask.Width - padding * 2, mask.Height - padding * 2, radius, radius)
 		    resizedPic.ApplyMask(mask)
 		    
+		    gg.DrawPicture(p, padding, padding, gg.Width -padding * 2, gg.Height - padding * 2, 0, 0, p.Width, p.Height)
 		    gg.DrawingColor = Color.RGB(0, 0, 0, 200)
 		    gg.DrawRoundRectangle(padding, padding, g.Width - padding * 2, g.Height - padding * 2, radius, radius)
-		    
-		    gg.DrawPicture(p, 0, 0, gg.Width, gg.Height, 0, 0, p.Width, p.Height)
 		    
 		    mDrawingCache.Value(key) = resizedPic
 		  End If
 		  
 		  resizedPic = mDrawingCache.Value(key)
-		  g.DrawPicture(resizedPic, padding, padding, g.Width, g.Height)
+		  g.DrawPicture(resizedPic, 0, 0, g.Width, g.Height, 0, 0, resizedPic.Width, resizedPic.Height)
 		End Sub
 	#tag EndMethod
 
