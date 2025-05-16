@@ -88,7 +88,8 @@ Protected Class MusicApp
 
 	#tag Method, Flags = &h21
 		Private Function IsMusicFile(file As FolderItem) As Boolean
-		  Return file <> Nil And file.Extension = "mp3"
+		  Var extensions() As String = Array("mp3", "m4a")
+		  Return file <> Nil And extensions.IndexOf(file.Extension) >= 0
 		End Function
 	#tag EndMethod
 
