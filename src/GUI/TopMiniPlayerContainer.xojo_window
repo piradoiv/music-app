@@ -371,7 +371,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          AllowFocusRing  =   True
          AllowTabs       =   False
          Enabled         =   True
-         Height          =   20
+         Height          =   10
          Index           =   -2147483648
          InitialParent   =   "DisplayCanvas"
          Left            =   334
@@ -385,7 +385,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   40
+         Top             =   48
          Transparent     =   True
          Visible         =   False
          Width           =   90
@@ -613,24 +613,31 @@ End
 		    ModernPositionProgressBar.Visible = True
 		    
 		    // Initialize modern volume slider with UWP XAML
+		    // Using Fluent Design System colors
 		    Var volumeXaml As String = "<Slider x:Name=""VolumeSlider"" " + _
 		      "Minimum=""0"" Maximum=""255"" Value=""127"" " + _
 		      "Orientation=""Horizontal"" " + _
 		      "Width=""68"" Height=""30"" " + _
 		      "Background=""Transparent"" " + _
-		      "Foreground=""#FF0078D4"" " + _
-		      "BorderBrush=""#FF4CC2FF"" " + _
-		      "ThumbBackground=""#FF0078D4"" />"
+		      "Foreground=""#0078D4"" " + _
+		      "BorderBrush=""Transparent"" " + _
+		      "Margin=""0"" " + _
+		      "IsThumbToolTipEnabled=""False"" />"
 		    
 		    ModernVolumeSlider.LoadXAML(volumeXaml)
 		    
 		    // Initialize modern progress bar with UWP XAML
+		    // Using Fluent Design System styling for determinate progress
+		    // Made thinner and more modern looking
 		    Var progressXaml As String = "<ProgressBar x:Name=""PositionProgress"" " + _
 		      "Minimum=""0"" Maximum=""100"" Value=""50"" " + _
-		      "Width=""90"" Height=""20"" " + _
-		      "Background=""#FF333333"" " + _
-		      "Foreground=""#FF0078D4"" " + _
-		      "BorderBrush=""#FF4CC2FF"" />"
+		      "Width=""90"" Height=""4"" " + _
+		      "Background=""#33FFFFFF"" " + _
+		      "Foreground=""#0078D4"" " + _
+		      "BorderBrush=""Transparent"" " + _
+		      "BorderThickness=""0"" " + _
+		      "Margin=""0"" " + _
+		      "IsIndeterminate=""False"" />"
 		    
 		    ModernPositionProgressBar.LoadXAML(progressXaml)
 		  #EndIf
@@ -1044,30 +1051,46 @@ End
 #tag EndEvents
 #tag Events ModernVolumeSlider
 	#tag Event
-		Sub PropertyChanged(propertyName As String, propertyValue As String)
+		Sub Opening()
 		  #If TargetWindows
-		    If propertyName = "Value" Then
-		      Var newValue As Integer = Val(propertyValue)
+		    // Setup event handling for value changes
+		    // This will be called when the control is ready
+		  #EndIf
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  #If TargetWindows
+		    // Handle volume slider changes
+		    Try
+		      Var currentValue As String = ModernVolumeSlider.GetPropertyValue("VolumeSlider", "Value")
+		      Var newValue As Integer = Val(currentValue)
 		      RaiseEvent VolumeChanged(newValue)
-		    End If
+		    Catch e As RuntimeException
+		      // Fallback - ignore errors
+		    End Try
 		  #EndIf
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events ModernPositionProgressBar
 	#tag Event
-		Sub PointerPressed(x As Single, y As Single)
+		Sub MouseUp(x As Integer, y As Integer)
 		  #If TargetWindows
 		    // Calculate the new position based on click location
-		    Var maxValue As String = ModernPositionProgressBar.GetPropertyValue("PositionProgress", "Maximum")
-		    Var maximum As Double = Val(maxValue)
-		    Var newValue As Double = maximum / ModernPositionProgressBar.Width * x
-		    
-		    // Update the progress bar
-		    ModernPositionProgressBar.SetPropertyValue("PositionProgress", "Value", newValue.ToString)
-		    
-		    // Trigger the seek event
-		    RaiseEvent Seek(newValue)
+		    Try
+		      Var maxValue As String = ModernPositionProgressBar.GetPropertyValue("PositionProgress", "Maximum")
+		      Var maximum As Double = Val(maxValue)
+		      Var newValue As Double = maximum / ModernPositionProgressBar.Width * x
+		      
+		      // Update the progress bar
+		      ModernPositionProgressBar.SetPropertyValue("PositionProgress", "Value", newValue.ToString)
+		      
+		      // Trigger the seek event
+		      RaiseEvent Seek(newValue)
+		    Catch e As RuntimeException
+		      // Fallback - ignore errors
+		    End Try
 		  #EndIf
 		End Sub
 	#tag EndEvent
