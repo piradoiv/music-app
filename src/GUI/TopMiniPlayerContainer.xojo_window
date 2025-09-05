@@ -648,7 +648,7 @@ End
 		Private Sub UpdateModernVolumeSlider(value As Integer)
 		  #If TargetWindows
 		    If ModernVolumeSlider.Visible Then
-		      ModernVolumeSlider.SetPropertyValue("VolumeSlider", "Value", value.ToString)
+		      ModernVolumeSlider.Value("VolumeSlider.Value") = value.ToString
 		    End If
 		  #EndIf
 		End Sub
@@ -658,8 +658,8 @@ End
 		Private Sub UpdateModernPositionProgressBar(position As Integer, maximum As Integer)
 		  #If TargetWindows
 		    If ModernPositionProgressBar.Visible Then
-		      ModernPositionProgressBar.SetPropertyValue("PositionProgress", "Maximum", maximum.ToString)
-		      ModernPositionProgressBar.SetPropertyValue("PositionProgress", "Value", position.ToString)
+		      ModernPositionProgressBar.Value("PositionProgress.Maximum") = maximum.ToString
+		      ModernPositionProgressBar.Value("PositionProgress.Value") = position.ToString
 		    End If
 		  #EndIf
 		End Sub
@@ -1063,7 +1063,7 @@ End
 		  #If TargetWindows
 		    // Handle volume slider changes
 		    Try
-		      Var currentValue As String = ModernVolumeSlider.GetPropertyValue("VolumeSlider", "Value")
+		      Var currentValue As String = ModernVolumeSlider.Value("VolumeSlider.Value")
 		      Var newValue As Integer = Val(currentValue)
 		      RaiseEvent VolumeChanged(newValue)
 		    Catch e As RuntimeException
@@ -1079,12 +1079,12 @@ End
 		  #If TargetWindows
 		    // Calculate the new position based on click location
 		    Try
-		      Var maxValue As String = ModernPositionProgressBar.GetPropertyValue("PositionProgress", "Maximum")
+		      Var maxValue As String = ModernPositionProgressBar.Value("PositionProgress.Maximum")
 		      Var maximum As Double = Val(maxValue)
 		      Var newValue As Double = maximum / ModernPositionProgressBar.Width * x
 		      
 		      // Update the progress bar
-		      ModernPositionProgressBar.SetPropertyValue("PositionProgress", "Value", newValue.ToString)
+		      ModernPositionProgressBar.Value("PositionProgress.Value") = newValue.ToString
 		      
 		      // Trigger the seek event
 		      RaiseEvent Seek(newValue)
