@@ -15,6 +15,7 @@ Protected Class MusicApp
 		  
 		  If newPaths.Count > 0 Then
 		    newPaths.Sort
+		    SavePlaylist
 		    RaiseEvent NewFilesAdded(newPaths)
 		  End If
 		End Sub
@@ -66,6 +67,7 @@ Protected Class MusicApp
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  mPlaylist = New Dictionary
+		  LoadPlaylist
 		End Sub
 	#tag EndMethod
 
@@ -93,12 +95,62 @@ Protected Class MusicApp
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub LoadPlaylist()
+		  Var playlistPaths() As String
+		  Try
+		    Var savedPlaylist As Variant = App.Preferences.Lookup("playlist", Array())
+		    If savedPlaylist <> Nil And savedPlaylist.IsArray Then
+		      playlistPaths = savedPlaylist
+		    End If
+		  Catch
+		    // Silently ignore errors loading playlist
+		    Return
+		  End Try
+		  
+		  If playlistPaths.Count = 0 Then
+		    Return
+		  End If
+		  
+		  // Restore the playlist, validating that files still exist
+		  Var validPaths() As String
+		  For Each path As String In playlistPaths
+		    Var musicFile As New FolderItem(path, FolderItem.PathModes.Native)
+		    If musicFile.Exists And IsMusicFile(musicFile) Then
+		      mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
+		      validPaths.Add(musicFile.NativePath)
+		    End If
+		  Next
+		  
+		  // Notify about restored files if any exist
+		  If validPaths.Count > 0 Then
+		    RaiseEvent NewFilesAdded(validPaths)
+		  End If
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub RemoveSong(songPath As FolderItem)
 		  If mPlaylist.HasKey(songPath.NativePath) Then
 		    mPlaylist.Remove(songPath.NativePath)
 		    RaiseEvent SongRemoved(songPath.NativePath)
+		    SavePlaylist
 		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub SavePlaylist()
+		  Var playlistPaths() As String
+		  For Each entry As DictionaryEntry In mPlaylist
+		    playlistPaths.Add(entry.Key)
+		  Next
+		  
+		  Try
+		    App.Preferences.Set("playlist", playlistPaths)
+		  Catch
+		    // Silently ignore errors saving playlist
+		  End Try
 		End Sub
 	#tag EndMethod
 
