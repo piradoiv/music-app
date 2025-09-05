@@ -624,7 +624,7 @@ End
 		      "Margin=""0"" " + _
 		      "IsThumbToolTipEnabled=""False"" />"
 		    
-		    ModernVolumeSlider.LoadXAML(volumeXaml)
+		    ModernVolumeSlider.Content = volumeXaml
 		    
 		    // Initialize modern progress bar with UWP XAML
 		    // Using Fluent Design System styling for determinate progress
@@ -639,7 +639,7 @@ End
 		      "Margin=""0"" " + _
 		      "IsIndeterminate=""False"" />"
 		    
-		    ModernPositionProgressBar.LoadXAML(progressXaml)
+		    ModernPositionProgressBar.Content = progressXaml
 		  #EndIf
 		End Sub
 	#tag EndMethod
