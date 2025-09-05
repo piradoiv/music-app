@@ -168,7 +168,7 @@ Begin DesktopContainer TopMiniPlayerContainer
       Begin DesktopXAMLContainer ModernVolumeSlider
          Active          =   False
          AllowAutoDeactivate=   True
-         Content         =   "<Slider x:Name=""VolumeSlider""\n            Minimum=""0"" Maximum=""255"" Value=""127""\n            Orientation=""Horizontal"" Width=""68"" Height=""30""\n            Background=""Transparent"" Foreground=""#0078D4""\n            BorderBrush=""Transparent"" Margin=""0"" IsThumbToolTipEnabled=""False"" />"
+         Content         =   "<Slider x:Name=""VolumeSlider""\n            Minimum=""0"" Maximum=""255"" Value=""127""\n            Orientation=""Horizontal"" Width=""68"" Height=""30""\n            Foreground=""#0078D4""\n            BorderBrush=""Transparent"" Margin=""0"" IsThumbToolTipEnabled=""False"" />"
          Enabled         =   True
          Height          =   30
          Index           =   -2147483648
@@ -372,7 +372,7 @@ Begin DesktopContainer TopMiniPlayerContainer
       Begin DesktopXAMLContainer ModernPositionProgressBar
          Active          =   False
          AllowAutoDeactivate=   True
-         Content         =   "<ProgressBar x:Name=""PositionProgress""\n                        Minimum=""0"" Maximum=""100"" Value=""50""\n                        Width=""90"" Height=""4""\n                        Background=""#33FFFFFF"" Foreground=""#0078D4""\n                        BorderBrush=""Transparent"" BorderThickness=""0""\n                        Margin=""0"" IsIndeterminate=""False"" IsHitTestVisible=""True"" />"
+         Content         =   "<ProgressBar x:Name=""PositionProgress""\n                        Minimum=""0"" Maximum=""100"" Value=""50""\n                        Width=""90"" Height=""4""\n                        Foreground=""#0078D4""\n                        BorderBrush=""Transparent"" BorderThickness=""0""\n                        Margin=""0"" IsIndeterminate=""False"" IsHitTestVisible=""True"" />"
          Enabled         =   True
          Height          =   10
          Index           =   -2147483648
