@@ -626,18 +626,19 @@ End
 		    
 		    ModernVolumeSlider.Content = volumeXaml
 		    
-		    // Initialize modern progress bar with UWP XAML
-		    // Using Fluent Design System styling for determinate progress
+		    // Initialize modern position slider with UWP XAML
+		    // Using a Slider styled as a thin progress bar for user interaction
 		    // Made thinner and more modern looking
-		    Var progressXaml As String = "<ProgressBar x:Name=""PositionProgress"" " + _
+		    Var progressXaml As String = "<Slider x:Name=""PositionProgress"" " + _
 		      "Minimum=""0"" Maximum=""100"" Value=""50"" " + _
+		      "Orientation=""Horizontal"" " + _
 		      "Width=""90"" Height=""4"" " + _
 		      "Background=""#33FFFFFF"" " + _
 		      "Foreground=""#0078D4"" " + _
 		      "BorderBrush=""Transparent"" " + _
 		      "BorderThickness=""0"" " + _
 		      "Margin=""0"" " + _
-		      "IsIndeterminate=""False"" />"
+		      "IsThumbToolTipEnabled=""False"" />"
 		    
 		    ModernPositionProgressBar.Content = progressXaml
 		  #EndIf
@@ -1059,44 +1060,36 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseUp(x As Integer, y As Integer)
+		Sub EventTriggered(eventName As String, parameters As Dictionary)
 		  #If TargetWindows
-		    // Handle volume slider changes - calculate new value based on click position
-		    Try
-		      Var maxValue As String = ModernVolumeSlider.Value("VolumeSlider.Maximum")
-		      Var maximum As Double = Val(maxValue)
-		      Var newValue As Double = maximum / ModernVolumeSlider.Width * x
-		      
-		      // Update the slider value
-		      ModernVolumeSlider.Value("VolumeSlider.Value") = newValue.ToString
-		      
-		      // Trigger the volume changed event
-		      RaiseEvent VolumeChanged(newValue)
-		    Catch e As RuntimeException
-		      // Fallback - ignore errors
-		    End Try
+		    // Handle native XAML events
+		    If eventName = "ValueChanged" Then
+		      // Volume slider value changed by user interaction
+		      Try
+		        Var newValue As String = ModernVolumeSlider.Value("VolumeSlider.Value")
+		        RaiseEvent VolumeChanged(Val(newValue))
+		      Catch e As RuntimeException
+		        // Fallback - ignore errors
+		      End Try
+		    End If
 		  #EndIf
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events ModernPositionProgressBar
 	#tag Event
-		Sub MouseUp(x As Integer, y As Integer)
+		Sub EventTriggered(eventName As String, parameters As Dictionary)
 		  #If TargetWindows
-		    // Calculate the new position based on click location
-		    Try
-		      Var maxValue As String = ModernPositionProgressBar.Value("PositionProgress.Maximum")
-		      Var maximum As Double = Val(maxValue)
-		      Var newValue As Double = maximum / ModernPositionProgressBar.Width * x
-		      
-		      // Update the progress bar
-		      ModernPositionProgressBar.Value("PositionProgress.Value") = newValue.ToString
-		      
-		      // Trigger the seek event
-		      RaiseEvent Seek(newValue)
-		    Catch e As RuntimeException
-		      // Fallback - ignore errors
-		    End Try
+		    // Handle native XAML events
+		    If eventName = "ValueChanged" Then
+		      // Position slider value changed by user interaction
+		      Try
+		        Var newValue As String = ModernPositionProgressBar.Value("PositionProgress.Value")
+		        RaiseEvent Seek(Val(newValue))
+		      Catch e As RuntimeException
+		        // Fallback - ignore errors
+		      End Try
+		    End If
 		  #EndIf
 		End Sub
 	#tag EndEvent
