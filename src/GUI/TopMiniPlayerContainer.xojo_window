@@ -628,7 +628,7 @@ End
 		    
 		    // Initialize modern progress bar with UWP XAML
 		    // Using Fluent Design System styling for determinate progress
-		    // Made thinner and more modern looking
+		    // Made thinner and more modern looking with click interaction enabled
 		    Var progressXaml As String = "<ProgressBar x:Name=""PositionProgress"" " + _
 		      "Minimum=""0"" Maximum=""100"" Value=""50"" " + _
 		      "Width=""90"" Height=""4"" " + _
@@ -637,7 +637,8 @@ End
 		      "BorderBrush=""Transparent"" " + _
 		      "BorderThickness=""0"" " + _
 		      "Margin=""0"" " + _
-		      "IsIndeterminate=""False"" />"
+		      "IsIndeterminate=""False"" " + _
+		      "IsHitTestVisible=""True"" />"
 		    
 		    ModernPositionProgressBar.Content = progressXaml
 		  #EndIf
@@ -1078,6 +1079,36 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag Events ModernPositionProgressBar
+	#tag Event
+		Sub EventTriggered(eventName As String, parameters As Dictionary)
+		  #If TargetWindows
+		    // Handle native XAML events for ProgressBar
+		    If eventName = "Tapped" Or eventName = "PointerPressed" Or eventName = "MouseLeftButtonUp" Then
+		      // ProgressBar was clicked - calculate seek position
+		      Try
+		        // Get the maximum value and calculate position based on click
+		        Var maxValue As String = ModernPositionProgressBar.Value("PositionProgress.Maximum")
+		        Var currentWidth As String = ModernPositionProgressBar.Value("ActualWidth")
+		        
+		        // For ProgressBar clicks, we need to calculate the position differently
+		        // Use the PositionProgressBar logic as reference
+		        Var width As Double = Val(currentWidth)
+		        Var maximum As Double = Val(maxValue)
+		        
+		        // Get click position from parameters if available
+		        If parameters <> Nil And parameters.HasKey("Position") Then
+		          Var pos As Variant = parameters.Value("Position")
+		          // Calculate the new seek position
+		          Var newValue As Double = maximum / width * Val(pos.StringValue)
+		          RaiseEvent Seek(newValue)
+		        End If
+		      Catch e As RuntimeException
+		        // Fallback - ignore errors
+		      End Try
+		    End If
+		  #EndIf
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
