@@ -306,4 +306,5 @@ SELECT * FROM Team WHERE City = "Boston"
 - Limit globals.
 - Prefer shared methods/properties on classes over global methods/properties on modules.
 - Classes, methods, properties, etc., within a Module or Class should be Private or Protected where possible.
+- When escaping quotes, it must be used the Xojo way. It isn't `\"`, in order to escape a quote, a double quote is used `""`.
 
