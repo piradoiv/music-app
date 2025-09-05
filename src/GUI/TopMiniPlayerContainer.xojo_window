@@ -185,7 +185,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          TabPanelIndex   =   0
          TabStop         =   True
          Tooltip         =   ""
-         Top             =   26
+         Top             =   24
          Transparent     =   True
          Visible         =   False
          Width           =   68
