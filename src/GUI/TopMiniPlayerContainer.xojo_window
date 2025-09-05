@@ -1061,10 +1061,16 @@ End
 	#tag Event
 		Sub MouseUp(x As Integer, y As Integer)
 		  #If TargetWindows
-		    // Handle volume slider changes
+		    // Handle volume slider changes - calculate new value based on click position
 		    Try
-		      Var currentValue As String = ModernVolumeSlider.Value("VolumeSlider.Value")
-		      Var newValue As Integer = Val(currentValue)
+		      Var maxValue As String = ModernVolumeSlider.Value("VolumeSlider.Maximum")
+		      Var maximum As Double = Val(maxValue)
+		      Var newValue As Double = maximum / ModernVolumeSlider.Width * x
+		      
+		      // Update the slider value
+		      ModernVolumeSlider.Value("VolumeSlider.Value") = newValue.ToString
+		      
+		      // Trigger the volume changed event
 		      RaiseEvent VolumeChanged(newValue)
 		    Catch e As RuntimeException
 		      // Fallback - ignore errors
