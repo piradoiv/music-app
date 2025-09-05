@@ -168,7 +168,7 @@ Begin DesktopContainer TopMiniPlayerContainer
       Begin DesktopXAMLContainer ModernVolumeSlider
          Active          =   False
          AllowAutoDeactivate=   True
-         Content         =   ""
+         Content         =   "<Slider x:Name=\"VolumeSlider\" Minimum=\"0\" Maximum=\"255\" Value=\"127\" Orientation=\"Horizontal\" Width=\"68\" Height=\"30\" Background=\"Transparent\" Foreground=\"#0078D4\" BorderBrush=\"Transparent\" Margin=\"0\" IsThumbToolTipEnabled=\"False\" />"
          Enabled         =   True
          Height          =   30
          Index           =   -2147483648
@@ -372,7 +372,7 @@ Begin DesktopContainer TopMiniPlayerContainer
       Begin DesktopXAMLContainer ModernPositionProgressBar
          Active          =   False
          AllowAutoDeactivate=   True
-         Content         =   ""
+         Content         =   "<ProgressBar x:Name=\"PositionProgress\" Minimum=\"0\" Maximum=\"100\" Value=\"50\" Width=\"90\" Height=\"4\" Background=\"#33FFFFFF\" Foreground=\"#0078D4\" BorderBrush=\"Transparent\" BorderThickness=\"0\" Margin=\"0\" IsIndeterminate=\"False\" IsHitTestVisible=\"True\" />"
          Enabled         =   True
          Height          =   10
          Index           =   -2147483648
@@ -608,36 +608,6 @@ End
 		    
 		    ModernVolumeSlider.Visible = True
 		    ModernPositionProgressBar.Visible = True
-		    
-		    // Initialize modern volume slider with UWP XAML
-		    // Using Fluent Design System colors
-		    Var volumeXaml As String = "<Slider x:Name=""VolumeSlider"" " + _
-		    "Minimum=""0"" Maximum=""255"" Value=""127"" " + _
-		    "Orientation=""Horizontal"" " + _
-		    "Width=""68"" Height=""30"" " + _
-		    "Background=""Transparent"" " + _
-		    "Foreground=""#0078D4"" " + _
-		    "BorderBrush=""Transparent"" " + _
-		    "Margin=""0"" " + _
-		    "IsThumbToolTipEnabled=""False"" />"
-		    
-		    ModernVolumeSlider.Content = volumeXaml
-		    
-		    // Initialize modern progress bar with UWP XAML
-		    // Using Fluent Design System styling for determinate progress
-		    // Made thinner and more modern looking with click interaction enabled
-		    Var progressXaml As String = "<ProgressBar x:Name=""PositionProgress"" " + _
-		    "Minimum=""0"" Maximum=""100"" Value=""50"" " + _
-		    "Width=""90"" Height=""4"" " + _
-		    "Background=""#33FFFFFF"" " + _
-		    "Foreground=""#0078D4"" " + _
-		    "BorderBrush=""Transparent"" " + _
-		    "BorderThickness=""0"" " + _
-		    "Margin=""0"" " + _
-		    "IsIndeterminate=""False"" " + _
-		    "IsHitTestVisible=""True"" />"
-		    
-		    ModernPositionProgressBar.Content = progressXaml
 		  #EndIf
 		End Sub
 	#tag EndMethod
@@ -897,21 +867,11 @@ End
 #tag EndEvents
 #tag Events ModernVolumeSlider
 	#tag Event
-		Sub Opening()
-		  #If TargetWindows
-		    // Setup event handling for value changes
-		    // This will be called when the control is ready
-		  #EndIf
-		End Sub
-	#tag EndEvent
-	#tag Event
 		Sub EventTriggered(eventName As String, parameters As Dictionary)
-		  #If TargetWindows
-		    If eventName = "ValueChanged" Then
-		      Var newValue As Double = ModernVolumeSlider.Value("VolumeSlider.Value").DoubleValue
-		      RaiseEvent VolumeChanged(newValue)
-		    End If
-		  #EndIf
+		  If eventName = "ValueChanged" Then
+		    Var newValue As Double = ModernVolumeSlider.Value("VolumeSlider.Value").DoubleValue
+		    RaiseEvent VolumeChanged(newValue)
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -1020,13 +980,11 @@ End
 #tag Events ModernPositionProgressBar
 	#tag Event
 		Sub EventTriggered(eventName As String, parameters As Dictionary)
-		  #If TargetWindows
-		    If eventName = "PointerPressed" Then
-		      Var x As Double = parameters.Value("X").DoubleValue
-		      Var newValue As Double = Me.Value("PositionProgress.Maximum").IntegerValue / Me.Width * x
-		      RaiseEvent Seek(newValue)
-		    End If
-		  #EndIf
+		  If eventName = "PointerPressed" Then
+		    Var x As Double = parameters.Value("X").DoubleValue
+		    Var newValue As Double = Me.Value("PositionProgress.Maximum").IntegerValue / Me.Width * x
+		    RaiseEvent Seek(newValue)
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents
