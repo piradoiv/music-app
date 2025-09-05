@@ -166,10 +166,9 @@ Begin DesktopContainer TopMiniPlayerContainer
          Width           =   68
       End
       Begin DesktopXAMLContainer ModernVolumeSlider
+         Active          =   False
          AllowAutoDeactivate=   True
-         AllowFocus      =   False
-         AllowFocusRing  =   True
-         AllowTabs       =   False
+         Content         =   ""
          Enabled         =   True
          Height          =   30
          Index           =   -2147483648
@@ -180,6 +179,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          LockLeft        =   False
          LockRight       =   True
          LockTop         =   True
+         PanelIndex      =   0
          Scope           =   2
          TabIndex        =   8
          TabPanelIndex   =   0
@@ -189,6 +189,10 @@ Begin DesktopContainer TopMiniPlayerContainer
          Transparent     =   True
          Visible         =   False
          Width           =   68
+         _mIndex         =   0
+         _mInitialParent =   ""
+         _mName          =   ""
+         _mPanelIndex    =   0
       End
       Begin DesktopCanvas VolumeUpIconCanvas
          AllowAutoDeactivate=   True
@@ -366,10 +370,9 @@ Begin DesktopContainer TopMiniPlayerContainer
          _mPanelIndex    =   0
       End
       Begin DesktopXAMLContainer ModernPositionProgressBar
+         Active          =   False
          AllowAutoDeactivate=   True
-         AllowFocus      =   False
-         AllowFocusRing  =   True
-         AllowTabs       =   False
+         Content         =   ""
          Enabled         =   True
          Height          =   10
          Index           =   -2147483648
@@ -380,6 +383,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          LockLeft        =   True
          LockRight       =   True
          LockTop         =   False
+         PanelIndex      =   0
          Scope           =   2
          TabIndex        =   6
          TabPanelIndex   =   0
@@ -389,6 +393,10 @@ Begin DesktopContainer TopMiniPlayerContainer
          Transparent     =   True
          Visible         =   False
          Width           =   90
+         _mIndex         =   0
+         _mInitialParent =   ""
+         _mName          =   ""
+         _mPanelIndex    =   0
       End
       Begin DesktopLabel DurationLabel
          AllowAutoDeactivate=   True
@@ -591,17 +599,6 @@ End
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub SetVolume(value As Integer)
-		  VolumeSlider.Value = value
-		  #If TargetWindows
-		    If ModernVolumeSlider.Visible Then
-		      UpdateModernVolumeSlider(value)
-		    End If
-		  #EndIf
-		End Sub
-	#tag EndMethod
-
 	#tag Method, Flags = &h21
 		Private Sub InitializeWindowsModernControls()
 		  #If TargetWindows
@@ -615,14 +612,14 @@ End
 		    // Initialize modern volume slider with UWP XAML
 		    // Using Fluent Design System colors
 		    Var volumeXaml As String = "<Slider x:Name=""VolumeSlider"" " + _
-		      "Minimum=""0"" Maximum=""255"" Value=""127"" " + _
-		      "Orientation=""Horizontal"" " + _
-		      "Width=""68"" Height=""30"" " + _
-		      "Background=""Transparent"" " + _
-		      "Foreground=""#0078D4"" " + _
-		      "BorderBrush=""Transparent"" " + _
-		      "Margin=""0"" " + _
-		      "IsThumbToolTipEnabled=""False"" />"
+		    "Minimum=""0"" Maximum=""255"" Value=""127"" " + _
+		    "Orientation=""Horizontal"" " + _
+		    "Width=""68"" Height=""30"" " + _
+		    "Background=""Transparent"" " + _
+		    "Foreground=""#0078D4"" " + _
+		    "BorderBrush=""Transparent"" " + _
+		    "Margin=""0"" " + _
+		    "IsThumbToolTipEnabled=""False"" />"
 		    
 		    ModernVolumeSlider.Content = volumeXaml
 		    
@@ -630,37 +627,27 @@ End
 		    // Using Fluent Design System styling for determinate progress
 		    // Made thinner and more modern looking with click interaction enabled
 		    Var progressXaml As String = "<ProgressBar x:Name=""PositionProgress"" " + _
-		      "Minimum=""0"" Maximum=""100"" Value=""50"" " + _
-		      "Width=""90"" Height=""4"" " + _
-		      "Background=""#33FFFFFF"" " + _
-		      "Foreground=""#0078D4"" " + _
-		      "BorderBrush=""Transparent"" " + _
-		      "BorderThickness=""0"" " + _
-		      "Margin=""0"" " + _
-		      "IsIndeterminate=""False"" " + _
-		      "IsHitTestVisible=""True"" />"
+		    "Minimum=""0"" Maximum=""100"" Value=""50"" " + _
+		    "Width=""90"" Height=""4"" " + _
+		    "Background=""#33FFFFFF"" " + _
+		    "Foreground=""#0078D4"" " + _
+		    "BorderBrush=""Transparent"" " + _
+		    "BorderThickness=""0"" " + _
+		    "Margin=""0"" " + _
+		    "IsIndeterminate=""False"" " + _
+		    "IsHitTestVisible=""True"" />"
 		    
 		    ModernPositionProgressBar.Content = progressXaml
 		  #EndIf
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Sub UpdateModernVolumeSlider(value As Integer)
+	#tag Method, Flags = &h0
+		Sub SetVolume(value As Integer)
+		  VolumeSlider.Value = value
 		  #If TargetWindows
 		    If ModernVolumeSlider.Visible Then
-		      ModernVolumeSlider.Value("VolumeSlider.Value") = value.ToString
-		    End If
-		  #EndIf
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub UpdateModernPositionProgressBar(position As Integer, maximum As Integer)
-		  #If TargetWindows
-		    If ModernPositionProgressBar.Visible Then
-		      ModernPositionProgressBar.Value("PositionProgress.Maximum") = maximum.ToString
-		      ModernPositionProgressBar.Value("PositionProgress.Value") = position.ToString
+		      UpdateModernVolumeSlider(value)
 		    End If
 		  #EndIf
 		End Sub
@@ -717,6 +704,27 @@ End
 		      UpdateModernPositionProgressBar(0, 1)
 		    #EndIf
 		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub UpdateModernPositionProgressBar(position As Integer, maximum As Integer)
+		  #If TargetWindows
+		    If ModernPositionProgressBar.Visible Then
+		      ModernPositionProgressBar.Value("PositionProgress.Maximum") = maximum.ToString
+		      ModernPositionProgressBar.Value("PositionProgress.Value") = position.ToString
+		    End If
+		  #EndIf
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub UpdateModernVolumeSlider(value As Integer)
+		  #If TargetWindows
+		    If ModernVolumeSlider.Visible Then
+		      ModernVolumeSlider.Value("VolumeSlider.Value") = value.ToString
+		    End If
+		  #EndIf
 		End Sub
 	#tag EndMethod
 
@@ -887,6 +895,26 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events ModernVolumeSlider
+	#tag Event
+		Sub Opening()
+		  #If TargetWindows
+		    // Setup event handling for value changes
+		    // This will be called when the control is ready
+		  #EndIf
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub EventTriggered(eventName As String, parameters As Dictionary)
+		  #If TargetWindows
+		    If eventName = "ValueChanged" Then
+		      Var newValue As Double = ModernVolumeSlider.Value("VolumeSlider.Value").DoubleValue
+		      RaiseEvent VolumeChanged(newValue)
+		    End If
+		  #EndIf
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events VolumeUpIconCanvas
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
@@ -989,6 +1017,19 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events ModernPositionProgressBar
+	#tag Event
+		Sub EventTriggered(eventName As String, parameters As Dictionary)
+		  #If TargetWindows
+		    If eventName = "PointerPressed" Then
+		      Var x As Double = parameters.Value("X").DoubleValue
+		      Var newValue As Double = Me.Value("PositionProgress.Maximum").IntegerValue / Me.Width * x
+		      RaiseEvent Seek(newValue)
+		    End If
+		  #EndIf
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events AlbumImageCanvas
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
@@ -1049,64 +1090,6 @@ End
 		  #If TargetWindows
 		    Me.Visible = False
 		  #Endif
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events ModernVolumeSlider
-	#tag Event
-		Sub Opening()
-		  #If TargetWindows
-		    // Setup event handling for value changes
-		    // This will be called when the control is ready
-		  #EndIf
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub EventTriggered(eventName As String, parameters As Dictionary)
-		  #If TargetWindows
-		    // Handle native XAML events
-		    If eventName = "ValueChanged" Then
-		      // Volume slider value changed by user interaction
-		      Try
-		        Var newValue As String = ModernVolumeSlider.Value("VolumeSlider.Value")
-		        RaiseEvent VolumeChanged(Val(newValue))
-		      Catch e As RuntimeException
-		        // Fallback - ignore errors
-		      End Try
-		    End If
-		  #EndIf
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events ModernPositionProgressBar
-	#tag Event
-		Sub EventTriggered(eventName As String, parameters As Dictionary)
-		  #If TargetWindows
-		    // Handle native XAML events for ProgressBar
-		    If eventName = "Tapped" Or eventName = "PointerPressed" Or eventName = "MouseLeftButtonUp" Then
-		      // ProgressBar was clicked - calculate seek position
-		      Try
-		        // Get the maximum value and calculate position based on click
-		        Var maxValue As String = ModernPositionProgressBar.Value("PositionProgress.Maximum")
-		        Var currentWidth As String = ModernPositionProgressBar.Value("ActualWidth")
-		        
-		        // For ProgressBar clicks, we need to calculate the position differently
-		        // Use the PositionProgressBar logic as reference
-		        Var width As Double = Val(currentWidth)
-		        Var maximum As Double = Val(maxValue)
-		        
-		        // Get click position from parameters if available
-		        If parameters <> Nil And parameters.HasKey("Position") Then
-		          Var pos As Variant = parameters.Value("Position")
-		          // Calculate the new seek position
-		          Var newValue As Double = maximum / width * Val(pos.StringValue)
-		          RaiseEvent Seek(newValue)
-		        End If
-		      Catch e As RuntimeException
-		        // Fallback - ignore errors
-		      End Try
-		    End If
-		  #EndIf
 		End Sub
 	#tag EndEvent
 #tag EndEvents
