@@ -108,9 +108,6 @@ Protected Class MusicApp
 		    Var databaseFile As FolderItem = appFolder.Child("playlist.db")
 		    mDatabase = New PlaylistDatabase(databaseFile)
 		    
-		    // Migrate from preferences if needed
-		    MigrateFromPreferences
-		    
 		    // Load existing playlist from database
 		    LoadPlaylistFromDatabase
 		    
@@ -151,36 +148,6 @@ Protected Class MusicApp
 		    
 		  Catch ex As RuntimeException
 		    System.DebugLog("Failed to load playlist from database: " + ex.Message)
-		  End Try
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub MigrateFromPreferences()
-		  If mDatabase = Nil Then
-		    Return
-		  End If
-		  
-		  Try
-		    // Check if there's existing playlist data in preferences
-		    Var savedPlaylist As Variant = App.Preferences.Lookup("playlist", Array())
-		    If savedPlaylist <> Nil And savedPlaylist.IsArray Then
-		      Var playlistPaths() As String = savedPlaylist
-		      
-		      If playlistPaths.Count > 0 Then
-		        // Migrate to database
-		        For Each path As String In playlistPaths
-		          mDatabase.AddSong(path)
-		        Next
-		        
-		        // Remove from preferences to avoid future migrations
-		        App.Preferences.Remove("playlist")
-		        System.DebugLog("Migrated " + playlistPaths.Count.ToString + " songs from preferences to database")
-		      End If
-		    End If
-		    
-		  Catch ex As RuntimeException
-		    System.DebugLog("Failed to migrate playlist from preferences: " + ex.Message)
 		  End Try
 		End Sub
 	#tag EndMethod
