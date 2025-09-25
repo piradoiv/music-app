@@ -41,7 +41,7 @@ Protected Class MusicApp
 		  Var reader As TextInputStream = TextInputStream.Open(songFile)
 		  Var songData As MemoryBlock = reader.ReadAll
 		  reader.Close
-		  Var tags As Dictionary = ReadID3Tags(songData)
+		  Var tags As Dictionary = MusicLibrary.ReadID3Tags(songData)
 		  If tags.HasKey("APIC") Then
 		    Return tags.Value("APIC")
 		  End If
@@ -67,7 +67,7 @@ Protected Class MusicApp
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  mPlaylist = New Dictionary
-		  LoadPlaylist
+		  InitializeDatabaseAndLoadPlaylist
 		End Sub
 	#tag EndMethod
 
@@ -96,36 +96,92 @@ Protected Class MusicApp
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub LoadPlaylist()
-		  Var playlistPaths() As String
+		Private Sub InitializeDatabaseAndLoadPlaylist()
 		  Try
+		    // Get the app data folder (same as preferences)
+		    Var appFolder As FolderItem = SpecialFolder.ApplicationData.Child("es.rcruz.music")
+		    If Not appFolder.Exists Then
+		      appFolder.CreateFolder
+		    End If
+		    
+		    // Initialize database
+		    Var databaseFile As FolderItem = appFolder.Child("playlist.db")
+		    mDatabase = New PlaylistDatabase(databaseFile)
+		    
+		    // Migrate from preferences if needed
+		    MigrateFromPreferences
+		    
+		    // Load existing playlist from database
+		    LoadPlaylistFromDatabase
+		    
+		  Catch ex As RuntimeException
+		    // If database initialization fails, continue without persistence
+		    System.DebugLog("Failed to initialize playlist database: " + ex.Message)
+		    mDatabase = Nil
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub LoadPlaylistFromDatabase()
+		  If mDatabase = Nil Then
+		    Return
+		  End If
+		  
+		  Try
+		    Var playlistPaths() As String = mDatabase.GetAllSongs
+		    Var validPaths() As String
+		    
+		    // Restore the playlist, validating that files still exist
+		    For Each path As String In playlistPaths
+		      Var musicFile As New FolderItem(path, FolderItem.PathModes.Native)
+		      If musicFile.Exists And IsMusicFile(musicFile) Then
+		        mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
+		        validPaths.Add(musicFile.NativePath)
+		      Else
+		        // Remove non-existent files from database
+		        mDatabase.RemoveSong(path)
+		      End If
+		    Next
+		    
+		    // Notify about restored files if any exist
+		    If validPaths.Count > 0 Then
+		      RaiseEvent NewFilesAdded(validPaths)
+		    End If
+		    
+		  Catch ex As RuntimeException
+		    System.DebugLog("Failed to load playlist from database: " + ex.Message)
+		  End Try
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub MigrateFromPreferences()
+		  If mDatabase = Nil Then
+		    Return
+		  End If
+		  
+		  Try
+		    // Check if there's existing playlist data in preferences
 		    Var savedPlaylist As Variant = App.Preferences.Lookup("playlist", Array())
 		    If savedPlaylist <> Nil And savedPlaylist.IsArray Then
-		      playlistPaths = savedPlaylist
+		      Var playlistPaths() As String = savedPlaylist
+		      
+		      If playlistPaths.Count > 0 Then
+		        // Migrate to database
+		        For Each path As String In playlistPaths
+		          mDatabase.AddSong(path)
+		        Next
+		        
+		        // Remove from preferences to avoid future migrations
+		        App.Preferences.Remove("playlist")
+		        System.DebugLog("Migrated " + playlistPaths.Count.ToString + " songs from preferences to database")
+		      End If
 		    End If
-		  Catch
-		    // Silently ignore errors loading playlist
-		    Return
+		    
+		  Catch ex As RuntimeException
+		    System.DebugLog("Failed to migrate playlist from preferences: " + ex.Message)
 		  End Try
-		  
-		  If playlistPaths.Count = 0 Then
-		    Return
-		  End If
-		  
-		  // Restore the playlist, validating that files still exist
-		  Var validPaths() As String
-		  For Each path As String In playlistPaths
-		    Var musicFile As New FolderItem(path, FolderItem.PathModes.Native)
-		    If musicFile.Exists And IsMusicFile(musicFile) Then
-		      mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
-		      validPaths.Add(musicFile.NativePath)
-		    End If
-		  Next
-		  
-		  // Notify about restored files if any exist
-		  If validPaths.Count > 0 Then
-		    RaiseEvent NewFilesAdded(validPaths)
-		  End If
 		End Sub
 	#tag EndMethod
 
@@ -134,22 +190,33 @@ Protected Class MusicApp
 		  If mPlaylist.HasKey(songPath.NativePath) Then
 		    mPlaylist.Remove(songPath.NativePath)
 		    RaiseEvent SongRemoved(songPath.NativePath)
-		    SavePlaylist
+		    
+		    // Remove from database
+		    If mDatabase <> Nil Then
+		      Try
+		        mDatabase.RemoveSong(songPath.NativePath)
+		      Catch ex As RuntimeException
+		        System.DebugLog("Failed to remove song from database: " + ex.Message)
+		      End Try
+		    End If
 		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub SavePlaylist()
-		  Var playlistPaths() As String
-		  For Each entry As DictionaryEntry In mPlaylist
-		    playlistPaths.Add(entry.Key)
-		  Next
+		  If mDatabase = Nil Then
+		    Return
+		  End If
 		  
 		  Try
-		    App.Preferences.Set("playlist", playlistPaths)
-		  Catch
-		    // Silently ignore errors saving playlist
+		    // Add new songs to database (database handles duplicates)
+		    For Each entry As DictionaryEntry In mPlaylist
+		      mDatabase.AddSong(entry.Key)
+		    Next
+		    
+		  Catch ex As RuntimeException
+		    System.DebugLog("Failed to save playlist to database: " + ex.Message)
 		  End Try
 		End Sub
 	#tag EndMethod
@@ -163,6 +230,10 @@ Protected Class MusicApp
 		Event SongRemoved(nativePath As String)
 	#tag EndHook
 
+
+	#tag Property, Flags = &h21
+		Private mDatabase As PlaylistDatabase
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mPlaylist As Dictionary
