@@ -165,7 +165,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          Visible         =   True
          Width           =   68
       End
-      Begin DesktopXAMLContainer ModernVolumeSlider
+      Begin DesktopXAMLContainer WinUIVolumeSlider
          Active          =   False
          AllowAutoDeactivate=   True
          Content         =   "<Slider x:Name=""VolumeSlider""\n            Minimum=""0"" Maximum=""255"" Value=""127""\n            Orientation=""Horizontal"" Width=""68"" Height=""30""\n            Foreground=""#0078D4""\n            BorderBrush=""Transparent"" Margin=""0"" IsThumbToolTipEnabled=""False"" />"
@@ -369,7 +369,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          _mName          =   ""
          _mPanelIndex    =   0
       End
-      Begin DesktopXAMLContainer ModernPositionProgressBar
+      Begin DesktopXAMLContainer WinUIPositionProgressBar
          Active          =   False
          AllowAutoDeactivate=   True
          Content         =   "<ProgressBar x:Name=""PositionProgress""\n                        Minimum=""0"" Maximum=""100"" Value=""50""\n                        Width=""90"" Height=""4""\n                        Foreground=""#0078D4""\n                        BorderBrush=""Transparent"" BorderThickness=""0""\n                        Margin=""0"" IsIndeterminate=""False"" IsHitTestVisible=""True"" />"
@@ -498,9 +498,8 @@ End
 		  
 		  mIconCache = New Dictionary
 		  
-		  // Initialize modern Windows controls
 		  #If TargetWindows
-		    InitializeWindowsModernControls
+		    InitializeWindowsWinUIControls
 		  #EndIf
 		  
 		  Update
@@ -600,14 +599,14 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub InitializeWindowsModernControls()
+		Private Sub InitializeWindowsWinUIControls()
 		  #If TargetWindows
 		    // Hide standard controls on Windows and show modern ones
 		    VolumeSlider.Visible = False
 		    PositionProgressBar.Visible = False
 		    
-		    ModernVolumeSlider.Visible = True
-		    ModernPositionProgressBar.Visible = True
+		    WinUIVolumeSlider.Visible = True
+		    WinUIPositionProgressBar.Visible = True
 		  #EndIf
 		End Sub
 	#tag EndMethod
@@ -616,8 +615,8 @@ End
 		Sub SetVolume(value As Integer)
 		  VolumeSlider.Value = value
 		  #If TargetWindows
-		    If ModernVolumeSlider.Visible Then
-		      UpdateModernVolumeSlider(value)
+		    If WinUIVolumeSlider.Visible Then
+		      UpdateWinUIVolumeSlider(value)
 		    End If
 		  #EndIf
 		End Sub
@@ -665,34 +664,34 @@ End
 		    PositionProgressBar.MaximumValue = length
 		    PositionProgressBar.Value = pos
 		    #If TargetWindows
-		      UpdateModernPositionProgressBar(pos, length)
+		      UpdateWinUIPositionProgressBar(pos, length)
 		    #EndIf
 		  Else
 		    PositionProgressBar.MaximumValue = 1
 		    PositionProgressBar.Value = 0
 		    #If TargetWindows
-		      UpdateModernPositionProgressBar(0, 1)
+		      UpdateWinUIPositionProgressBar(0, 1)
 		    #EndIf
 		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub UpdateModernPositionProgressBar(position As Integer, maximum As Integer)
+		Private Sub UpdateWinUIPositionProgressBar(position As Integer, maximum As Integer)
 		  #If TargetWindows
-		    If ModernPositionProgressBar.Visible Then
-		      ModernPositionProgressBar.Value("PositionProgress.Maximum") = maximum.ToString
-		      ModernPositionProgressBar.Value("PositionProgress.Value") = position.ToString
+		    If WinUIPositionProgressBar.Visible Then
+		      WinUIPositionProgressBar.Value("PositionProgress.Maximum") = maximum.ToString
+		      WinUIPositionProgressBar.Value("PositionProgress.Value") = position.ToString
 		    End If
 		  #EndIf
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub UpdateModernVolumeSlider(value As Integer)
+		Private Sub UpdateWinUIVolumeSlider(value As Integer)
 		  #If TargetWindows
-		    If ModernVolumeSlider.Visible Then
-		      ModernVolumeSlider.Value("VolumeSlider.Value") = value.ToString
+		    If WinUIVolumeSlider.Visible Then
+		      WinUIVolumeSlider.Value("VolumeSlider.Value") = value.ToString
 		    End If
 		  #EndIf
 		End Sub
@@ -865,11 +864,11 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events ModernVolumeSlider
+#tag Events WinUIVolumeSlider
 	#tag Event
 		Sub EventTriggered(eventName As String, parameters As Dictionary)
 		  If eventName = "ValueChanged" Then
-		    Var newValue As Double = ModernVolumeSlider.Value("VolumeSlider.Value").DoubleValue
+		    Var newValue As Double = WinUIVolumeSlider.Value("VolumeSlider.Value").DoubleValue
 		    RaiseEvent VolumeChanged(newValue)
 		  End If
 		End Sub
@@ -977,7 +976,7 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events ModernPositionProgressBar
+#tag Events WinUIPositionProgressBar
 	#tag Event
 		Sub EventTriggered(eventName As String, parameters As Dictionary)
 		  If eventName = "PointerPressed" Then
