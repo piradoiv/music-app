@@ -21,7 +21,6 @@ Protected Class PlaylistDatabase
 		    Raise New RuntimeException("Failed to create playlist database: " + mDatabase.ErrorMessage)
 		  End If
 		  
-		  // Create the playlist table
 		  Var sql As String = "CREATE TABLE playlist (id INTEGER PRIMARY KEY AUTOINCREMENT, file_path TEXT NOT NULL UNIQUE, added_at DATETIME DEFAULT CURRENT_TIMESTAMP)"
 		  If Not mDatabase.ExecuteSQL(sql) Then
 		    Raise New RuntimeException("Failed to create playlist table: " + mDatabase.ErrorMessage)
@@ -31,14 +30,8 @@ Protected Class PlaylistDatabase
 
 	#tag Method, Flags = &h0
 		Sub AddSong(filePath As String)
-		  Var sql As String = "INSERT OR IGNORE INTO playlist (file_path) VALUES (?)"
-		  Var statement As SQLitePreparedStatement = mDatabase.Prepare(sql)
-		  statement.BindType(0, SQLitePreparedStatement.SQLITE_TEXT)
-		  statement.Bind(0, filePath)
-		  
-		  If Not statement.Step Then
-		    // Ignore duplicate key errors, but report other errors
-		    If mDatabase.ErrorCode <> 19 Then // SQLITE_CONSTRAINT
+		  If Not mDatabase.ExecuteSQL("INSERT OR IGNORE INTO playlist (file_path) VALUES (?)", filePath) Then
+		    If mDatabase.ErrorCode <> 19 Then
 		      Raise New RuntimeException("Failed to add song to playlist: " + mDatabase.ErrorMessage)
 		    End If
 		  End If
@@ -47,12 +40,7 @@ Protected Class PlaylistDatabase
 
 	#tag Method, Flags = &h0
 		Sub RemoveSong(filePath As String)
-		  Var sql As String = "DELETE FROM playlist WHERE file_path = ?"
-		  Var statement As SQLitePreparedStatement = mDatabase.Prepare(sql)
-		  statement.BindType(0, SQLitePreparedStatement.SQLITE_TEXT)
-		  statement.Bind(0, filePath)
-		  
-		  If Not statement.Step Then
+		  If Not mDatabase.ExecuteSQL("DELETE FROM playlist WHERE file_path = ?", filePath) Then
 		    Raise New RuntimeException("Failed to remove song from playlist: " + mDatabase.ErrorMessage)
 		  End If
 		End Sub

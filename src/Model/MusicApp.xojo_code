@@ -9,7 +9,7 @@ Protected Class MusicApp
 		      Continue
 		    End If
 		    
-		    mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
+		    mPlaylist.Value(musicFile.NativePath) = musicFile.NativePath
 		    newPaths.Add(musicFile.NativePath)
 		  Next
 		  
@@ -104,11 +104,9 @@ Protected Class MusicApp
 		      appFolder.CreateFolder
 		    End If
 		    
-		    // Initialize database
 		    Var databaseFile As FolderItem = appFolder.Child("playlist.db")
 		    mDatabase = New PlaylistDatabase(databaseFile)
 		    
-		    // Load existing playlist from database
 		    LoadPlaylistFromDatabase
 		    
 		  Catch ex As RuntimeException
@@ -129,19 +127,16 @@ Protected Class MusicApp
 		    Var playlistPaths() As String = mDatabase.GetAllSongs
 		    Var validPaths() As String
 		    
-		    // Restore the playlist, validating that files still exist
 		    For Each path As String In playlistPaths
 		      Var musicFile As New FolderItem(path, FolderItem.PathModes.Native)
 		      If musicFile.Exists And IsMusicFile(musicFile) Then
-		        mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
+		        mPlaylist.Value(musicFile.NativePath) = musicFile.NativePath
 		        validPaths.Add(musicFile.NativePath)
 		      Else
-		        // Remove non-existent files from database
 		        mDatabase.RemoveSong(path)
 		      End If
 		    Next
 		    
-		    // Notify about restored files if any exist
 		    If validPaths.Count > 0 Then
 		      RaiseEvent NewFilesAdded(validPaths)
 		    End If
@@ -158,7 +153,6 @@ Protected Class MusicApp
 		    mPlaylist.Remove(songPath.NativePath)
 		    RaiseEvent SongRemoved(songPath.NativePath)
 		    
-		    // Remove from database
 		    If mDatabase <> Nil Then
 		      Try
 		        mDatabase.RemoveSong(songPath.NativePath)
@@ -177,7 +171,6 @@ Protected Class MusicApp
 		  End If
 		  
 		  Try
-		    // Add new songs to database (database handles duplicates)
 		    For Each entry As DictionaryEntry In mPlaylist
 		      mDatabase.AddSong(entry.Key)
 		    Next
