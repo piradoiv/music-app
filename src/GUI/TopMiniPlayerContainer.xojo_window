@@ -165,6 +165,35 @@ Begin DesktopContainer TopMiniPlayerContainer
          Visible         =   True
          Width           =   68
       End
+      Begin DesktopXAMLContainer WinUIVolumeSlider
+         Active          =   False
+         AllowAutoDeactivate=   True
+         Content         =   "<Slider x:Name=""VolumeSlider""\n            Minimum=""0"" Maximum=""255"" Value=""127""\n            Orientation=""Horizontal"" Width=""68"" Height=""30""\n            Foreground=""#0078D4""\n            BorderBrush=""Transparent"" Margin=""0"" IsThumbToolTipEnabled=""False"" />"
+         Enabled         =   True
+         Height          =   30
+         Index           =   -2147483648
+         InitialParent   =   "BackgroundCanvas"
+         Left            =   540
+         LockBottom      =   False
+         LockedInPosition=   False
+         LockLeft        =   False
+         LockRight       =   True
+         LockTop         =   True
+         PanelIndex      =   0
+         Scope           =   2
+         TabIndex        =   8
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   24
+         Transparent     =   True
+         Visible         =   False
+         Width           =   68
+         _mIndex         =   0
+         _mInitialParent =   ""
+         _mName          =   ""
+         _mPanelIndex    =   0
+      End
       Begin DesktopCanvas VolumeUpIconCanvas
          AllowAutoDeactivate=   True
          AllowFocus      =   False
@@ -340,6 +369,35 @@ Begin DesktopContainer TopMiniPlayerContainer
          _mName          =   ""
          _mPanelIndex    =   0
       End
+      Begin DesktopXAMLContainer WinUIPositionProgressBar
+         Active          =   False
+         AllowAutoDeactivate=   True
+         Content         =   "<ProgressBar x:Name=""PositionProgress""\n                        Minimum=""0"" Maximum=""100"" Value=""50""\n                        Width=""90"" Height=""4""\n                        Foreground=""#0078D4""\n                        BorderBrush=""Transparent"" BorderThickness=""0""\n                        Margin=""0"" IsIndeterminate=""False"" IsHitTestVisible=""True"" />"
+         Enabled         =   True
+         Height          =   10
+         Index           =   -2147483648
+         InitialParent   =   "DisplayCanvas"
+         Left            =   334
+         LockBottom      =   True
+         LockedInPosition=   False
+         LockLeft        =   True
+         LockRight       =   True
+         LockTop         =   False
+         PanelIndex      =   0
+         Scope           =   2
+         TabIndex        =   6
+         TabPanelIndex   =   0
+         TabStop         =   True
+         Tooltip         =   ""
+         Top             =   48
+         Transparent     =   True
+         Visible         =   False
+         Width           =   90
+         _mIndex         =   0
+         _mInitialParent =   ""
+         _mName          =   ""
+         _mPanelIndex    =   0
+      End
       Begin DesktopLabel DurationLabel
          AllowAutoDeactivate=   True
          Bold            =   False
@@ -439,6 +497,11 @@ End
 		  DurationLabel.FontName = fontName
 		  
 		  mIconCache = New Dictionary
+		  
+		  #If TargetWindows
+		    InitializeWindowsWinUIControls
+		  #EndIf
+		  
 		  Update
 		  RaiseEvent Opening
 		End Sub
@@ -535,9 +598,27 @@ End
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub InitializeWindowsWinUIControls()
+		  #If TargetWindows
+		    // Hide standard controls on Windows and show modern ones
+		    VolumeSlider.Visible = False
+		    PositionProgressBar.Visible = False
+		    
+		    WinUIVolumeSlider.Visible = True
+		    WinUIPositionProgressBar.Visible = True
+		  #EndIf
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub SetVolume(value As Integer)
 		  VolumeSlider.Value = value
+		  #If TargetWindows
+		    If WinUIVolumeSlider.Visible Then
+		      UpdateWinUIVolumeSlider(value)
+		    End If
+		  #EndIf
 		End Sub
 	#tag EndMethod
 
@@ -582,10 +663,37 @@ End
 		  If length > 0 Then
 		    PositionProgressBar.MaximumValue = length
 		    PositionProgressBar.Value = pos
+		    #If TargetWindows
+		      UpdateWinUIPositionProgressBar(pos, length)
+		    #EndIf
 		  Else
 		    PositionProgressBar.MaximumValue = 1
 		    PositionProgressBar.Value = 0
+		    #If TargetWindows
+		      UpdateWinUIPositionProgressBar(0, 1)
+		    #EndIf
 		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub UpdateWinUIPositionProgressBar(position As Integer, maximum As Integer)
+		  #If TargetWindows
+		    If WinUIPositionProgressBar.Visible Then
+		      WinUIPositionProgressBar.Value("PositionProgress.Maximum") = maximum.ToString
+		      WinUIPositionProgressBar.Value("PositionProgress.Value") = position.ToString
+		    End If
+		  #EndIf
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub UpdateWinUIVolumeSlider(value As Integer)
+		  #If TargetWindows
+		    If WinUIVolumeSlider.Visible Then
+		      WinUIVolumeSlider.Value("VolumeSlider.Value") = value.ToString
+		    End If
+		  #EndIf
 		End Sub
 	#tag EndMethod
 
@@ -696,7 +804,9 @@ End
 		Sub Paint(g As Graphics, areas() As Rect)
 		  Const padding = 8
 		  
-		  DrawBackground(g.Clip(0, 0, g.Width, g.Height))
+		  #If Not TargetWindows
+		    DrawBackground(g.Clip(0, 0, g.Width, g.Height))
+		  #EndIf
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -751,6 +861,16 @@ End
 	#tag Event
 		Sub ValueChanged()
 		  RaiseEvent VolumeChanged(Me.Value)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events WinUIVolumeSlider
+	#tag Event
+		Sub EventTriggered(eventName As String, parameters As Dictionary)
+		  If eventName = "ValueChanged" Then
+		    Var newValue As Double = WinUIVolumeSlider.Value("VolumeSlider.Value").DoubleValue
+		    RaiseEvent VolumeChanged(newValue)
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -853,6 +973,17 @@ End
 		  #If TargetLinux
 		    Me.Top = Me.Top - 5
 		  #EndIf
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events WinUIPositionProgressBar
+	#tag Event
+		Sub EventTriggered(eventName As String, parameters As Dictionary)
+		  If eventName = "PointerPressed" Then
+		    Var x As Double = parameters.Value("X").DoubleValue
+		    Var newValue As Double = Me.Value("PositionProgress.Maximum").IntegerValue / Me.Width * x
+		    RaiseEvent Seek(newValue)
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents

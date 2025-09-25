@@ -1,5 +1,5 @@
 Type=Desktop
-RBProjectVersion=2025.011
+RBProjectVersion=2025.021
 MinIDEVersion=20210300
 OrigIDEVersion=20240400
 Class=App;App.xojo_code;&h0000000057A86FFF;&h0000000000000000;false
@@ -77,3 +77,4 @@ WindowsRunAs=0
 MacOSMinimumVersion=
 PlistEntries={"root":""}
 AppCategory=
+AppSpecificPassword=
