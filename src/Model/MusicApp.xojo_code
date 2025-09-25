@@ -9,7 +9,7 @@ Protected Class MusicApp
 		      Continue
 		    End If
 		    
-		    mPlaylist.Value(musicFile.NativePath) = musicFile.NativePath
+		    mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
 		    newPaths.Add(musicFile.NativePath)
 		  Next
 		  
@@ -41,7 +41,7 @@ Protected Class MusicApp
 		  Var reader As TextInputStream = TextInputStream.Open(songFile)
 		  Var songData As MemoryBlock = reader.ReadAll
 		  reader.Close
-		  Var tags As Dictionary = MusicLibrary.ReadID3Tags(songData)
+		  Var tags As Dictionary = ReadID3Tags(songData)
 		  If tags.HasKey("APIC") Then
 		    Return tags.Value("APIC")
 		  End If
@@ -98,7 +98,6 @@ Protected Class MusicApp
 	#tag Method, Flags = &h21
 		Private Sub InitializeDatabaseAndLoadPlaylist()
 		  Try
-		    // Get the app data folder (same as preferences)
 		    Var appFolder As FolderItem = SpecialFolder.ApplicationData.Child("es.rcruz.music")
 		    If Not appFolder.Exists Then
 		      appFolder.CreateFolder
@@ -130,7 +129,7 @@ Protected Class MusicApp
 		    For Each path As String In playlistPaths
 		      Var musicFile As New FolderItem(path, FolderItem.PathModes.Native)
 		      If musicFile.Exists And IsMusicFile(musicFile) Then
-		        mPlaylist.Value(musicFile.NativePath) = musicFile.NativePath
+		        mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
 		        validPaths.Add(musicFile.NativePath)
 		      Else
 		        mDatabase.RemoveSong(path)
