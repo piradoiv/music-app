@@ -114,15 +114,36 @@ Protected Class PlaylistDatabase
 
 	#tag Method, Flags = &h0
 		Sub UpdatePlaylistOrder(filePaths() As String)
+		  If filePaths.Count = 0 Then
+		    Return
+		  End If
+		  
 		  mDatabase.ExecuteSQL("BEGIN TRANSACTION")
 		  
+		  Var caseStatements() As String
+		  Var inPlaceholders() As String
+		  
 		  For i As Integer = 0 To filePaths.LastIndex
-		    mDatabase.ExecuteSQL("UPDATE playlist SET sort_order = ? WHERE file_path = ?", i, filePaths(i))
-		    If mDatabase.Error Then
-		      mDatabase.ExecuteSQL("ROLLBACK")
-		      Raise New RuntimeException("Failed to update playlist order: " + mDatabase.ErrorMessage)
-		    End If
+		    caseStatements.Add("WHEN ? THEN " + i.ToString)
+		    inPlaceholders.Add("?")
 		  Next
+		  
+		  Var sql As String = "UPDATE playlist SET sort_order = CASE file_path " + String.FromArray(caseStatements, " ") + " END WHERE file_path IN (" + String.FromArray(inPlaceholders, ",") + ")"
+		  
+		  Var params() As Variant
+		  For Each path As String In filePaths
+		    params.Add(path)
+		  Next
+		  For Each path As String In filePaths
+		    params.Add(path)
+		  Next
+		  
+		  mDatabase.ExecuteSQL(sql, params)
+		  
+		  If mDatabase.Error Then
+		    mDatabase.ExecuteSQL("ROLLBACK")
+		    Raise New RuntimeException("Failed to update playlist order: " + mDatabase.ErrorMessage)
+		  End If
 		  
 		  mDatabase.ExecuteSQL("COMMIT")
 		  
