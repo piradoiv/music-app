@@ -251,6 +251,11 @@ End
 		      End If
 		    End Try
 		  #EndIf
+		  
+		  Var playlist() As String = Music.GetPlaylist
+		  If playlist.Count > 0 Then
+		    SongList.AddSongs(playlist)
+		  End If
 		End Sub
 	#tag EndEvent
 
