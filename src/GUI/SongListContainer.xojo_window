@@ -235,6 +235,10 @@ End
 		Event SongDoublePressed(nativePath As String)
 	#tag EndHook
 
+	#tag Hook, Flags = &h0
+		Event PlaylistReordered(nativePaths() As String)
+	#tag EndHook
+
 
 	#tag Property, Flags = &h21
 		Private mDrawingCache As Dictionary
@@ -337,6 +341,18 @@ End
 	#tag Event
 		Function DragReorderRows(newPosition as Integer, parentRow as Integer) As Boolean
 		  ResetPlayingIndicator
+		  
+		  Var nativePaths() As String
+		  For row As Integer = 0 To Me.RowCount - 1
+		    Var song As SongElement = Me.RowTagAt(row)
+		    If song <> Nil Then
+		      nativePaths.Add(song.NativePath)
+		    End If
+		  Next
+		  
+		  If nativePaths.Count > 0 Then
+		    RaiseEvent PlaylistReordered(nativePaths)
+		  End If
 		End Function
 	#tag EndEvent
 	#tag Event

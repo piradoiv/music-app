@@ -456,6 +456,11 @@ End
 		  Music.RemoveSong(New FolderItem(nativePath))
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub PlaylistReordered(nativePaths() As String)
+		  Music.UpdatePlaylistOrder(nativePaths)
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events Music
 	#tag Event

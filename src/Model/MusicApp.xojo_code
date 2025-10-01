@@ -174,6 +174,18 @@ Protected Class MusicApp
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub UpdatePlaylistOrder(filePaths() As String)
+		  If mPlaylistDatabase <> Nil Then
+		    Try
+		      mPlaylistDatabase.UpdatePlaylistOrder(filePaths)
+		    Catch ex As RuntimeException
+		      System.DebugLog("Failed to update playlist order: " + ex.Message)
+		    End Try
+		  End If
+		End Sub
+	#tag EndMethod
+
 
 	#tag Hook, Flags = &h0
 		Event NewFilesAdded(nativePaths() As String)
