@@ -94,6 +94,23 @@ Protected Class MusicApp
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetPlaylist() As String()
+		  If mPlaylistDatabase = Nil Then
+		    Var empty() As String
+		    Return empty
+		  End If
+		  
+		  Try
+		    Return mPlaylistDatabase.GetAllSongs
+		  Catch ex As RuntimeException
+		    System.DebugLog("Failed to get playlist: " + ex.Message)
+		    Var empty() As String
+		    Return empty
+		  End Try
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function IsMusicFile(file As FolderItem) As Boolean
 		  Var extensions() As String = Array("mp3", "m4a")
@@ -130,20 +147,13 @@ Protected Class MusicApp
 		  
 		  Try
 		    Var playlistPaths() As String = mPlaylistDatabase.GetAllSongs
-		    Var validPaths() As String
 		    
 		    For Each path As String In playlistPaths
 		      Var musicFile As New FolderItem(path, FolderItem.PathModes.Native)
-		      If musicFile.Exists And IsMusicFile(musicFile) Then
-		        validPaths.Add(musicFile.NativePath)
-		      Else
+		      If Not musicFile.Exists Or Not IsMusicFile(musicFile) Then
 		        mPlaylistDatabase.RemoveSong(path)
 		      End If
 		    Next
-		    
-		    If validPaths.Count > 0 Then
-		      RaiseEvent NewFilesAdded(validPaths)
-		    End If
 		    
 		  Catch ex As RuntimeException
 		    System.DebugLog("Failed to load playlist from database: " + ex.Message)
