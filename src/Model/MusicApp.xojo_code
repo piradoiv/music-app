@@ -5,17 +5,24 @@ Protected Class MusicApp
 		  Var newPaths() As String
 		  
 		  For Each musicFile As FolderItem In files
-		    If Not IsMusicFile(musicFile) Or mPlaylist.HasKey(musicFile.NativePath) Then
+		    If Not IsMusicFile(musicFile) Then
 		      Continue
 		    End If
 		    
-		    mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
-		    newPaths.Add(musicFile.NativePath)
+		    If mPlaylistDatabase <> Nil Then
+		      Try
+		        mPlaylistDatabase.AddSong(musicFile.NativePath)
+		        newPaths.Add(musicFile.NativePath)
+		      Catch ex As RuntimeException
+		        System.DebugLog("Failed to add song: " + ex.Message)
+		      End Try
+		    Else
+		      newPaths.Add(musicFile.NativePath)
+		    End If
 		  Next
 		  
 		  If newPaths.Count > 0 Then
 		    newPaths.Sort
-		    SavePlaylist
 		    RaiseEvent NewFilesAdded(newPaths)
 		  End If
 		End Sub
@@ -66,7 +73,6 @@ Protected Class MusicApp
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  mPlaylist = New Dictionary
 		  InitializeDatabaseAndLoadPlaylist
 		End Sub
 	#tag EndMethod
@@ -129,7 +135,6 @@ Protected Class MusicApp
 		    For Each path As String In playlistPaths
 		      Var musicFile As New FolderItem(path, FolderItem.PathModes.Native)
 		      If musicFile.Exists And IsMusicFile(musicFile) Then
-		        mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
 		        validPaths.Add(musicFile.NativePath)
 		      Else
 		        mPlaylistDatabase.RemoveSong(path)
@@ -148,35 +153,14 @@ Protected Class MusicApp
 
 	#tag Method, Flags = &h0
 		Sub RemoveSong(songPath As FolderItem)
-		  If mPlaylist.HasKey(songPath.NativePath) Then
-		    mPlaylist.Remove(songPath.NativePath)
-		    RaiseEvent SongRemoved(songPath.NativePath)
-		    
-		    If mPlaylistDatabase <> Nil Then
-		      Try
-		        mPlaylistDatabase.RemoveSong(songPath.NativePath)
-		      Catch ex As RuntimeException
-		        System.DebugLog("Failed to remove song from database: " + ex.Message)
-		      End Try
-		    End If
+		  If mPlaylistDatabase <> Nil Then
+		    Try
+		      mPlaylistDatabase.RemoveSong(songPath.NativePath)
+		      RaiseEvent SongRemoved(songPath.NativePath)
+		    Catch ex As RuntimeException
+		      System.DebugLog("Failed to remove song from database: " + ex.Message)
+		    End Try
 		  End If
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub SavePlaylist()
-		  If mPlaylistDatabase = Nil Then
-		    Return
-		  End If
-		  
-		  Try
-		    For Each entry As DictionaryEntry In mPlaylist
-		      mPlaylistDatabase.AddSong(entry.Key)
-		    Next
-		    
-		  Catch ex As RuntimeException
-		    System.DebugLog("Failed to save playlist to database: " + ex.Message)
-		  End Try
 		End Sub
 	#tag EndMethod
 
@@ -192,10 +176,6 @@ Protected Class MusicApp
 
 	#tag Property, Flags = &h21
 		Private mPlaylistDatabase As PlaylistDatabase
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private mPlaylist As Dictionary
 	#tag EndProperty
 
 
