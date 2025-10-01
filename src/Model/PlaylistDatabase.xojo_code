@@ -17,12 +17,12 @@ Protected Class PlaylistDatabase
 
 	#tag Method, Flags = &h21
 		Private Sub CreateDatabase()
-		  If Not mDatabase.CreateDatabase Then
-		    Raise New RuntimeException("Failed to create playlist database: " + mDatabase.ErrorMessage)
-		  End If
+		  mDatabase.CreateDatabase
 		  
 		  Var sql As String = "CREATE TABLE playlist (id INTEGER PRIMARY KEY AUTOINCREMENT, file_path TEXT NOT NULL UNIQUE, added_at DATETIME DEFAULT CURRENT_TIMESTAMP)"
-		  If Not mDatabase.ExecuteSQL(sql) Then
+		  mDatabase.ExecuteSQL(sql)
+		  
+		  If mDatabase.Error Then
 		    Raise New RuntimeException("Failed to create playlist table: " + mDatabase.ErrorMessage)
 		  End If
 		End Sub
@@ -30,17 +30,19 @@ Protected Class PlaylistDatabase
 
 	#tag Method, Flags = &h0
 		Sub AddSong(filePath As String)
-		  If Not mDatabase.ExecuteSQL("INSERT OR IGNORE INTO playlist (file_path) VALUES (?)", filePath) Then
-		    If mDatabase.ErrorCode <> 19 Then
-		      Raise New RuntimeException("Failed to add song to playlist: " + mDatabase.ErrorMessage)
-		    End If
+		  mDatabase.ExecuteSQL("INSERT OR IGNORE INTO playlist (file_path) VALUES (?)", filePath)
+		  
+		  If mDatabase.Error And mDatabase.ErrorCode <> 19 Then
+		    Raise New RuntimeException("Failed to add song to playlist: " + mDatabase.ErrorMessage)
 		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub RemoveSong(filePath As String)
-		  If Not mDatabase.ExecuteSQL("DELETE FROM playlist WHERE file_path = ?", filePath) Then
+		  mDatabase.ExecuteSQL("DELETE FROM playlist WHERE file_path = ?", filePath)
+		  
+		  If mDatabase.Error Then
 		    Raise New RuntimeException("Failed to remove song from playlist: " + mDatabase.ErrorMessage)
 		  End If
 		End Sub
@@ -67,8 +69,9 @@ Protected Class PlaylistDatabase
 
 	#tag Method, Flags = &h0
 		Sub ClearPlaylist()
-		  Var sql As String = "DELETE FROM playlist"
-		  If Not mDatabase.ExecuteSQL(sql) Then
+		  mDatabase.ExecuteSQL("DELETE FROM playlist")
+		  
+		  If mDatabase.Error Then
 		    Raise New RuntimeException("Failed to clear playlist: " + mDatabase.ErrorMessage)
 		  End If
 		End Sub

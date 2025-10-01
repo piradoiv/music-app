@@ -104,26 +104,26 @@ Protected Class MusicApp
 		    End If
 		    
 		    Var databaseFile As FolderItem = appFolder.Child("playlist.db")
-		    mDatabase = New PlaylistDatabase(databaseFile)
+		    mPlaylistDatabase = New PlaylistDatabase(databaseFile)
 		    
 		    LoadPlaylistFromDatabase
 		    
 		  Catch ex As RuntimeException
 		    // If database initialization fails, continue without persistence
 		    System.DebugLog("Failed to initialize playlist database: " + ex.Message)
-		    mDatabase = Nil
+		    mPlaylistDatabase = Nil
 		  End Try
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub LoadPlaylistFromDatabase()
-		  If mDatabase = Nil Then
+		  If mPlaylistDatabase = Nil Then
 		    Return
 		  End If
 		  
 		  Try
-		    Var playlistPaths() As String = mDatabase.GetAllSongs
+		    Var playlistPaths() As String = mPlaylistDatabase.GetAllSongs
 		    Var validPaths() As String
 		    
 		    For Each path As String In playlistPaths
@@ -132,7 +132,7 @@ Protected Class MusicApp
 		        mPlaylist.Value(musicFile.NativePath) = musicFile.ShellPath
 		        validPaths.Add(musicFile.NativePath)
 		      Else
-		        mDatabase.RemoveSong(path)
+		        mPlaylistDatabase.RemoveSong(path)
 		      End If
 		    Next
 		    
@@ -152,9 +152,9 @@ Protected Class MusicApp
 		    mPlaylist.Remove(songPath.NativePath)
 		    RaiseEvent SongRemoved(songPath.NativePath)
 		    
-		    If mDatabase <> Nil Then
+		    If mPlaylistDatabase <> Nil Then
 		      Try
-		        mDatabase.RemoveSong(songPath.NativePath)
+		        mPlaylistDatabase.RemoveSong(songPath.NativePath)
 		      Catch ex As RuntimeException
 		        System.DebugLog("Failed to remove song from database: " + ex.Message)
 		      End Try
@@ -165,13 +165,13 @@ Protected Class MusicApp
 
 	#tag Method, Flags = &h21
 		Private Sub SavePlaylist()
-		  If mDatabase = Nil Then
+		  If mPlaylistDatabase = Nil Then
 		    Return
 		  End If
 		  
 		  Try
 		    For Each entry As DictionaryEntry In mPlaylist
-		      mDatabase.AddSong(entry.Key)
+		      mPlaylistDatabase.AddSong(entry.Key)
 		    Next
 		    
 		  Catch ex As RuntimeException
@@ -191,7 +191,7 @@ Protected Class MusicApp
 
 
 	#tag Property, Flags = &h21
-		Private mDatabase As PlaylistDatabase
+		Private mPlaylistDatabase As PlaylistDatabase
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
