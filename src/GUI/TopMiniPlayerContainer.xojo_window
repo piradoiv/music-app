@@ -150,7 +150,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          LockLeft        =   False
          LockRight       =   True
          LockTop         =   True
-         MaximumValue    =   255
+         MaximumValue    =   100
          MinimumValue    =   0
          PageStep        =   20
          Scope           =   2
@@ -161,7 +161,7 @@ Begin DesktopContainer TopMiniPlayerContainer
          Tooltip         =   ""
          Top             =   26
          Transparent     =   True
-         Value           =   127
+         Value           =   30
          Visible         =   True
          Width           =   68
       End

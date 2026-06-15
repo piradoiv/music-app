@@ -470,7 +470,7 @@ End
 #tag Events MP3Player
 	#tag Event
 		Sub Opening()
-		  Me.Volume = 127
+		  Me.Volume = 50
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -553,7 +553,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub Opening()
-		  Me.SetVolume(App.Preferences.Lookup("volume", 255))
+		  Me.SetVolume(App.Preferences.Lookup("volume", 30))
 		  Me.AlbumIcon = GenerateAlbumIcon
 		End Sub
 	#tag EndEvent
