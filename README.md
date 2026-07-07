@@ -21,7 +21,7 @@ Music is inspired in iTunes, BeatBox and elementaryOS' Music app which are amazi
 macOS is fully supported. It works on Linux and Windows, but as these aren't my main OS, please report any issue you might find.
 
 # Releases
-There are no public releases yet, but you can build it using [Xojo](https://www.xojo.com/), release 2025r1.1 is being used at the moment of writing this README file.
+There are no public releases yet, but you can build it using [Xojo](https://www.xojo.com/), release 2026r2 is being used at the moment of writing this README file.
 
 # License
 
