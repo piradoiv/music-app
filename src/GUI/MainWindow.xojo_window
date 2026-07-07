@@ -235,7 +235,7 @@ Begin DesktopWindow MainWindow
       Height          =   26
       Index           =   -2147483648
       Italic          =   False
-      Left            =   574
+      Left            =   581
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   False
