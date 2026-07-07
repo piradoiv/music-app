@@ -258,7 +258,25 @@ End
 
 #tag WindowCode
 	#tag Event
+		Sub DropObject(obj As DragItem, action As DragItem.Types)
+		  Do
+		    If obj = Nil Or obj.FolderItem = Nil Then
+		      Continue
+		    End If
+		    
+		    If obj.FolderItem.IsFolder Then
+		      Music.AddFolderRecursively(obj.FolderItem)
+		    Else
+		      Music.AddFiles(Array(obj.FolderItem))
+		    End If
+		  Loop Until Not obj.NextItem
+		End Sub
+	#tag EndEvent
+
+	#tag Event
 		Sub Opening()
+		  Self.AcceptFileDrop("audio/mpeg")
+		  
 		  MainWindow.Width = App.Preferences.Lookup("mainWindow.width", Self.Width)
 		  MainWindow.Height = App.Preferences.Lookup("mainWindow.height", Self.Height)
 		  
