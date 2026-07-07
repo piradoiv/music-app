@@ -222,6 +222,37 @@ Begin DesktopWindow MainWindow
       _mName          =   ""
       _mPanelIndex    =   0
    End
+   Begin DesktopButton ClearQueueButton
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Clear Queue"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   26
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   574
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   2
+      TabIndex        =   15
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   466
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   106
+   End
 End
 #tag EndDesktopWindow
 
@@ -574,6 +605,13 @@ End
 		  End If
 		  
 		  Music.AddFolderRecursively(folder)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events ClearQueueButton
+	#tag Event
+		Sub Pressed()
+		  SongList.RemoveAll
 		End Sub
 	#tag EndEvent
 #tag EndEvents

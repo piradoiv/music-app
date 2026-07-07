@@ -84,7 +84,6 @@ Begin DesktopContainer SongListContainer
    End
    Begin Thread ImportMusicThread
       DebugIdentifier =   ""
-      Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
       Priority        =   5
@@ -210,6 +209,16 @@ End
 		  
 		  Return ""
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RemoveAll()
+		  If mSongPlaying <> "" Then
+		    RaiseEvent RemoveSong(mSongPlaying)
+		  End If
+		  Stop
+		  SongListBox.RemoveAllRows
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
