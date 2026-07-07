@@ -87,6 +87,7 @@ Begin DesktopWindow MainWindow
       Movie           =   0
       PanelIndex      =   0
       Position        =   0.0
+      Rate            =   1.0
       RepeatInReverse =   False
       Scope           =   2
       TabIndex        =   5
