@@ -84,6 +84,7 @@ Begin DesktopContainer SongListContainer
    End
    Begin Thread ImportMusicThread
       DebugIdentifier =   ""
+      Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
       Priority        =   5
@@ -257,6 +258,8 @@ End
 		  Const padding = 2
 		  Const radius = 8
 		  
+		  Static highlight As Color = Color.HSV(Color.HighlightColor.Hue, 1, Color.HighlightColor.Value, 0)
+		  
 		  Select Case column
 		  Case 0
 		    Var song As SongElement = SongElement(Me.RowTagAt(row))
@@ -280,7 +283,6 @@ End
 		    Var w As Double = g.Width / 3
 		    
 		    g.SaveState
-		    Static highlight As Color = Color.HighlightColor
 		    g.DrawingColor = Color.HSV(highlight.Hue, 1, .6)
 		    Var now As DateTime = DateTime.Now // TODO: Use System.Ticks instead, or something that consumes less CPU
 		    
@@ -296,6 +298,13 @@ End
 		    Return True
 		    
 		  End Select
+		  
+		  // Depending on the OS, it might happen the background color is too bright to use a light
+		  // foreground color, so we'll check that at runtime
+		  If Me.RowSelectedAt(row) Then
+		    Static luminance As Double = (0.299 * highlight.Red) + (0.587 * highlight.Green) + (0.114 * highlight.Blue)
+		    g.DrawingColor = If(luminance > 128, Color.Black, Color.White)
+		  End If
 		  
 		  Return False
 		End Function
@@ -341,15 +350,19 @@ End
 	#tag EndEvent
 	#tag Event
 		Function PaintCellBackground(g As Graphics, row As Integer, column As Integer) As Boolean
-		  If Color.IsDarkMode Then
-		    g.DrawingColor = If(row Mod 2 = 0, &c121212, &c000000)
+		  If Me.RowSelectedAt(row) Then
+		    g.DrawingColor = Color.HSV(Color.HighlightColor.Hue, 1, Color.HighlightColor.Value)
 		  Else
-		    g.DrawingColor = If(row Mod 2 = 0, &cF3F3F3, &cFFFFFF)
+		    If Color.IsDarkMode Then
+		      g.DrawingColor = If(row Mod 2 = 0, &c121212, &c000000)
+		    Else
+		      g.DrawingColor = If(row Mod 2 = 0, &cF3F3F3, &cFFFFFF)
+		    End If
 		  End If
 		  
 		  g.FillRectangle(0, 0, g.Width, g.Height)
 		  
-		  Return False
+		  Return True
 		End Function
 	#tag EndEvent
 	#tag Event
